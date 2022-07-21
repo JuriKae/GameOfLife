@@ -28,6 +28,31 @@ public class Cell extends Rectangle {
         }
     }
 
+    public static void countNeighbours(Cell cell, int xGrid, int yGrid) {
+        int neighbours = 0;
+
+        // counts alive neighbours of every single cell
+        for (int i = -1; i < 2; i++) {
+            for (int j = -1; j < 2; j++) {
+                if (cells[xGrid + i][yGrid + j].alive)
+                    if (i != 0 || j != 0) {
+                        neighbours++;
+                    }
+            }
+        }
+
+        // sets next gen cell alive or dead according to number of neighbours
+        if (cell.alive) {
+            if (neighbours <= 1 || neighbours >= 4) {
+                cell.nextGenAlive = false;
+            }
+        } else {
+            if (neighbours == 3) {
+                cell.nextGenAlive = true;
+            }
+        }
+    }
+
     public boolean isAlive() {
         return alive;
     }

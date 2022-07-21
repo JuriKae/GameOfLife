@@ -39,6 +39,8 @@ public class Main extends JPanel {
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
 
+        new Options();
+
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         this.repaint();
@@ -61,10 +63,21 @@ public class Main extends JPanel {
                         e.printStackTrace();
                     }
 
+                    while (Options.isPaused()) {
+                        try {
+                            Thread.sleep(50);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        if (Options.isStep()) {
+                            Options.setStep(false);
+                            break;
+                        }
+                    }
+
                     for (int i = 1; i < xGrids - 1; i++) {
                         for (int j = 1; j < yGrids - 1; j++) {
-                            Cell currentCell = Cell.getCells()[i][j];
-                            countNeighbours(currentCell, i, j);
+                            Cell.countNeighbours(Cell.getCells()[i][j], i, j);
                         }
                     }
                     main.repaint();
@@ -76,35 +89,10 @@ public class Main extends JPanel {
         t1.start();
     }
 
-    public static void countNeighbours(Cell cell, int xGrid, int yGrid) {
-        int neighbours = 0;
-
-        // counts alive neighbours of every single cell
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                if (Cell.getCells()[xGrid + i][yGrid + j].isAlive())
-                    if (i != 0 || j != 0) {
-                        neighbours++;
-                    }
-            }
-        }
-
-        // sets next gen cell alive or dead according to number of neighbours
-        if (cell.isAlive()) {
-            if (neighbours <= 1 || neighbours >= 4) {
-                cell.setNextGenAlive(false);
-            }
-        } else {
-            if (neighbours == 3) {
-                cell.setNextGenAlive(true);
-            }
-        }
-    }
-
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        
+
         // draw first alive cells
         if (!initialized) {
             g.setColor(Color.WHITE);
@@ -153,5 +141,9 @@ public class Main extends JPanel {
 
     public static int getyGrids() {
         return yGrids;
+    }
+
+    public static JPanel getTopPanel() {
+        return topPanel;
     }
 }
