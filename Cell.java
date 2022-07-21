@@ -2,6 +2,7 @@ import java.awt.Rectangle;
 
 public class Cell extends Rectangle {
     private boolean alive = false;
+    private boolean nextGenAlive = false;
     private static int width = 10;
     private static int height = 10;
 
@@ -36,5 +37,13 @@ public class Cell extends Rectangle {
 
     public void setNeighbours(int neighbours) {
         this.neighbours = neighbours;
+    }
+
+    public boolean isNextGenAlive() {
+        return nextGenAlive;
+    }
+
+    public void setNextGenAlive(boolean nextGenAlive) {
+        this.nextGenAlive = nextGenAlive;
     }
 }
