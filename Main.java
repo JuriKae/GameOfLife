@@ -32,8 +32,10 @@ public class Main extends JPanel {
         this.repaint();
     }
 
+
+
     public static void main(String[] args) {
-        new Main();
+        Main main = new Main();
         Cell.initializeCells();
 
         Thread t1 = new Thread(new Runnable() {
@@ -42,18 +44,18 @@ public class Main extends JPanel {
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(3000);
+                        Thread.sleep(500);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-    
+
                     for (int i = 1; i < 49; i++) {
                         for (int j = 1; j < 49; j++) {
                             Cell currentCell = cells[i][j];
                             countNeighbours(currentCell, i, j);
                         }
                     }
-                    System.out.println("uff");
+                    main.repaint();
                 }
             }
 
@@ -62,12 +64,10 @@ public class Main extends JPanel {
         t1.start();
     }
 
-    public void callRepaint() {
-        repaint();
-    }
-
     public static void countNeighbours(Cell cell, int i, int j) {
         int neighbours = 0;
+
+        // TO-DO: nested for loop
         if (cells[i - 1][j - 1].isAlive())
             neighbours++;
         if (cells[i][j - 1].isAlive())
@@ -85,15 +85,14 @@ public class Main extends JPanel {
         if (cells[i + 1][j + 1].isAlive())
             neighbours++;
 
-        System.out.println(neighbours);
         if (cell.isAlive()) {
             if (neighbours <= 1 || neighbours >= 4)
                 cell.setAlive(false);
-                deadCells[i][j] = cell;
+            deadCells[i][j] = cell;
         } else {
             if (neighbours == 3)
                 cell.setAlive(true);
-                aliveCells[i][j] = cell;
+            aliveCells[i][j] = cell;
         }
     }
 
@@ -102,18 +101,13 @@ public class Main extends JPanel {
         super.paint(g);
         g.setColor(Color.WHITE);
 
-        for (int i = 0; i <= this.getWidth(); i += 10) {
-            g.drawLine(i, 0, i, 500);
-            g.drawLine(0, i, 500, i);
-        }
-
         // draw first alive cells
         for (int i = 0; i < 50; i++) {
             for (int j = 0; j < 50; j++) {
                 if (j % 10 == 0 || i % 10 == 0) {
-                    int x = (int) (cells[i][j].getX() + 1);
-                    int y = (int) (cells[i][j].getY() + 1);
-                    g.fillRect(x, y, 9, 9);
+                    int x = (int) (cells[i][j].getX());
+                    int y = (int) (cells[i][j].getY());
+                    g.fillRect(x, y, 10, 10);
                     cells[i][j].setAlive(true);
                 }
             }
@@ -122,16 +116,14 @@ public class Main extends JPanel {
         // draw cells
         for (int i = 1; i < 49; i++) {
             for (int j = 1; j < 49; j++) {
-                    int x = (int) (cells[i][j].getX() + 1);
-                    int y = (int) (cells[i][j].getY() + 1);
-                    if (cells[i][j].isAlive()) {
-                        g.setColor(Color.WHITE);
-                    } else {
-                        g.setColor(Color.BLACK);
-                    }
-                    g.fillRect(x, y, 9, 9);
-                    System.out.println("Paint stuff");
-                
+                int x = (int) (cells[i][j].getX());
+                int y = (int) (cells[i][j].getY());
+                if (cells[i][j].isAlive()) {
+                    g.setColor(Color.WHITE);
+                } else {
+                    g.setColor(Color.BLACK);
+                }
+                g.fillRect(x, y, 10, 10);
             }
         }
 
