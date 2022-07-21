@@ -20,6 +20,10 @@ public class Main extends JPanel {
     private static int xGrids;
     private static int yGrids;
 
+    private static Main main;
+
+    private static Thread thread;
+
     private static boolean initialized;
 
     public Main() {
@@ -47,18 +51,22 @@ public class Main extends JPanel {
     }
 
     public static void main(String[] args) {
-        Main main = new Main();
+        main = new Main();
         Cell.initializeCells();
         xGrids = panelWidth / Cell.getCellWidth();
         yGrids = panelHeight / Cell.getCellHeight();
 
-        Thread t1 = new Thread(new Runnable() {
+        createThread();
+    }
+
+    public static void createThread() {
+        thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 while (true) {
                     try {
-                        Thread.sleep(30);
+                        Thread.sleep(50);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -85,8 +93,6 @@ public class Main extends JPanel {
             }
 
         });
-
-        t1.start();
     }
 
     @Override
@@ -145,5 +151,21 @@ public class Main extends JPanel {
 
     public static JPanel getTopPanel() {
         return topPanel;
+    }
+
+    public static Thread getThread() {
+        return thread;
+    }
+
+    public static void setThread(Thread thread) {
+        Main.thread = thread;
+    }
+
+    public static Main getMain() {
+        return main;
+    }
+
+    public static void setInitialized(boolean initialized) {
+        Main.initialized = initialized;
     }
 }
