@@ -184,4 +184,12 @@ public class Cell extends Rectangle {
     public Color getDeadColor() {
         return deadColor;
     }
+
+    public static int getxGrids() {
+        return xGrids;
+    }
+
+    public static int getyGrids() {
+        return yGrids;
+    }
 }

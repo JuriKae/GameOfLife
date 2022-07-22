@@ -6,10 +6,6 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 
 public class Main extends JPanel {
 
@@ -35,7 +31,7 @@ public class Main extends JPanel {
     private static boolean repainted;
     private static boolean initialized;
 
-    private static PanelListener panelListener = new PanelListener();
+    private static MouseCellListener mouseListener = new MouseCellListener();
 
     public Main() {
         frame = new JFrame();
@@ -47,8 +43,8 @@ public class Main extends JPanel {
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
         this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 1));
-        this.addMouseListener(panelListener);
-        this.addMouseMotionListener(panelListener);
+        this.addMouseListener(mouseListener);
+        this.addMouseMotionListener(mouseListener);
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.BLACK);
@@ -93,12 +89,14 @@ public class Main extends JPanel {
                     }
                     repainted = false;
 
+                    // wait if the game has been paused
                     while (BasicOptions.isPaused() && !reset) {
                         try {
                             Thread.sleep(10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
+                        // if user pressed step, break out of the while loop for one iteration
                         if (BasicOptions.isStep()) {
                             BasicOptions.setStep(false);
                             break;
@@ -115,6 +113,7 @@ public class Main extends JPanel {
 
                     Cell.makeCountingThreads();
 
+                    // wait until all counting threads are finished
                     for (Thread t : Thread.getAllStackTraces().keySet()) {
                         if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3")
                                 || t.getName().equals("4")) {
@@ -134,9 +133,9 @@ public class Main extends JPanel {
                 reset = false;
                 generation = 1;
                 BasicOptions.getGenerationLabel().setText("Generation: " + generation);
-                System.out.println("Ended this Thread " + Thread.currentThread());
             }
         });
+        // thread always starts immediately, but paused is enabled
         thread.start();
     }
 
@@ -144,9 +143,8 @@ public class Main extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // draw first alive cells
+        // execute
         if (initialized) {
-            // draw cells
             for (int i = 1; i < xGrids - 1; i++) {
                 for (int j = 1; j < yGrids - 1; j++) {
                     int x = (int) (Cell.getCells()[i][j].getX());
@@ -161,7 +159,9 @@ public class Main extends JPanel {
                     g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
                 }
             }
-        } else {
+
+            // executed if the game has been reset
+        } else if (!initialized) {
             Cell.initAliveCells();
 
             for (int i = 0; i < xGrids - 1; i++) {
@@ -176,49 +176,9 @@ public class Main extends JPanel {
                 }
             }
             initialized = true;
-        }
+        } 
 
         repainted = true;
-    }
-
-    public static class PanelListener extends MouseAdapter {
-        @Override
-        public void mousePressed(MouseEvent e) {
-            super.mousePressed(e);
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(true);
-            } else if (SwingUtilities.isRightMouseButton(e)) {
-                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(false);
-            }
-            main.repaint();
-        }
-
-        @Override
-        public void mouseDragged(MouseEvent e) {
-            super.mouseDragged(e);
-            if (SwingUtilities.isLeftMouseButton(e)) {
-                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(true);
-            } else if (SwingUtilities.isRightMouseButton(e)) {
-                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(false);
-            }
-            main.repaint();
-        }
-    }
-
-    public static int getPanelWidth() {
-        return panelWidth;
-    }
-
-    public static int getPanelHeight() {
-        return panelHeight;
-    }
-
-    public static int getxGrids() {
-        return xGrids;
-    }
-
-    public static int getyGrids() {
-        return yGrids;
     }
 
     public static JPanel getTopPanel() {
@@ -229,10 +189,6 @@ public class Main extends JPanel {
         return thread;
     }
 
-    public static void setThread(Thread thread) {
-        Main.thread = thread;
-    }
-
     public static Main getMain() {
         return main;
     }
@@ -241,20 +197,12 @@ public class Main extends JPanel {
         Main.initialized = initialized;
     }
 
-    public static JFrame getFrame() {
-        return frame;
-    }
-
     public static void setxGrids(int xGrids) {
         Main.xGrids = xGrids;
     }
 
     public static void setyGrids(int yGrids) {
         Main.yGrids = yGrids;
-    }
-
-    public static boolean isReset() {
-        return reset;
     }
 
     public static void setReset(boolean reset) {
