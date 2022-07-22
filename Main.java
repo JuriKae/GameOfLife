@@ -85,9 +85,9 @@ public class Main extends JPanel {
                     }
                     repainted = false;
 
-                    while (Options.isPaused()) {
+                    while (Options.isPaused() && !reset) {
                         try {
-                            Thread.sleep(50);
+                            Thread.sleep(10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
@@ -98,22 +98,25 @@ public class Main extends JPanel {
                     }
 
                     // long start = System.nanoTime();
-                   /*  for (int i = 1; i < xGrids - 1; i++) {
+
+                    /* //  this is faster for smaller grids
+                    for (int i = 1; i < xGrids - 1; i++) {
                         for (int j = 1; j < yGrids - 1; j++) {
                             Cell.countNeighbours(Cell.getCells()[i][j], i, j);
                         }
                     } */
 
                     Cell.makeCountingThreads();
-                    while (Cell.getFinishedThreads() != 4) {
-                        try {
-                            Thread.sleep(0);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
+
+                    for (Thread t : Thread.getAllStackTraces().keySet()) {
+                        if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3") || t.getName().equals("4")) {
+                            try {
+                                t.join();
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
-
-                    Cell.setFinishedThreads(0);
 
                     // long duration = (System.nanoTime() - start) / 1000000;
                     // System.out.println(duration + "ms for counting");
@@ -129,12 +132,11 @@ public class Main extends JPanel {
                 System.out.println("Ended this Thread " + Thread.currentThread());
             }
         });
+        thread.start();
     }
 
     @Override
     public void paint(Graphics g) {
-        long start = System.nanoTime();
-
         super.paint(g);
 
         // draw first alive cells
@@ -170,9 +172,6 @@ public class Main extends JPanel {
         }
 
         repainted = true;
-
-        long duration = (System.nanoTime() - start) / 1000000;
-        System.out.println(duration + "ms for painting");
     }
 
     public static int getPanelWidth() {

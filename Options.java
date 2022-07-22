@@ -5,7 +5,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 public class Options {
-    private static JButton startButton, resetButton, pauseButton, stepButton, testButton;
+    private static JButton startButton, resetButton, pauseButton, stepButton;
     private static JLabel generationLabel;
 
     private static boolean paused = true;
@@ -29,9 +29,6 @@ public class Options {
         stepButton.setFocusable(false);
         stepButton.addActionListener(e -> makeAStep());
         
-        testButton = new JButton("Test");
-        testButton.setFocusable(false);
-        // testButton.addActionListener();
 
         generationLabel = new JLabel("Generation: 1");
         generationLabel.setFont(new Font(null, Font.BOLD, 20));
@@ -42,22 +39,15 @@ public class Options {
         Main.getTopPanel().add(resetButton);
         Main.getTopPanel().add(pauseButton);
         Main.getTopPanel().add(stepButton);
-        // Main.getTopPanel().add(testButton);
         Main.getTopPanel().add(generationLabel);
 
     }
 
     public static void startGame() {
-        if (!Main.getThread().isAlive()) {
-            Main.getThread().start();
+        if (paused) {
+            paused = false;
             startButton.setEnabled(false);
             pauseButton.setEnabled(true);
-            if (paused) {
-                paused = false;
-            }
-        } else {
-            startButton.setEnabled(false);
-            togglePause();
         }
     }
 
@@ -65,12 +55,12 @@ public class Options {
         Main.setReset(true);
         Cell.initializeCells();
         
-        // if (!paused) {
-        //     togglePause();
-        // }
+        if (!paused) {
+            togglePause();
+        }
 
-        // pauseButton.setEnabled(false);
-        // pauseButton.setText("Pause");
+        pauseButton.setEnabled(false);
+        pauseButton.setText("Pause");
 
         Main.setInitialized(false);
         Main.getMain().repaint();

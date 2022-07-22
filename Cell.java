@@ -4,8 +4,8 @@ public class Cell extends Rectangle {
     private boolean alive = false;
     private boolean nextGenAlive = false;
 
-    private static int cellWidth = 10;
-    private static int cellHeight = 10;
+    private static int cellWidth = 3;
+    private static int cellHeight = 3;
 
     private static int xGrids;
     private static int yGrids;
@@ -78,7 +78,6 @@ public class Cell extends Rectangle {
                     countNeighbours(cells[i][j], i, j);
                 }
             }
-            finishedThreads++;
         });
         Threadmaker.runInThread(() -> {
             for (int i = (xGrids / 2) - 1; i < xGrids - 1; i++) {
@@ -86,7 +85,6 @@ public class Cell extends Rectangle {
                     countNeighbours(cells[i][j], i, j);
                 }
             }
-            finishedThreads++;
         });
         Threadmaker.runInThread(() -> {
             for (int i = 1; i < (xGrids / 2) - 1; i++) {
@@ -94,7 +92,6 @@ public class Cell extends Rectangle {
                     countNeighbours(cells[i][j], i, j);
                 }
             }
-            finishedThreads++;
         });
         Threadmaker.runInThread(() -> {
             for (int i = (xGrids / 2) - 1; i < xGrids - 1; i++) {
@@ -102,7 +99,6 @@ public class Cell extends Rectangle {
                     countNeighbours(cells[i][j], i, j);
                 }
             }
-            finishedThreads++;
         });
     }
 
