@@ -40,16 +40,16 @@ public class Main extends JPanel {
 
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
-        this.setBorder(BorderFactory.createLineBorder(Color.GREEN, 1));
+        this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 1));
 
         topPanel = new JPanel();
-        topPanel.setBackground(Color.DARK_GRAY);
+        topPanel.setBackground(Color.BLACK);
         topPanel.setPreferredSize(new Dimension(0, 75));
 
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
 
-        new Options();
+        new BasicOptions();
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
@@ -85,14 +85,14 @@ public class Main extends JPanel {
                     }
                     repainted = false;
 
-                    while (Options.isPaused() && !reset) {
+                    while (BasicOptions.isPaused() && !reset) {
                         try {
                             Thread.sleep(10);
                         } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
-                        if (Options.isStep()) {
-                            Options.setStep(false);
+                        if (BasicOptions.isStep()) {
+                            BasicOptions.setStep(false);
                             break;
                         }
                     }
@@ -123,12 +123,12 @@ public class Main extends JPanel {
 
                     main.repaint();
                     generation++;
-                    Options.getGenerationLabel().setText("Generation: " + generation);
+                    BasicOptions.getGenerationLabel().setText("Generation: " + generation);
                 }
                 // resetted
                 reset = false;
                 generation = 1;
-                Options.getGenerationLabel().setText("Generation: " + generation);
+                BasicOptions.getGenerationLabel().setText("Generation: " + generation);
                 System.out.println("Ended this Thread " + Thread.currentThread());
             }
         });

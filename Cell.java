@@ -38,7 +38,7 @@ public class Cell extends Rectangle {
         }
     }
 
-    public static /* synchronized */ void countNeighbours(Cell cell, int xGrid, int yGrid) {
+    public static void countNeighbours(Cell cell, int xGrid, int yGrid) {
         int neighbours = 0;
 
         // counts alive neighbours of every single cell
@@ -73,7 +73,7 @@ public class Cell extends Rectangle {
 
     public static void initAliveCells() {
 
-        switch (Options.getAliveCellMode()) {
+        switch (BasicOptions.getAliveCellMode()) {
             case EMPTY:
                 break;
             case LINE:
@@ -88,7 +88,7 @@ public class Cell extends Rectangle {
             case RANDOM:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
-                        cells[i][j].nextGenAlive = (Math.random() < Options.getPercOfAliveCells()/100);
+                        cells[i][j].nextGenAlive = (Math.random() < BasicOptions.getPercOfAliveCells()/100);
                     }
                 }
                 break;
