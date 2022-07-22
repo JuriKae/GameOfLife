@@ -12,8 +12,8 @@ public class Main extends JPanel {
     private static JFrame frame;
     private static JPanel topPanel;
 
-    private static int panelWidth = 500;
-    private static int panelHeight = 500;
+    private static int panelWidth = 600;
+    private static int panelHeight = 600;
 
     private static int width = panelWidth + 16;
     private static int height = panelHeight + 39 + 75;
@@ -48,7 +48,7 @@ public class Main extends JPanel {
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.BLACK);
-        topPanel.setPreferredSize(new Dimension(0, 125));
+        topPanel.setPreferredSize(new Dimension(0, 75));
 
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
@@ -74,7 +74,12 @@ public class Main extends JPanel {
             public void run() {
                 while (!reset) {
                     try {
-                        Thread.sleep(BasicOptions.getDelay());
+                        // do not sleep if user makes steps
+                        if (!BasicOptions.isStep()) {
+                            Thread.sleep(BasicOptions.getDelay());
+                        } else {
+                            BasicOptions.setStep(false);
+                        }
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -98,7 +103,6 @@ public class Main extends JPanel {
                         }
                         // if user pressed step, break out of the while loop for one iteration
                         if (BasicOptions.isStep()) {
-                            BasicOptions.setStep(false);
                             break;
                         }
                     }
@@ -160,15 +164,14 @@ public class Main extends JPanel {
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
                         g.setColor(Cell.getCells()[i][j].getAliveColor());
                         Cell.getCells()[i][j].setAlive(true);
-                        // Cell.getCells()[i][j].setLastGenAlive(true);
                     } else {
                         g.setColor(Cell.getCells()[i][j].getDeadColor());
                         Cell.getCells()[i][j].setAlive(false);
-                        // Cell.getCells()[i][j].setLastGenAlive(false);
                     }
                     g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
                 }
             }
+            System.out.println("Painted");
 
             // executed if the game has been reset
         } else if (!initialized) {
@@ -181,10 +184,11 @@ public class Main extends JPanel {
                         int y = (int) (Cell.getCells()[i][j].getY());
                         g.setColor(Cell.getCells()[i][j].getAliveColor());
                         g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
-                        Cell.getCells()[i][j].setNextGenAlive(true);
+                        Cell.getCells()[i][j].setAlive(true);
                     }
                 }
             }
+            System.out.println("Initialized");
             initialized = true;
         } 
 

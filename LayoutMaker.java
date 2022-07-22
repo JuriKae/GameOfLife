@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,23 +27,30 @@ public class LayoutMaker {
         gbc.insets = new Insets(3, -70, 3, 0);
         gbc.gridx = 1;
         gbc.gridy = 0;
+        gbc.gridwidth = 2;
         topPanel.add(BasicOptions.getPauseButton(), gbc);
 
+        gbc.insets = new Insets(3, -70, 3, 0);
         gbc.gridx = 1;
         gbc.gridy = 1;
-        topPanel.add(BasicOptions.getStepButton(), gbc);
-
-        gbc.gridx = 1;
-        gbc.gridy = 2;
+        gbc.gridwidth = 1;
+        BasicOptions.getPreviousButton().setPreferredSize(new Dimension(50, 30));
         topPanel.add(BasicOptions.getPreviousButton(), gbc);
 
-        gbc.insets = new Insets(3, 100, 3, 0);
+        gbc.insets = new Insets(3, -10, 3, 10);
         gbc.gridx = 2;
+        gbc.gridy = 1;
+        BasicOptions.getStepButton().setPreferredSize(new Dimension(50, 30));
+        topPanel.add(BasicOptions.getStepButton(), gbc);
+
+
+        gbc.insets = new Insets(3, 100, 3, 0);
+        gbc.gridx = 3;
         gbc.gridy = 0;
         topPanel.add(BasicOptions.getGenerationLabel(), gbc);
 
         gbc.insets = new Insets(3, 80, 3, 0);
-        gbc.gridx = 2;
+        gbc.gridx = 3;
         gbc.gridy = 1;
         topPanel.add(BasicOptions.getOptionsButton(), gbc);
 
@@ -52,8 +60,14 @@ public class LayoutMaker {
         topPanel.add(BasicOptions.getCellModeBox(), gbc);
 
         // gbc.insets = new Insets(3, 80, 3, 0);
-        gbc.gridx = 1;
-        gbc.gridy = 0;
+        gbc.gridx = 0;
+        gbc.gridy = 1;
         topPanel.add(BasicOptions.getDelayBox(), gbc);
+
+        gbc.insets = new Insets(0, 0, 0, 0);
+        gbc.gridx = 4;
+        gbc.gridy = 0;
+        gbc.gridheight = 2;
+        topPanel.add(BasicOptions.getDelaySlider(), gbc);
     }
 }

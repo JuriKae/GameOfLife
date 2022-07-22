@@ -6,12 +6,14 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JSlider;
 
 public class BasicOptions {
-    private static JButton startButton, resetButton, pauseButton, stepButton, previousButton, optionsButton;
+    private static JButton startButton, resetButton, pauseButton, previousButton, stepButton, optionsButton;
     private static JLabel generationLabel;
 
-    private static JComboBox<Object> cellModeBox, delayBox;
+    private static JComboBox<Object> cellModeBox, cellSizeBox;
+    private static JSlider delaySlider;
 
     private static boolean paused = true;
     private static boolean step = false;
@@ -21,6 +23,7 @@ public class BasicOptions {
     private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
 
     private static AliveCellMode[] cellModes = { AliveCellMode.RANDOM, AliveCellMode.LINE, AliveCellMode.EMPTY };
+    private static Integer[] cellSizes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
 
     private static float percOfAliveCells = 40;
 
@@ -39,12 +42,12 @@ public class BasicOptions {
         pauseButton.addActionListener(e -> togglePause());
         pauseButton.setEnabled(false);
 
-        stepButton = new JButton("Step");
-        stepButton.addActionListener(e -> makeAStep());
-
-        previousButton = new JButton("Previous");
+        previousButton = new JButton("Back");
         previousButton.addActionListener(e -> makeAStepBack());
         previousButton.setEnabled(false);
+
+        stepButton = new JButton("Step");
+        stepButton.addActionListener(e -> makeAStep());
 
         optionsButton = new JButton("Options");
         optionsButton.addActionListener(e -> toggleShowOptions());
@@ -54,7 +57,7 @@ public class BasicOptions {
         generationLabel.setPreferredSize(new Dimension(130, 20));
         generationLabel.setForeground(Color.WHITE);
 
-        JButton[] buttonArray = { startButton, resetButton, pauseButton, stepButton, previousButton, optionsButton };
+        JButton[] buttonArray = { startButton, resetButton, pauseButton, previousButton, stepButton, optionsButton };
         for (JButton button : buttonArray) {
             button.setPreferredSize(new Dimension(100, 30));
             button.setFocusable(false);
@@ -64,18 +67,31 @@ public class BasicOptions {
             button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         }
 
-        
         cellModeBox = new JComboBox<>(cellModes);
         cellModeBox.setVisible(false);
-        cellModeBox.addActionListener(e -> aliveCellMode = (AliveCellMode) cellModeBox.getSelectedItem());
+        cellModeBox.setPreferredSize(new Dimension(100, 30));
+        cellModeBox.addActionListener(e -> {
+            aliveCellMode = (AliveCellMode) cellModeBox.getSelectedItem();
+            reset();
+        });
 
-        delayBox = new JComboBox<>();
-        delayBox.setVisible(false);
-        delayBox.setEditable(true);
-        delayBox.addActionListener(e -> {
-            String stringDelay = (String) delayBox.getSelectedItem();
-            delay = Integer.parseInt(stringDelay);
-            
+        cellSizeBox = new JComboBox<>(cellSizes);
+        cellSizeBox.setVisible(false);
+        cellSizeBox.setEditable(true);
+        cellSizeBox.setPreferredSize(new Dimension(100, 30));
+        cellSizeBox.setSelectedIndex(5);
+        cellSizeBox.addActionListener(e -> {
+            Integer cellSizeString = (Integer) cellSizeBox.getSelectedItem();
+            Cell.setCellWidth(cellSizeString);
+            Cell.setCellHeight(cellSizeString);
+            reset();
+        });
+
+        delaySlider = new JSlider(JSlider.VERTICAL, 1, 1000, 40);
+        delaySlider.setPreferredSize(new Dimension(20, 70));
+        delaySlider.addChangeListener(e -> {
+            System.out.println(delaySlider.getValue());
+            delay = delaySlider.getValue();
         });
 
         new LayoutMaker();
@@ -155,7 +171,7 @@ public class BasicOptions {
 
     public static void toggleShowOptions() {
         cellModeBox.setVisible(!optionsShown);
-        delayBox.setVisible(!optionsShown);
+        cellSizeBox.setVisible(!optionsShown);
 
         startButton.setVisible(optionsShown);
         resetButton.setVisible(optionsShown);
@@ -163,6 +179,7 @@ public class BasicOptions {
         stepButton.setVisible(optionsShown);
         previousButton.setVisible(optionsShown);
         generationLabel.setVisible(optionsShown);
+        delaySlider.setVisible(optionsShown);
 
         if (optionsShown)
             optionsButton.setText("Options");
@@ -221,7 +238,7 @@ public class BasicOptions {
     }
 
     public static JComboBox<Object> getDelayBox() {
-        return delayBox;
+        return cellSizeBox;
     }
 
     public static int getDelay() {
@@ -230,5 +247,9 @@ public class BasicOptions {
 
     public static JButton getPreviousButton() {
         return previousButton;
+    }
+
+    public static JSlider getDelaySlider() {
+        return delaySlider;
     }
 }
