@@ -1,15 +1,20 @@
 import javax.swing.JButton;
+import javax.swing.JLabel;
+
+import java.awt.Color;
+import java.awt.Font;
 
 public class Options {
-    private static JButton startButton, resetButton, pauseButton, stepButton;
+    private static JButton startButton, resetButton, pauseButton, stepButton, testButton;
+    private static JLabel generationLabel;
 
-    private static boolean paused = false;
+    private static boolean paused = true;
     private static boolean step = false;
 
     public Options() {
         startButton = new JButton("Start");
         startButton.setFocusable(false);
-        startButton.addActionListener(e -> start());
+        startButton.addActionListener(e -> startGame());
 
         resetButton = new JButton("Reset");
         resetButton.setFocusable(false);
@@ -23,20 +28,33 @@ public class Options {
         stepButton = new JButton("Step");
         stepButton.setFocusable(false);
         stepButton.addActionListener(e -> makeAStep());
+        
+        testButton = new JButton("Test");
+        testButton.setFocusable(false);
+        // testButton.addActionListener();
+
+        generationLabel = new JLabel("Generation: 1");
+        generationLabel.setFont(new Font(null, Font.BOLD, 20));
+        generationLabel.setForeground(Color.WHITE);
 
 
         Main.getTopPanel().add(startButton);
         Main.getTopPanel().add(resetButton);
         Main.getTopPanel().add(pauseButton);
         Main.getTopPanel().add(stepButton);
+        // Main.getTopPanel().add(testButton);
+        Main.getTopPanel().add(generationLabel);
 
     }
 
-    public static void start() {
+    public static void startGame() {
         if (!Main.getThread().isAlive()) {
             Main.getThread().start();
             startButton.setEnabled(false);
             pauseButton.setEnabled(true);
+            if (paused) {
+                paused = false;
+            }
         } else {
             startButton.setEnabled(false);
             togglePause();
@@ -44,26 +62,22 @@ public class Options {
     }
 
     public static void reset() {
-        Cell[][] cells = Cell.getCells();
+        Main.setReset(true);
+        Cell.initializeCells();
+        
+        // if (!paused) {
+        //     togglePause();
+        // }
 
-        for (int i = 0; i < Main.getxGrids(); i++) {
-            for (int j = 0; j < Main.getyGrids(); j++) {
-                cells[i][j].setAlive(false);
-                cells[i][j].setNextGenAlive(false);
-            }
-        }
-
-        if (!paused) {
-            togglePause();
-        }
-
-        pauseButton.setEnabled(false);
-        pauseButton.setText("Pause");
+        // pauseButton.setEnabled(false);
+        // pauseButton.setText("Pause");
 
         Main.setInitialized(false);
         Main.getMain().repaint();
 
         startButton.setEnabled(true);
+
+        Main.createThread();
     }
 
     public static void togglePause() {
@@ -82,7 +96,7 @@ public class Options {
 
     public static void makeAStep() {
         if (!Main.getThread().isAlive()) {
-            start();
+            startGame();
             togglePause();
         }
         pauseButton.setEnabled(true);
@@ -100,5 +114,9 @@ public class Options {
 
     public static void setStep(boolean step) {
         Options.step = step;
+    }
+
+    public static JLabel getGenerationLabel() {
+        return generationLabel;
     }
 }

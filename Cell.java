@@ -4,22 +4,30 @@ public class Cell extends Rectangle {
     private boolean alive = false;
     private boolean nextGenAlive = false;
 
-    private static int cellWidth = 3;
-    private static int cellHeight = 3;
+    private static int cellWidth = 10;
+    private static int cellHeight = 10;
+
+    private static int xGrids;
+    private static int yGrids;
+
+    private static int finishedThreads;
 
     private int neighbours = 0;
 
     private static Cell[][] cells;
 
-
     public Cell(int i, int j) {
         this.setBounds(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
     }
-    
+
     public static void initializeCells() {
-        int xGrids = Main.getPanelWidth() / cellWidth;
-        int yGrids = Main.getPanelHeight() / cellHeight;
+        xGrids = Main.getMain().getWidth() / cellWidth;
+        yGrids = Main.getMain().getHeight() / cellHeight;
+
         cells = new Cell[xGrids][yGrids];
+
+        Main.setxGrids(xGrids);
+        Main.setyGrids(yGrids);
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
@@ -28,18 +36,26 @@ public class Cell extends Rectangle {
         }
     }
 
-    public static void countNeighbours(Cell cell, int xGrid, int yGrid) {
+    public static /* synchronized */ void countNeighbours(Cell cell, int xGrid, int yGrid) {
         int neighbours = 0;
 
         // counts alive neighbours of every single cell
-        for (int i = -1; i < 2; i++) {
-            for (int j = -1; j < 2; j++) {
-                if (cells[xGrid + i][yGrid + j].alive)
-                    if (i != 0 || j != 0) {
-                        neighbours++;
-                    }
-            }
-        }
+        if (cells[xGrid - 1][yGrid - 1].isAlive())
+            neighbours++;
+        if (cells[xGrid][yGrid - 1].isAlive())
+            neighbours++;
+        if (cells[xGrid + 1][yGrid - 1].isAlive())
+            neighbours++;
+        if (cells[xGrid - 1][yGrid].isAlive())
+            neighbours++;
+        if (cells[xGrid + 1][yGrid].isAlive())
+            neighbours++;
+        if (cells[xGrid - 1][yGrid + 1].isAlive())
+            neighbours++;
+        if (cells[xGrid][yGrid + 1].isAlive())
+            neighbours++;
+        if (cells[xGrid + 1][yGrid + 1].isAlive())
+            neighbours++;
 
         // sets next gen cell alive or dead according to number of neighbours
         if (cell.alive) {
@@ -51,6 +67,43 @@ public class Cell extends Rectangle {
                 cell.nextGenAlive = true;
             }
         }
+    }
+
+    // Creates 4 threads that count the neighbours of every cell
+    public static void makeCountingThreads() {
+
+        Threadmaker.runInThread(() -> {
+            for (int i = 1; i < (xGrids / 2) - 1; i++) {
+                for (int j = 1; j < (yGrids / 2) - 1; j++) {
+                    countNeighbours(cells[i][j], i, j);
+                }
+            }
+            finishedThreads++;
+        });
+        Threadmaker.runInThread(() -> {
+            for (int i = (xGrids / 2) - 1; i < xGrids - 1; i++) {
+                for (int j = 1; j < (yGrids / 2) - 1; j++) {
+                    countNeighbours(cells[i][j], i, j);
+                }
+            }
+            finishedThreads++;
+        });
+        Threadmaker.runInThread(() -> {
+            for (int i = 1; i < (xGrids / 2) - 1; i++) {
+                for (int j = (yGrids / 2) - 1; j < yGrids - 1; j++) {
+                    countNeighbours(cells[i][j], i, j);
+                }
+            }
+            finishedThreads++;
+        });
+        Threadmaker.runInThread(() -> {
+            for (int i = (xGrids / 2) - 1; i < xGrids - 1; i++) {
+                for (int j = (yGrids / 2) - 1; j < yGrids - 1; j++) {
+                    countNeighbours(cells[i][j], i, j);
+                }
+            }
+            finishedThreads++;
+        });
     }
 
     public boolean isAlive() {
@@ -99,5 +152,13 @@ public class Cell extends Rectangle {
 
     public static void setCells(Cell[][] cells) {
         Cell.cells = cells;
+    }
+
+    public static int getFinishedThreads() {
+        return finishedThreads;
+    }
+
+    public static void setFinishedThreads(int finishedThreads) {
+        Cell.finishedThreads = finishedThreads;
     }
 }
