@@ -136,39 +136,41 @@ public class Main extends JPanel {
     }
 
     @Override
-    public void paint(Graphics g) {
-        super.paint(g);
+    public void paintComponent(Graphics g) {
+        super.paintComponent(g);
 
         // draw first alive cells
-        if (!initialized) {
-            g.setColor(Color.WHITE);
-            for (int i = 1; i < xGrids - 1; i++) {
-                for (int j = 1; j < yGrids - 1; j++) {
-                    if (j % 7 == 0 || i % 7 == 0) {
-                        int x = (int) (Cell.getCells()[i][j].getX());
-                        int y = (int) (Cell.getCells()[i][j].getY());
-                        g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
-                        Cell.getCells()[i][j].setNextGenAlive(true);
-                    }
-                }
-            }
-            initialized = true;
-        } else {
+        if (initialized) {
             // draw cells
             for (int i = 1; i < xGrids - 1; i++) {
                 for (int j = 1; j < yGrids - 1; j++) {
                     int x = (int) (Cell.getCells()[i][j].getX());
                     int y = (int) (Cell.getCells()[i][j].getY());
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
-                        g.setColor(Color.WHITE);
+                        g.setColor(Cell.getCells()[i][j].getAliveColor());
                         Cell.getCells()[i][j].setAlive(true);
                     } else {
-                        g.setColor(Color.BLACK);
+                        g.setColor(Cell.getCells()[i][j].getDeadColor());
                         Cell.getCells()[i][j].setAlive(false);
                     }
-                    g.fillRect(x, y, Cell.getCellWidth() - 1, Cell.getCellHeight() - 1);
+                    g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
                 }
             }
+        } else {
+            Cell.initAliveCells();
+            
+            for (int i = 0; i < xGrids - 1; i++) {
+                for (int j = 0; j < yGrids - 1; j++) {
+                    if (Cell.getCells()[i][j].isNextGenAlive()) {
+                        int x = (int) (Cell.getCells()[i][j].getX());
+                        int y = (int) (Cell.getCells()[i][j].getY());
+                        g.setColor(Cell.getCells()[i][j].getAliveColor());
+                        g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
+                        Cell.getCells()[i][j].setNextGenAlive(true);
+                    }
+                }
+            }
+            initialized = true;
         }
 
         repainted = true;

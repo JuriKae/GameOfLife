@@ -11,6 +11,10 @@ public class Options {
     private static boolean paused = true;
     private static boolean step = false;
 
+    private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
+
+    private static float percOfAliveCells = 40;
+
     public Options() {
         startButton = new JButton("Start");
         startButton.setFocusable(false);
@@ -91,6 +95,7 @@ public class Options {
         }
         pauseButton.setEnabled(true);
         pauseButton.setText("Resume");
+        startButton.setEnabled(false);
         step = true;
     }
 
@@ -108,5 +113,13 @@ public class Options {
 
     public static JLabel getGenerationLabel() {
         return generationLabel;
+    }
+
+    public static AliveCellMode getAliveCellMode() {
+        return aliveCellMode;
+    }
+
+    public static float getPercOfAliveCells() {
+        return percOfAliveCells;
     }
 }

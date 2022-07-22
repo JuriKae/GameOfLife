@@ -1,18 +1,20 @@
+import java.awt.Color;
 import java.awt.Rectangle;
 
 public class Cell extends Rectangle {
     private boolean alive = false;
     private boolean nextGenAlive = false;
 
+    private int neighbours = 0;
+
     private static int cellWidth = 3;
     private static int cellHeight = 3;
 
+    private Color aliveColor = Color.WHITE;
+    private Color deadColor = Color.BLACK;
+
     private static int xGrids;
     private static int yGrids;
-
-    private static int finishedThreads;
-
-    private int neighbours = 0;
 
     private static Cell[][] cells;
 
@@ -67,6 +69,31 @@ public class Cell extends Rectangle {
                 cell.nextGenAlive = true;
             }
         }
+    }
+
+    public static void initAliveCells() {
+
+        switch (Options.getAliveCellMode()) {
+            case EMPTY:
+                break;
+            case LINE:
+                for (int i = 1; i < xGrids - 1; i++) {
+                    for (int j = 1; j < yGrids - 1; j++) {
+                        if (j % 7 == 0 || i % 7 == 0) {
+                            cells[i][j].nextGenAlive = true;
+                        }
+                    }
+                }
+                break;
+            case RANDOM:
+                for (int i = 1; i < xGrids - 1; i++) {
+                    for (int j = 1; j < yGrids - 1; j++) {
+                        cells[i][j].nextGenAlive = (Math.random() < Options.getPercOfAliveCells()/100);
+                    }
+                }
+                break;
+        }
+
     }
 
     // Creates 4 threads that count the neighbours of every cell
@@ -150,11 +177,11 @@ public class Cell extends Rectangle {
         Cell.cells = cells;
     }
 
-    public static int getFinishedThreads() {
-        return finishedThreads;
+    public Color getAliveColor() {
+        return aliveColor;
     }
 
-    public static void setFinishedThreads(int finishedThreads) {
-        Cell.finishedThreads = finishedThreads;
+    public Color getDeadColor() {
+        return deadColor;
     }
 }
