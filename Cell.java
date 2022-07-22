@@ -7,8 +7,8 @@ public class Cell extends Rectangle {
 
     private int neighbours = 0;
 
-    private static int cellWidth = 3;
-    private static int cellHeight = 3;
+    private static int cellWidth = 10;
+    private static int cellHeight = 10;
 
     private Color aliveColor = Color.WHITE;
     private Color deadColor = Color.BLACK;

@@ -4,18 +4,27 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 public class BasicOptions {
     private static JButton startButton, resetButton, pauseButton, stepButton, optionsButton;
     private static JLabel generationLabel;
 
+    private static JComboBox<Object> cellModeBox, delayBox;
+
     private static boolean paused = true;
     private static boolean step = false;
 
+    private static boolean optionsShown = false;
+
     private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
 
+    private static AliveCellMode[] cellModes = { AliveCellMode.RANDOM, AliveCellMode.LINE, AliveCellMode.EMPTY };
+
     private static float percOfAliveCells = 40;
+
+    private static int delay = 50;
 
     private static Font buttonFont = new Font(null, Font.BOLD, 12);
 
@@ -34,7 +43,7 @@ public class BasicOptions {
         stepButton.addActionListener(e -> makeAStep());
 
         optionsButton = new JButton("Options");
-        // optionsButton.addActionListener(e -> showOptions());
+        optionsButton.addActionListener(e -> toggleShowOptions());
 
         generationLabel = new JLabel("Generation: 1");
         generationLabel.setFont(new Font(null, Font.BOLD, 16));
@@ -50,6 +59,20 @@ public class BasicOptions {
             button.setFont(buttonFont);
             button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         }
+
+        
+        cellModeBox = new JComboBox<>(cellModes);
+        cellModeBox.setVisible(false);
+        cellModeBox.addActionListener(e -> aliveCellMode = (AliveCellMode) cellModeBox.getSelectedItem());
+
+        delayBox = new JComboBox<>();
+        delayBox.setVisible(false);
+        delayBox.setEditable(true);
+        delayBox.addActionListener(e -> {
+            String stringDelay = (String) delayBox.getSelectedItem();
+            delay = Integer.parseInt(stringDelay);
+            
+        });
 
         new LayoutMaker();
     }
@@ -106,6 +129,24 @@ public class BasicOptions {
         step = true;
     }
 
+    public static void toggleShowOptions() {
+        cellModeBox.setVisible(!optionsShown);
+        delayBox.setVisible(!optionsShown);
+
+        startButton.setVisible(optionsShown);
+        resetButton.setVisible(optionsShown);
+        pauseButton.setVisible(optionsShown);
+        stepButton.setVisible(optionsShown);
+        generationLabel.setVisible(optionsShown);
+
+        if (optionsShown)
+            optionsButton.setText("Options");
+        else
+            optionsButton.setText("Exit");
+
+        optionsShown = !optionsShown;
+    }
+
     public static boolean isPaused() {
         return paused;
     }
@@ -148,5 +189,17 @@ public class BasicOptions {
 
     public static JButton getOptionsButton() {
         return optionsButton;
+    }
+
+    public static JComboBox<Object> getCellModeBox() {
+        return cellModeBox;
+    }
+
+    public static JComboBox<Object> getDelayBox() {
+        return delayBox;
+    }
+
+    public static int getDelay() {
+        return delay;
     }
 }

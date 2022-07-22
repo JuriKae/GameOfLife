@@ -6,6 +6,10 @@ import java.awt.Graphics;
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class Main extends JPanel {
 
@@ -31,6 +35,8 @@ public class Main extends JPanel {
     private static boolean repainted;
     private static boolean initialized;
 
+    private static PanelListener panelListener = new PanelListener();
+
     public Main() {
         frame = new JFrame();
         frame.setTitle("Game of Life");
@@ -41,6 +47,8 @@ public class Main extends JPanel {
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
         this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 1));
+        this.addMouseListener(panelListener);
+        this.addMouseMotionListener(panelListener);
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.BLACK);
@@ -70,7 +78,7 @@ public class Main extends JPanel {
             public void run() {
                 while (!reset) {
                     try {
-                        Thread.sleep(50);
+                        Thread.sleep(BasicOptions.getDelay());
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -97,19 +105,19 @@ public class Main extends JPanel {
                         }
                     }
 
-                    // long start = System.nanoTime();
-
-                    /* //  this is faster for smaller grids
-                    for (int i = 1; i < xGrids - 1; i++) {
-                        for (int j = 1; j < yGrids - 1; j++) {
-                            Cell.countNeighbours(Cell.getCells()[i][j], i, j);
-                        }
-                    } */
+                    /*
+                     * for (int i = 1; i < xGrids - 1; i++) {
+                     * for (int j = 1; j < yGrids - 1; j++) {
+                     * Cell.countNeighbours(Cell.getCells()[i][j], i, j);
+                     * }
+                     * }
+                     */
 
                     Cell.makeCountingThreads();
 
                     for (Thread t : Thread.getAllStackTraces().keySet()) {
-                        if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3") || t.getName().equals("4")) {
+                        if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3")
+                                || t.getName().equals("4")) {
                             try {
                                 t.join();
                             } catch (InterruptedException e) {
@@ -117,9 +125,6 @@ public class Main extends JPanel {
                             }
                         }
                     }
-
-                    // long duration = (System.nanoTime() - start) / 1000000;
-                    // System.out.println(duration + "ms for counting");
 
                     main.repaint();
                     generation++;
@@ -158,7 +163,7 @@ public class Main extends JPanel {
             }
         } else {
             Cell.initAliveCells();
-            
+
             for (int i = 0; i < xGrids - 1; i++) {
                 for (int j = 0; j < yGrids - 1; j++) {
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
@@ -174,6 +179,30 @@ public class Main extends JPanel {
         }
 
         repainted = true;
+    }
+
+    public static class PanelListener extends MouseAdapter {
+        @Override
+        public void mousePressed(MouseEvent e) {
+            super.mousePressed(e);
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(true);
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(false);
+            }
+            main.repaint();
+        }
+
+        @Override
+        public void mouseDragged(MouseEvent e) {
+            super.mouseDragged(e);
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(true);
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                Cell.getCells()[e.getX() / Cell.getCellWidth()][e.getY() / Cell.getCellHeight()].setNextGenAlive(false);
+            }
+            main.repaint();
+        }
     }
 
     public static int getPanelWidth() {

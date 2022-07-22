@@ -41,5 +41,15 @@ public class LayoutMaker {
         gbc.gridx = 2;
         gbc.gridy = 1;
         topPanel.add(BasicOptions.getOptionsButton(), gbc);
+
+        // gbc.insets = new Insets(3, 80, 3, 0);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        topPanel.add(BasicOptions.getCellModeBox(), gbc);
+
+        // gbc.insets = new Insets(3, 80, 3, 0);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        topPanel.add(BasicOptions.getDelayBox(), gbc);
     }
 }
