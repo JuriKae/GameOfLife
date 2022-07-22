@@ -32,6 +32,10 @@ public class LayoutMaker {
         gbc.gridy = 1;
         topPanel.add(BasicOptions.getStepButton(), gbc);
 
+        gbc.gridx = 1;
+        gbc.gridy = 2;
+        topPanel.add(BasicOptions.getPreviousButton(), gbc);
+
         gbc.insets = new Insets(3, 100, 3, 0);
         gbc.gridx = 2;
         gbc.gridy = 0;

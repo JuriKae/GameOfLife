@@ -8,7 +8,7 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 
 public class BasicOptions {
-    private static JButton startButton, resetButton, pauseButton, stepButton, optionsButton;
+    private static JButton startButton, resetButton, pauseButton, stepButton, previousButton, optionsButton;
     private static JLabel generationLabel;
 
     private static JComboBox<Object> cellModeBox, delayBox;
@@ -42,6 +42,10 @@ public class BasicOptions {
         stepButton = new JButton("Step");
         stepButton.addActionListener(e -> makeAStep());
 
+        previousButton = new JButton("Previous");
+        previousButton.addActionListener(e -> makeAStepBack());
+        previousButton.setEnabled(false);
+
         optionsButton = new JButton("Options");
         optionsButton.addActionListener(e -> toggleShowOptions());
 
@@ -50,7 +54,7 @@ public class BasicOptions {
         generationLabel.setPreferredSize(new Dimension(130, 20));
         generationLabel.setForeground(Color.WHITE);
 
-        JButton[] buttonArray = { startButton, resetButton, pauseButton, stepButton, optionsButton };
+        JButton[] buttonArray = { startButton, resetButton, pauseButton, stepButton, previousButton, optionsButton };
         for (JButton button : buttonArray) {
             button.setPreferredSize(new Dimension(100, 30));
             button.setFocusable(false);
@@ -110,10 +114,12 @@ public class BasicOptions {
         if (paused) {
             pauseButton.setText("Resume");
             stepButton.setEnabled(true);
+            previousButton.setEnabled(true);
             pauseButton.setEnabled(true);
         } else {
             pauseButton.setText("Pause");
             stepButton.setEnabled(false);
+            previousButton.setEnabled(false);
             pauseButton.setEnabled(true);
         }
     }
@@ -123,10 +129,28 @@ public class BasicOptions {
             startGame();
             togglePause();
         }
+        previousButton.setEnabled(true);
         pauseButton.setEnabled(true);
         pauseButton.setText("Resume");
         startButton.setEnabled(false);
         step = true;
+    }
+
+    public static void makeAStepBack() {
+        previousButton.setEnabled(false);
+
+        for (int i = 0; i < Cell.getxGrids() - 1; i++) {
+            for (int j = 0; j < Cell.getyGrids() - 1; j++) {
+                if (Cell.getCells()[i][j].isLastGenAlive()) {
+                    Cell.getCells()[i][j].setNextGenAlive(true);
+                } else {
+                    Cell.getCells()[i][j].setNextGenAlive(false);
+                }
+            }
+        }
+        Main.setGeneration(Main.getGeneration() - 1);
+        generationLabel.setText("Generation: " + Main.getGeneration());
+        Main.getMain().repaint();
     }
 
     public static void toggleShowOptions() {
@@ -137,6 +161,7 @@ public class BasicOptions {
         resetButton.setVisible(optionsShown);
         pauseButton.setVisible(optionsShown);
         stepButton.setVisible(optionsShown);
+        previousButton.setVisible(optionsShown);
         generationLabel.setVisible(optionsShown);
 
         if (optionsShown)
@@ -201,5 +226,9 @@ public class BasicOptions {
 
     public static int getDelay() {
         return delay;
+    }
+
+    public static JButton getPreviousButton() {
+        return previousButton;
     }
 }

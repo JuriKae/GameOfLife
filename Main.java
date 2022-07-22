@@ -48,7 +48,7 @@ public class Main extends JPanel {
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.BLACK);
-        topPanel.setPreferredSize(new Dimension(0, 75));
+        topPanel.setPreferredSize(new Dimension(0, 125));
 
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
@@ -149,12 +149,22 @@ public class Main extends JPanel {
                 for (int j = 1; j < yGrids - 1; j++) {
                     int x = (int) (Cell.getCells()[i][j].getX());
                     int y = (int) (Cell.getCells()[i][j].getY());
+
+                    // save if last generation was alive or dead
+                    if (Cell.getCells()[i][j].isAlive()) {
+                        Cell.getCells()[i][j].setLastGenAlive(true);
+                    } else {
+                        Cell.getCells()[i][j].setLastGenAlive(false);
+                    }
+
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
                         g.setColor(Cell.getCells()[i][j].getAliveColor());
                         Cell.getCells()[i][j].setAlive(true);
+                        // Cell.getCells()[i][j].setLastGenAlive(true);
                     } else {
                         g.setColor(Cell.getCells()[i][j].getDeadColor());
                         Cell.getCells()[i][j].setAlive(false);
+                        // Cell.getCells()[i][j].setLastGenAlive(false);
                     }
                     g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
                 }
@@ -207,5 +217,13 @@ public class Main extends JPanel {
 
     public static void setReset(boolean reset) {
         Main.reset = reset;
+    }
+
+    public static void setGeneration(int generation) {
+        Main.generation = generation;
+    }
+
+    public static int getGeneration() {
+        return generation;
     }
 }

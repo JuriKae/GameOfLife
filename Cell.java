@@ -4,6 +4,7 @@ import java.awt.Rectangle;
 public class Cell extends Rectangle {
     private boolean alive = false;
     private boolean nextGenAlive = false;
+    private boolean lastGenAlive = false;
 
     private int neighbours = 0;
 
@@ -191,5 +192,13 @@ public class Cell extends Rectangle {
 
     public static int getyGrids() {
         return yGrids;
+    }
+
+    public boolean isLastGenAlive() {
+        return lastGenAlive;
+    }
+
+    public void setLastGenAlive(boolean lastGenAlive) {
+        this.lastGenAlive = lastGenAlive;
     }
 }
