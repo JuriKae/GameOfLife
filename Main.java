@@ -116,6 +116,7 @@ public class Main extends JPanel {
                      */
 
                     Cell.makeCountingThreads();
+                    
 
                     // wait until all counting threads are finished
                     for (Thread t : Thread.getAllStackTraces().keySet()) {
@@ -137,6 +138,7 @@ public class Main extends JPanel {
                 reset = false;
                 generation = 1;
                 BasicOptions.getGenerationLabel().setText("Generation: " + generation);
+                CellColor.setGenerationCounter(1);
             }
         });
         // thread always starts immediately, but paused is enabled
@@ -161,6 +163,7 @@ public class Main extends JPanel {
                         Cell.getCells()[i][j].setLastGenAlive(false);
                     }
 
+                    // set color depnding of status of cell
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
                         g.setColor(Cell.getCells()[i][j].getAliveColor());
                         Cell.getCells()[i][j].setAlive(true);
@@ -168,6 +171,8 @@ public class Main extends JPanel {
                         g.setColor(Cell.getCells()[i][j].getDeadColor());
                         Cell.getCells()[i][j].setAlive(false);
                     }
+
+
                     g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
                 }
             }

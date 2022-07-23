@@ -22,6 +22,8 @@ public class BasicOptions {
 
     private static ColorMode colorMode = ColorMode.RANDOM;
 
+    private static boolean oneGenerationColor = true;
+
     private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
 
     private static AliveCellMode[] cellModes = { AliveCellMode.RANDOM, AliveCellMode.LINE, AliveCellMode.EMPTY };
@@ -264,5 +266,13 @@ public class BasicOptions {
 
     public static void setColorMode(ColorMode colorMode) {
         BasicOptions.colorMode = colorMode;
+    }
+
+    public static boolean isOneGenerationColor() {
+        return oneGenerationColor;
+    }
+
+    public static void setOneGenerationColor(boolean oneGenerationColor) {
+        BasicOptions.oneGenerationColor = oneGenerationColor;
     }
 }

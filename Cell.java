@@ -68,7 +68,13 @@ public class Cell extends Rectangle {
                 cell.nextGenAlive = true;
             }
         }
-        CellColor.handleCellColor(cells[i][j]);
+
+        // change color for each cell
+        if (!BasicOptions.isOneGenerationColor()) {
+            CellColor.handleCellColor(cells[i][j]);
+        } else {
+            CellColor.handleGenerationColor(cells[i][j]);
+        }
     }
 
     public static void initAliveCells() {
@@ -81,6 +87,11 @@ public class Cell extends Rectangle {
                     for (int j = 1; j < yGrids - 1; j++) {
                         if (j % 7 == 0 || i % 7 == 0) {
                             cells[i][j].nextGenAlive = true;
+                            if (!BasicOptions.isOneGenerationColor()) {
+                                CellColor.handleCellColor(cells[i][j]);
+                            } else {
+                                CellColor.handleGenerationColor(cells[i][j]);
+                            }
                         }
                     }
                 }
@@ -89,11 +100,15 @@ public class Cell extends Rectangle {
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
                         cells[i][j].nextGenAlive = (Math.random() < BasicOptions.getPercOfAliveCells() / 100);
+                        if (!BasicOptions.isOneGenerationColor()) {
+                            CellColor.handleCellColor(cells[i][j]);
+                        } else {
+                            CellColor.handleGenerationColor(cells[i][j]);
+                        }
                     }
                 }
                 break;
         }
-
     }
 
     // Creates 4 threads that count the neighbours of every cell
