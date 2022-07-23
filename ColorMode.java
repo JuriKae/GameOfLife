@@ -1,3 +1,3 @@
 public enum ColorMode {
-    NORMAL, RANDOM, RAINBOW, SPECIFIC
+    Normal, Random, Rainbow, Specific
 }

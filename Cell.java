@@ -80,9 +80,9 @@ public class Cell extends Rectangle {
     public static void initAliveCells() {
 
         switch (BasicOptions.getAliveCellMode()) {
-            case EMPTY:
+            case Empty:
                 break;
-            case LINE:
+            case Line:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
                         if (j % 7 == 0 || i % 7 == 0) {
@@ -96,7 +96,7 @@ public class Cell extends Rectangle {
                     }
                 }
                 break;
-            case RANDOM:
+            case Random:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
                         cells[i][j].nextGenAlive = (Math.random() < BasicOptions.getPercOfAliveCells() / 100);

@@ -18,18 +18,14 @@ public class BasicOptions {
     private static boolean paused = true;
     private static boolean step = false;
 
-    private static boolean optionsShown = false;
-
-    private static ColorMode colorMode = ColorMode.RAINBOW;
+    private static ColorMode colorMode = ColorMode.Normal;
 
     private static boolean oneGenerationColor = false;
 
-    private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
+    private static FirstCellMode firstCellMode = FirstCellMode.Random;
 
-    private static AliveCellMode[] cellModes = { AliveCellMode.RANDOM, AliveCellMode.LINE, AliveCellMode.EMPTY };
-    private static Integer[] cellSizes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 
-    private static float percOfAliveCells = 40;
+    private static int percOfAliveCells = 40;
 
     private static int delay = 50;
 
@@ -54,7 +50,7 @@ public class BasicOptions {
         stepButton.addActionListener(e -> makeAStep());
 
         optionsButton = new JButton("Options");
-        optionsButton.addActionListener(e -> toggleShowOptions());
+        optionsButton.addActionListener(e -> AdvancedOptions.getOptionsFrame().setVisible(true));
 
         generationLabel = new JLabel("Generation: 1");
         generationLabel.setFont(new Font(null, Font.BOLD, 16));
@@ -70,26 +66,6 @@ public class BasicOptions {
             button.setFont(buttonFont);
             button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         }
-
-        cellModeBox = new JComboBox<>(cellModes);
-        cellModeBox.setVisible(false);
-        cellModeBox.setPreferredSize(new Dimension(100, 30));
-        cellModeBox.addActionListener(e -> {
-            aliveCellMode = (AliveCellMode) cellModeBox.getSelectedItem();
-            reset();
-        });
-
-        cellSizeBox = new JComboBox<>(cellSizes);
-        cellSizeBox.setVisible(false);
-        cellSizeBox.setEditable(true);
-        cellSizeBox.setPreferredSize(new Dimension(100, 30));
-        cellSizeBox.setSelectedIndex(5);
-        cellSizeBox.addActionListener(e -> {
-            Integer cellSizeString = (Integer) cellSizeBox.getSelectedItem();
-            Cell.setCellWidth(cellSizeString);
-            Cell.setCellHeight(cellSizeString);
-            reset();
-        });
 
         delaySlider = new JSlider(JSlider.VERTICAL, 1, 100, 40);
         delaySlider.setPreferredSize(new Dimension(20, 70));
@@ -176,29 +152,6 @@ public class BasicOptions {
         Main.getMain().repaint();
     }
 
-    public static void toggleShowOptions() {
-
-        AdvancedOptions.getOptionsFrame().setVisible(true);
-
-        // cellModeBox.setVisible(!optionsShown);
-        // cellSizeBox.setVisible(!optionsShown);
-
-        // startButton.setVisible(optionsShown);
-        // resetButton.setVisible(optionsShown);
-        // pauseButton.setVisible(optionsShown);
-        // stepButton.setVisible(optionsShown);
-        // previousButton.setVisible(optionsShown);
-        // generationLabel.setVisible(optionsShown);
-        // delaySlider.setVisible(optionsShown);
-
-        // if (optionsShown)
-        //     optionsButton.setText("Options");
-        // else
-        //     optionsButton.setText("Exit");
-
-        // optionsShown = !optionsShown;
-    }
-
     public static boolean isPaused() {
         return paused;
     }
@@ -215,8 +168,8 @@ public class BasicOptions {
         return generationLabel;
     }
 
-    public static AliveCellMode getAliveCellMode() {
-        return aliveCellMode;
+    public static FirstCellMode getAliveCellMode() {
+        return firstCellMode;
     }
 
     public static float getPercOfAliveCells() {
@@ -277,5 +230,13 @@ public class BasicOptions {
 
     public static void setOneGenerationColor(boolean oneGenerationColor) {
         BasicOptions.oneGenerationColor = oneGenerationColor;
+    }
+
+    public static void setFirstCellMode(FirstCellMode firstCellMode) {
+        BasicOptions.firstCellMode = firstCellMode;
+    }
+
+    public static void setPercOfAliveCells(int percOfAliveCells) {
+        BasicOptions.percOfAliveCells = percOfAliveCells;
     }
 }

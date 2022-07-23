@@ -43,7 +43,6 @@ public class LayoutMaker {
         BasicOptions.getStepButton().setPreferredSize(new Dimension(50, 30));
         topPanel.add(BasicOptions.getStepButton(), gbc);
 
-
         gbc.insets = new Insets(3, 20, 3, 0);
         gbc.gridx = 3;
         gbc.gridy = 0;
@@ -53,16 +52,6 @@ public class LayoutMaker {
         gbc.gridx = 3;
         gbc.gridy = 1;
         topPanel.add(BasicOptions.getOptionsButton(), gbc);
-
-        gbc.insets = new Insets(3, 0, 3, 50);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        topPanel.add(BasicOptions.getCellModeBox(), gbc);
-
-        gbc.insets = new Insets(3, 0, 3, 50);
-        gbc.gridx = 0;
-        gbc.gridy = 1;
-        topPanel.add(BasicOptions.getDelayBox(), gbc);
 
         gbc.insets = new Insets(0, 40, 0, 0);
         gbc.gridx = 4;
