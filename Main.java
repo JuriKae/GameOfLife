@@ -171,7 +171,6 @@ public class Main extends JPanel {
                     g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
                 }
             }
-            System.out.println("Painted");
 
             // executed if the game has been reset
         } else if (!initialized) {
@@ -188,7 +187,6 @@ public class Main extends JPanel {
                     }
                 }
             }
-            System.out.println("Initialized");
             initialized = true;
         } 
 

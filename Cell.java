@@ -6,8 +6,6 @@ public class Cell extends Rectangle {
     private boolean nextGenAlive = false;
     private boolean lastGenAlive = false;
 
-    private int neighbours = 0;
-
     private static int cellWidth = 6;
     private static int cellHeight = 6;
 
@@ -39,25 +37,25 @@ public class Cell extends Rectangle {
         }
     }
 
-    public static void countNeighbours(Cell cell, int xGrid, int yGrid) {
+    public static void countNeighbours(Cell cell, int i, int j) {
         int neighbours = 0;
 
         // counts alive neighbours of every single cell
-        if (cells[xGrid - 1][yGrid - 1].isAlive())
+        if (cells[i - 1][j - 1].isAlive())
             neighbours++;
-        if (cells[xGrid][yGrid - 1].isAlive())
+        if (cells[i][j - 1].isAlive())
             neighbours++;
-        if (cells[xGrid + 1][yGrid - 1].isAlive())
+        if (cells[i + 1][j - 1].isAlive())
             neighbours++;
-        if (cells[xGrid - 1][yGrid].isAlive())
+        if (cells[i - 1][j].isAlive())
             neighbours++;
-        if (cells[xGrid + 1][yGrid].isAlive())
+        if (cells[i + 1][j].isAlive())
             neighbours++;
-        if (cells[xGrid - 1][yGrid + 1].isAlive())
+        if (cells[i - 1][j + 1].isAlive())
             neighbours++;
-        if (cells[xGrid][yGrid + 1].isAlive())
+        if (cells[i][j + 1].isAlive())
             neighbours++;
-        if (cells[xGrid + 1][yGrid + 1].isAlive())
+        if (cells[i + 1][j + 1].isAlive())
             neighbours++;
 
         // sets next gen cell alive or dead according to number of neighbours
@@ -70,6 +68,7 @@ public class Cell extends Rectangle {
                 cell.nextGenAlive = true;
             }
         }
+        CellColor.handleCellColor(cells[i][j]);
     }
 
     public static void initAliveCells() {
@@ -89,7 +88,7 @@ public class Cell extends Rectangle {
             case RANDOM:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
-                        cells[i][j].nextGenAlive = (Math.random() < BasicOptions.getPercOfAliveCells()/100);
+                        cells[i][j].nextGenAlive = (Math.random() < BasicOptions.getPercOfAliveCells() / 100);
                     }
                 }
                 break;
@@ -138,14 +137,6 @@ public class Cell extends Rectangle {
         this.alive = alive;
     }
 
-    public int getNeighbours() {
-        return neighbours;
-    }
-
-    public void setNeighbours(int neighbours) {
-        this.neighbours = neighbours;
-    }
-
     public boolean isNextGenAlive() {
         return nextGenAlive;
     }
@@ -174,10 +165,6 @@ public class Cell extends Rectangle {
         return cells;
     }
 
-    public static void setCells(Cell[][] cells) {
-        Cell.cells = cells;
-    }
-
     public Color getAliveColor() {
         return aliveColor;
     }
@@ -200,5 +187,13 @@ public class Cell extends Rectangle {
 
     public void setLastGenAlive(boolean lastGenAlive) {
         this.lastGenAlive = lastGenAlive;
+    }
+
+    public void setAliveColor(Color aliveColor) {
+        this.aliveColor = aliveColor;
+    }
+
+    public void setDeadColor(Color deadColor) {
+        this.deadColor = deadColor;
     }
 }

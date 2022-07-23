@@ -20,10 +20,12 @@ public class BasicOptions {
 
     private static boolean optionsShown = false;
 
+    private static ColorMode colorMode = ColorMode.RANDOM;
+
     private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
 
     private static AliveCellMode[] cellModes = { AliveCellMode.RANDOM, AliveCellMode.LINE, AliveCellMode.EMPTY };
-    private static Integer[] cellSizes = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20};
+    private static Integer[] cellSizes = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20 };
 
     private static float percOfAliveCells = 40;
 
@@ -87,11 +89,14 @@ public class BasicOptions {
             reset();
         });
 
-        delaySlider = new JSlider(JSlider.VERTICAL, 1, 1000, 40);
+        delaySlider = new JSlider(JSlider.VERTICAL, 1, 100, 40);
         delaySlider.setPreferredSize(new Dimension(20, 70));
+        delaySlider.setBackground(Color.BLACK);
         delaySlider.addChangeListener(e -> {
-            System.out.println(delaySlider.getValue());
-            delay = delaySlider.getValue();
+
+            // function to calculate logarithmic values for better slider experience
+            delay = (int) Math.exp((Math.log(1000) - Math.log(1)) / (100 - 1) * (delaySlider.getValue() - 1));
+
         });
 
         new LayoutMaker();
@@ -251,5 +256,13 @@ public class BasicOptions {
 
     public static JSlider getDelaySlider() {
         return delaySlider;
+    }
+
+    public static ColorMode getColorMode() {
+        return colorMode;
+    }
+
+    public static void setColorMode(ColorMode colorMode) {
+        BasicOptions.colorMode = colorMode;
     }
 }
