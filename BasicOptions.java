@@ -20,9 +20,9 @@ public class BasicOptions {
 
     private static boolean optionsShown = false;
 
-    private static ColorMode colorMode = ColorMode.RANDOM;
+    private static ColorMode colorMode = ColorMode.RAINBOW;
 
-    private static boolean oneGenerationColor = true;
+    private static boolean oneGenerationColor = false;
 
     private static AliveCellMode aliveCellMode = AliveCellMode.RANDOM;
 
@@ -177,23 +177,26 @@ public class BasicOptions {
     }
 
     public static void toggleShowOptions() {
-        cellModeBox.setVisible(!optionsShown);
-        cellSizeBox.setVisible(!optionsShown);
 
-        startButton.setVisible(optionsShown);
-        resetButton.setVisible(optionsShown);
-        pauseButton.setVisible(optionsShown);
-        stepButton.setVisible(optionsShown);
-        previousButton.setVisible(optionsShown);
-        generationLabel.setVisible(optionsShown);
-        delaySlider.setVisible(optionsShown);
+        AdvancedOptions.getOptionsFrame().setVisible(true);
 
-        if (optionsShown)
-            optionsButton.setText("Options");
-        else
-            optionsButton.setText("Exit");
+        // cellModeBox.setVisible(!optionsShown);
+        // cellSizeBox.setVisible(!optionsShown);
 
-        optionsShown = !optionsShown;
+        // startButton.setVisible(optionsShown);
+        // resetButton.setVisible(optionsShown);
+        // pauseButton.setVisible(optionsShown);
+        // stepButton.setVisible(optionsShown);
+        // previousButton.setVisible(optionsShown);
+        // generationLabel.setVisible(optionsShown);
+        // delaySlider.setVisible(optionsShown);
+
+        // if (optionsShown)
+        //     optionsButton.setText("Options");
+        // else
+        //     optionsButton.setText("Exit");
+
+        // optionsShown = !optionsShown;
     }
 
     public static boolean isPaused() {

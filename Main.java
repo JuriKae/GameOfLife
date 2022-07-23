@@ -54,6 +54,7 @@ public class Main extends JPanel {
         frame.add(topPanel, BorderLayout.NORTH);
 
         new BasicOptions();
+        new AdvancedOptions();
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
