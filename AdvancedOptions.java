@@ -32,14 +32,17 @@ public class AdvancedOptions {
     private static boolean colorsSwitched = false;
 
     // first cell panel stuff
-    private static JLabel firstCellsLabel, firstCellPatternLabel, percRandomLabel;
+    private static JLabel firstCellsLabel, firstCellPatternLabel, percRandomLabel, lineDistanceLabel;
     private static JComboBox<Object> cellModeBox;
     private static FirstCellMode[] cellModes = { FirstCellMode.Random, FirstCellMode.Line, FirstCellMode.Empty };
-    private static JSpinner percRandomSpinner;
+    private static JSpinner percRandomSpinner, lineDistanceSpinner;
     private static SpinnerNumberModel firstCellsSpinnerModel = new SpinnerNumberModel(50, 1, 100, 5);
+    private static SpinnerNumberModel lineDistanceSpinnerModel = new SpinnerNumberModel(7, 1, 200, 1);
 
     private static FirstCellMode firstCellMode = FirstCellMode.Random;
     private static int percOfAliveCells = 40;
+
+    private static int lineDistance = 9;
 
     // cell size panel stuff
     private static JLabel cellSizeLabel, setCellSizeLabel;
@@ -136,7 +139,6 @@ public class AdvancedOptions {
             }
         });
 
-
         oneGenColorCheckBox = new JCheckBox();
         oneGenColorCheckBox.setBounds(300, 130, 100, 30);
         oneGenColorCheckBox.setBackground(Color.BLACK);
@@ -159,7 +161,6 @@ public class AdvancedOptions {
             }
             Main.getMain().repaint();
         });
-
 
         colorPanel.add(colorLabel);
         colorPanel.add(chooseColorModeLabel);
@@ -187,10 +188,17 @@ public class AdvancedOptions {
         firstCellPatternLabel.setForeground(Color.WHITE);
         firstCellPatternLabel.setFont(normalFont);
 
-        percRandomLabel = new JLabel("% of alive cells when using random:");
+        percRandomLabel = new JLabel("Percentage of alive cells:");
         percRandomLabel.setBounds(10, 90, 250, 30);
         percRandomLabel.setForeground(Color.WHITE);
         percRandomLabel.setFont(normalFont);
+        percRandomLabel.setVisible(true);
+
+        lineDistanceLabel = new JLabel("Distance of lines:");
+        lineDistanceLabel.setBounds(10, 90, 250, 30);
+        lineDistanceLabel.setForeground(Color.WHITE);
+        lineDistanceLabel.setFont(normalFont);
+        lineDistanceLabel.setVisible(false);
 
         cellModeBox = new JComboBox<Object>(cellModes);
         cellModeBox.setFocusable(false);
@@ -199,8 +207,32 @@ public class AdvancedOptions {
         cellModeBox.setForeground(boxFontColor);
         cellModeBox.setFont(boxFont);
         cellModeBox.addActionListener(e -> {
+
             firstCellMode = (FirstCellMode) cellModeBox.getSelectedItem();
-            // BasicOptions.reset();
+
+            // show correct label and spinner depening on first cell mode
+            if (firstCellMode == FirstCellMode.Random) {
+                percRandomLabel.setVisible(true);
+                lineDistanceLabel.setVisible(false);
+
+                percRandomSpinner.setVisible(true);
+                lineDistanceSpinner.setVisible(false);
+
+            } else if (firstCellMode == FirstCellMode.Line) {
+                percRandomLabel.setVisible(false);
+                lineDistanceLabel.setVisible(true);
+
+                percRandomSpinner.setVisible(false);
+                lineDistanceSpinner.setVisible(true);
+
+            } else if (firstCellMode == FirstCellMode.Empty) {
+                percRandomLabel.setVisible(false);
+                lineDistanceLabel.setVisible(false);
+
+                percRandomSpinner.setVisible(false);
+                lineDistanceSpinner.setVisible(false);
+            }
+            BasicOptions.reset();
         });
 
         percRandomSpinner = new JSpinner(firstCellsSpinnerModel);
@@ -210,13 +242,28 @@ public class AdvancedOptions {
         percRandomSpinner.setFont(boxFont);
         percRandomSpinner.addChangeListener(e -> {
             percOfAliveCells = (int) percRandomSpinner.getValue();
+            BasicOptions.reset();
         });
+        percRandomSpinner.setVisible(true);
 
- 
+        lineDistanceSpinner = new JSpinner(lineDistanceSpinnerModel);
+        lineDistanceSpinner.setBounds(300, 90, 100, 30);
+        lineDistanceSpinner.getEditor().getComponent(0).setBackground(buttonColor);
+        lineDistanceSpinner.getEditor().getComponent(0).setForeground(boxFontColor);
+        lineDistanceSpinner.setFont(boxFont);
+        lineDistanceSpinner.addChangeListener(e -> {
+            lineDistance = (int) lineDistanceSpinner.getValue();
+            BasicOptions.reset();
+        });
+        lineDistanceSpinner.setVisible(false);
+
+
         firstCellsPanel.add(firstCellPatternLabel);
         firstCellsPanel.add(percRandomLabel);
+        firstCellsPanel.add(lineDistanceLabel);
         firstCellsPanel.add(cellModeBox);
         firstCellsPanel.add(percRandomSpinner);
+        firstCellsPanel.add(lineDistanceSpinner);
         firstCellsPanel.add(firstCellsLabel);
     }
 
@@ -279,5 +326,9 @@ public class AdvancedOptions {
 
     public static boolean isColorsSwitched() {
         return colorsSwitched;
+    }
+
+    public static int getLineDistance() {
+        return lineDistance;
     }
 }

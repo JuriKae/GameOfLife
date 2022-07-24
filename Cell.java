@@ -85,7 +85,7 @@ public class Cell extends Rectangle {
             case Line:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
-                        if (j % 7 == 0 || i % 7 == 0) {
+                        if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
                             cells[i][j].nextGenAlive = true;
                             if (!AdvancedOptions.isOneGenerationColor()) {
                                 CellColor.handleCellColor(cells[i][j]);
