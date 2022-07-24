@@ -10,7 +10,7 @@ public class CellColor {
     private static int generationCounter = 1;
 
     public static synchronized void handleCellColor(Cell cell) {
-        switch (BasicOptions.getColorMode()) {
+        switch (AdvancedOptions.getColorMode()) {
             case Normal:
                 cell.setAliveColor(Color.WHITE);
                 cell.setDeadColor(Color.BLACK);
@@ -36,7 +36,7 @@ public class CellColor {
     }
 
     public static synchronized void handleGenerationColor(Cell cell) {
-        switch (BasicOptions.getColorMode()) {
+        switch (AdvancedOptions.getColorMode()) {
             case Normal:
                 cell.setAliveColor(Color.WHITE);
                 cell.setDeadColor(Color.BLACK);

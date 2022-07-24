@@ -15,11 +15,16 @@ public class Main extends JPanel {
     private static int panelWidth = 600;
     private static int panelHeight = 600;
 
+    private static int topPanelHeight = 75;
+
     private static int width = panelWidth + 16;
-    private static int height = panelHeight + 39 + 75;
+    private static int height = panelHeight + 39 + topPanelHeight;
 
     private static int xGrids;
     private static int yGrids;
+
+    private static int currentCellWidth;
+    private static int currentCellHeight;
 
     private static int generation = 1;
 
@@ -48,7 +53,7 @@ public class Main extends JPanel {
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.BLACK);
-        topPanel.setPreferredSize(new Dimension(0, 75));
+        topPanel.setPreferredSize(new Dimension(panelWidth, topPanelHeight));
 
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
@@ -174,13 +179,15 @@ public class Main extends JPanel {
                     }
 
 
-                    g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
+                    g.fillRect(x, y, currentCellWidth, currentCellHeight);
                 }
             }
 
             // executed if the game has been reset
         } else if (!initialized) {
             Cell.initAliveCells();
+            currentCellWidth = Cell.getCellWidth();
+            currentCellHeight = Cell.getCellHeight();
 
             for (int i = 0; i < xGrids - 1; i++) {
                 for (int j = 0; j < yGrids - 1; j++) {
@@ -188,7 +195,7 @@ public class Main extends JPanel {
                         int x = (int) (Cell.getCells()[i][j].getX());
                         int y = (int) (Cell.getCells()[i][j].getY());
                         g.setColor(Cell.getCells()[i][j].getAliveColor());
-                        g.fillRect(x, y, Cell.getCellWidth(), Cell.getCellHeight());
+                        g.fillRect(x, y, currentCellWidth, currentCellHeight);
                         Cell.getCells()[i][j].setAlive(true);
                     }
                 }

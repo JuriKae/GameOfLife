@@ -70,7 +70,7 @@ public class Cell extends Rectangle {
         }
 
         // change color for each cell
-        if (!BasicOptions.isOneGenerationColor()) {
+        if (!AdvancedOptions.isOneGenerationColor()) {
             CellColor.handleCellColor(cells[i][j]);
         } else {
             CellColor.handleGenerationColor(cells[i][j]);
@@ -79,7 +79,7 @@ public class Cell extends Rectangle {
 
     public static void initAliveCells() {
 
-        switch (BasicOptions.getAliveCellMode()) {
+        switch (AdvancedOptions.getAliveCellMode()) {
             case Empty:
                 break;
             case Line:
@@ -87,7 +87,7 @@ public class Cell extends Rectangle {
                     for (int j = 1; j < yGrids - 1; j++) {
                         if (j % 7 == 0 || i % 7 == 0) {
                             cells[i][j].nextGenAlive = true;
-                            if (!BasicOptions.isOneGenerationColor()) {
+                            if (!AdvancedOptions.isOneGenerationColor()) {
                                 CellColor.handleCellColor(cells[i][j]);
                             } else {
                                 CellColor.handleGenerationColor(cells[i][j]);
@@ -99,8 +99,8 @@ public class Cell extends Rectangle {
             case Random:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
-                        cells[i][j].nextGenAlive = (Math.random() < BasicOptions.getPercOfAliveCells() / 100);
-                        if (!BasicOptions.isOneGenerationColor()) {
+                        cells[i][j].nextGenAlive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
+                        if (!AdvancedOptions.isOneGenerationColor()) {
                             CellColor.handleCellColor(cells[i][j]);
                         } else {
                             CellColor.handleGenerationColor(cells[i][j]);

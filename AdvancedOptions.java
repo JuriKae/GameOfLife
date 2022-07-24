@@ -14,11 +14,16 @@ public class AdvancedOptions {
     private static JFrame optionsFrame;
     private static JPanel colorPanel, firstCellsPanel, cellSizePanel;
 
+
     // color panel stuff
     private static JLabel colorLabel, chooseColorModeLabel, chooseColorLabel, oneGenColorLabel;
     private static JComboBox<Object> colorModeBox;
     private static ColorMode[] colorModes = {ColorMode.Normal, ColorMode.Rainbow, ColorMode.Random, ColorMode.Specific};
     private static JCheckBox oneGenColorCheckBox;
+
+    private static ColorMode colorMode = ColorMode.Normal;
+    private static boolean oneGenerationColor = false;
+
 
     // first cell panel stuff
     private static JLabel firstCellsLabel, firstCellPatternLabel, percRandomLabel;
@@ -26,6 +31,10 @@ public class AdvancedOptions {
     private static FirstCellMode[] cellModes = { FirstCellMode.Random, FirstCellMode.Line, FirstCellMode.Empty };
     private static JSpinner percRandomSpinner;
     private static SpinnerNumberModel firstCellsSpinnerModel = new SpinnerNumberModel(50, 1, 100, 5);
+
+    private static FirstCellMode firstCellMode = FirstCellMode.Random;
+    private static int percOfAliveCells = 40;
+
 
     // cell size panel stuff
     private static JLabel cellSizeLabel, setCellSizeLabel;
@@ -88,7 +97,7 @@ public class AdvancedOptions {
         colorModeBox = new JComboBox<Object>(colorModes);
         colorModeBox.setBounds(300, 50, 100, 30);
         colorModeBox.addActionListener(e -> {
-            BasicOptions.setColorMode((ColorMode) colorModeBox.getSelectedItem());
+            colorMode = (ColorMode) colorModeBox.getSelectedItem();
         });
 
         oneGenColorCheckBox = new JCheckBox();
@@ -96,9 +105,9 @@ public class AdvancedOptions {
         oneGenColorCheckBox.setBackground(Color.BLACK);
         oneGenColorCheckBox.addActionListener(e -> {
             if (oneGenColorCheckBox.isSelected()) {
-                BasicOptions.setOneGenerationColor(true);
+                oneGenerationColor = true;
             } else {
-                BasicOptions.setOneGenerationColor(false);
+                oneGenerationColor = false;
             }
         });
 
@@ -137,14 +146,14 @@ public class AdvancedOptions {
         cellModeBox = new JComboBox<Object>(cellModes);
         cellModeBox.setBounds(300, 50, 100, 30);
         cellModeBox.addActionListener(e -> {
-            BasicOptions.setFirstCellMode((FirstCellMode) cellModeBox.getSelectedItem()); 
+            firstCellMode = (FirstCellMode) cellModeBox.getSelectedItem();
             // BasicOptions.reset();
         });
 
         percRandomSpinner = new JSpinner(firstCellsSpinnerModel);
         percRandomSpinner.setBounds(300, 90, 100, 30);
         percRandomSpinner.addChangeListener(e -> {
-            BasicOptions.setPercOfAliveCells((int) percRandomSpinner.getValue());
+            percOfAliveCells = (int) percRandomSpinner.getValue();
         });
 
 
@@ -179,7 +188,7 @@ public class AdvancedOptions {
         cellSizeSpinner.addChangeListener(e -> {
             Cell.setCellWidth((int) cellSizeSpinner.getValue());
             Cell.setCellHeight((int) cellSizeSpinner.getValue());
-            BasicOptions.reset();
+            // BasicOptions.reset();
         });
 
 
@@ -190,5 +199,22 @@ public class AdvancedOptions {
 
     public static JFrame getOptionsFrame() {
         return optionsFrame;
+    }
+
+     public static ColorMode getColorMode() {
+        return colorMode;
+    }
+
+    public static boolean isOneGenerationColor() {
+        return oneGenerationColor;
+    }
+
+
+    public static FirstCellMode getAliveCellMode() {
+        return firstCellMode;
+    }
+
+    public static float getPercOfAliveCells() {
+        return percOfAliveCells;
     }
 }

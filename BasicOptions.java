@@ -4,7 +4,6 @@ import java.awt.Font;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 
@@ -12,20 +11,11 @@ public class BasicOptions {
     private static JButton startButton, resetButton, pauseButton, previousButton, stepButton, optionsButton;
     private static JLabel generationLabel;
 
-    private static JComboBox<Object> cellModeBox, cellSizeBox;
     private static JSlider delaySlider;
 
     private static boolean paused = true;
     private static boolean step = false;
 
-    private static ColorMode colorMode = ColorMode.Normal;
-
-    private static boolean oneGenerationColor = false;
-
-    private static FirstCellMode firstCellMode = FirstCellMode.Random;
-
-
-    private static int percOfAliveCells = 40;
 
     private static int delay = 50;
 
@@ -81,10 +71,9 @@ public class BasicOptions {
     }
 
     public static void startGame() {
-        if (paused) {
-            paused = false;
+        if (paused) {   
+            togglePause();
             startButton.setEnabled(false);
-            pauseButton.setEnabled(true);
         }
     }
 
@@ -96,6 +85,7 @@ public class BasicOptions {
             togglePause();
         }
 
+        previousButton.setEnabled(false);
         pauseButton.setEnabled(false);
         pauseButton.setText("Pause");
 
@@ -168,14 +158,6 @@ public class BasicOptions {
         return generationLabel;
     }
 
-    public static FirstCellMode getAliveCellMode() {
-        return firstCellMode;
-    }
-
-    public static float getPercOfAliveCells() {
-        return percOfAliveCells;
-    }
-
     public static JButton getStartButton() {
         return startButton;
     }
@@ -196,14 +178,6 @@ public class BasicOptions {
         return optionsButton;
     }
 
-    public static JComboBox<Object> getCellModeBox() {
-        return cellModeBox;
-    }
-
-    public static JComboBox<Object> getDelayBox() {
-        return cellSizeBox;
-    }
-
     public static int getDelay() {
         return delay;
     }
@@ -214,29 +188,5 @@ public class BasicOptions {
 
     public static JSlider getDelaySlider() {
         return delaySlider;
-    }
-
-    public static ColorMode getColorMode() {
-        return colorMode;
-    }
-
-    public static void setColorMode(ColorMode colorMode) {
-        BasicOptions.colorMode = colorMode;
-    }
-
-    public static boolean isOneGenerationColor() {
-        return oneGenerationColor;
-    }
-
-    public static void setOneGenerationColor(boolean oneGenerationColor) {
-        BasicOptions.oneGenerationColor = oneGenerationColor;
-    }
-
-    public static void setFirstCellMode(FirstCellMode firstCellMode) {
-        BasicOptions.firstCellMode = firstCellMode;
-    }
-
-    public static void setPercOfAliveCells(int percOfAliveCells) {
-        BasicOptions.percOfAliveCells = percOfAliveCells;
     }
 }
