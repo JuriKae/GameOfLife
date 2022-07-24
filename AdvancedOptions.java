@@ -18,21 +18,21 @@ public class AdvancedOptions {
     private static JPanel colorPanel, firstCellsPanel, cellSizePanel;
 
     // color panel stuff
-    private static JLabel colorLabel, chooseColorModeLabel, chooseColorLabel, oneGenColorLabel;
+    private static JLabel colorLabel, chooseColorModeLabel, invertColorsLabel, colorOptionLabel3;
     private static JComboBox<Object> colorModeBox;
     private static ColorMode[] colorModes = { ColorMode.Normal, ColorMode.Rainbow, ColorMode.Random,
             ColorMode.Specific };
-    private static JCheckBox oneGenColorCheckBox;
+    private static JCheckBox invertColorsBox, oneGenColorCheckBox;
     private static JPanel chosenColorPanel;
     private static Color chosenColor = Color.WHITE;
 
     private static ColorMode colorMode = ColorMode.Normal;
     private static boolean oneGenerationColor = false;
 
-    private static boolean colorsSwitched = false;
+    private static boolean colorsInverted = false;
 
     // first cell panel stuff
-    private static JLabel firstCellsLabel, firstCellPatternLabel, percRandomLabel, lineDistanceLabel;
+    private static JLabel firstCellsLabel, firstCellPatternLabel, cellModeSpinnerLabel;
     private static JComboBox<Object> cellModeBox;
     private static FirstCellMode[] cellModes = { FirstCellMode.Random, FirstCellMode.Line, FirstCellMode.Empty };
     private static JSpinner percRandomSpinner, lineDistanceSpinner;
@@ -93,16 +93,18 @@ public class AdvancedOptions {
         chooseColorModeLabel.setBounds(10, 50, 200, 30);
         chooseColorModeLabel.setForeground(Color.WHITE);
         chooseColorModeLabel.setFont(normalFont);
+        
+        invertColorsLabel = new JLabel("Invert colors:");
+        invertColorsLabel.setBounds(10, 90, 200, 30);
+        invertColorsLabel.setForeground(Color.WHITE);
+        invertColorsLabel.setFont(normalFont);
+        invertColorsLabel.setVisible(true);
 
-        chooseColorLabel = new JLabel("Choose a Color:");
-        chooseColorLabel.setBounds(10, 90, 200, 30);
-        chooseColorLabel.setForeground(Color.WHITE);
-        chooseColorLabel.setFont(normalFont);
-
-        oneGenColorLabel = new JLabel("One color per generation:");
-        oneGenColorLabel.setBounds(10, 130, 200, 30);
-        oneGenColorLabel.setForeground(Color.WHITE);
-        oneGenColorLabel.setFont(normalFont);
+        colorOptionLabel3 = new JLabel("Choose a Color:");
+        colorOptionLabel3.setBounds(10, 130, 200, 30);
+        colorOptionLabel3.setForeground(Color.WHITE);
+        colorOptionLabel3.setFont(normalFont);
+        colorOptionLabel3.setVisible(false);
 
         colorModeBox = new JComboBox<Object>(colorModes);
         colorModeBox.setFocusable(false);
@@ -112,6 +114,27 @@ public class AdvancedOptions {
         colorModeBox.setFont(boxFont);
         colorModeBox.addActionListener(e -> {
             colorMode = (ColorMode) colorModeBox.getSelectedItem();
+
+            if (colorMode == ColorMode.Normal) {
+                colorOptionLabel3.setVisible(false);
+                chosenColorPanel.setVisible(false);
+                oneGenColorCheckBox.setVisible(false);
+
+            } else if (colorMode == ColorMode.Rainbow) {
+                colorOptionLabel3.setVisible(true);
+                oneGenColorCheckBox.setVisible(true);
+                colorOptionLabel3.setText("One color per generation:");
+
+            } else if (colorMode == ColorMode.Random) {
+                colorOptionLabel3.setVisible(true);
+                oneGenColorCheckBox.setVisible(true);
+                colorOptionLabel3.setText("One color per generation:");
+            } else if (colorMode == ColorMode.Specific) {
+                colorOptionLabel3.setVisible(true);
+                chosenColorPanel.setVisible(true);
+                oneGenColorCheckBox.setVisible(false);
+                colorOptionLabel3.setText("Choose a color:");
+            }
 
             // directly change mode when color mode is changed
             for (int i = 1; i < Cell.getxGrids() - 1; i++) {
@@ -126,8 +149,20 @@ public class AdvancedOptions {
             Main.getMain().repaint();
         });
 
+        invertColorsBox = new JCheckBox();
+        invertColorsBox.setBounds(300, 90, 100, 30);
+        invertColorsBox.setBackground(Color.BLACK);
+        invertColorsBox.addActionListener(e -> {
+            if (invertColorsBox.isSelected()) {
+                colorsInverted = true;
+            } else {
+                colorsInverted = false;
+            }
+            Main.getMain().repaint();
+        });
+
         chosenColorPanel = new JPanel();
-        chosenColorPanel.setBounds(300, 90, 23, 23);
+        chosenColorPanel.setBounds(300, 130, 23, 23);
         chosenColorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         chosenColorPanel.addMouseListener(new MouseAdapter() {
             @Override
@@ -138,6 +173,7 @@ public class AdvancedOptions {
                 colorModeBox.setSelectedItem(ColorMode.Specific);
             }
         });
+        chosenColorPanel.setVisible(false);
 
         oneGenColorCheckBox = new JCheckBox();
         oneGenColorCheckBox.setBounds(300, 130, 100, 30);
@@ -161,11 +197,13 @@ public class AdvancedOptions {
             }
             Main.getMain().repaint();
         });
+        oneGenColorCheckBox.setVisible(false);
 
         colorPanel.add(colorLabel);
+        colorPanel.add(invertColorsLabel);
+        colorPanel.add(invertColorsBox);
         colorPanel.add(chooseColorModeLabel);
-        colorPanel.add(chooseColorLabel);
-        colorPanel.add(oneGenColorLabel);
+        colorPanel.add(colorOptionLabel3);
         colorPanel.add(chosenColorPanel);
         colorPanel.add(colorModeBox);
         colorPanel.add(oneGenColorCheckBox);
@@ -188,17 +226,11 @@ public class AdvancedOptions {
         firstCellPatternLabel.setForeground(Color.WHITE);
         firstCellPatternLabel.setFont(normalFont);
 
-        percRandomLabel = new JLabel("Percentage of alive cells:");
-        percRandomLabel.setBounds(10, 90, 250, 30);
-        percRandomLabel.setForeground(Color.WHITE);
-        percRandomLabel.setFont(normalFont);
-        percRandomLabel.setVisible(true);
-
-        lineDistanceLabel = new JLabel("Distance of lines:");
-        lineDistanceLabel.setBounds(10, 90, 250, 30);
-        lineDistanceLabel.setForeground(Color.WHITE);
-        lineDistanceLabel.setFont(normalFont);
-        lineDistanceLabel.setVisible(false);
+        cellModeSpinnerLabel = new JLabel("Percentage of alive cells:");
+        cellModeSpinnerLabel.setBounds(10, 90, 250, 30);
+        cellModeSpinnerLabel.setForeground(Color.WHITE);
+        cellModeSpinnerLabel.setFont(normalFont);
+        cellModeSpinnerLabel.setVisible(true);
 
         cellModeBox = new JComboBox<Object>(cellModes);
         cellModeBox.setFocusable(false);
@@ -212,23 +244,19 @@ public class AdvancedOptions {
 
             // show correct label and spinner depening on first cell mode
             if (firstCellMode == FirstCellMode.Random) {
-                percRandomLabel.setVisible(true);
-                lineDistanceLabel.setVisible(false);
+                cellModeSpinnerLabel.setText("Percentage of alive cells:");
 
                 percRandomSpinner.setVisible(true);
                 lineDistanceSpinner.setVisible(false);
 
             } else if (firstCellMode == FirstCellMode.Line) {
-                percRandomLabel.setVisible(false);
-                lineDistanceLabel.setVisible(true);
+                cellModeSpinnerLabel.setText("Distance of lines:");
 
                 percRandomSpinner.setVisible(false);
                 lineDistanceSpinner.setVisible(true);
 
             } else if (firstCellMode == FirstCellMode.Empty) {
-                percRandomLabel.setVisible(false);
-                lineDistanceLabel.setVisible(false);
-
+                cellModeSpinnerLabel.setVisible(false);
                 percRandomSpinner.setVisible(false);
                 lineDistanceSpinner.setVisible(false);
             }
@@ -259,8 +287,7 @@ public class AdvancedOptions {
 
 
         firstCellsPanel.add(firstCellPatternLabel);
-        firstCellsPanel.add(percRandomLabel);
-        firstCellsPanel.add(lineDistanceLabel);
+        firstCellsPanel.add(cellModeSpinnerLabel);
         firstCellsPanel.add(cellModeBox);
         firstCellsPanel.add(percRandomSpinner);
         firstCellsPanel.add(lineDistanceSpinner);
@@ -325,7 +352,7 @@ public class AdvancedOptions {
     }
 
     public static boolean isColorsSwitched() {
-        return colorsSwitched;
+        return colorsInverted;
     }
 
     public static int getLineDistance() {

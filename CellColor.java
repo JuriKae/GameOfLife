@@ -6,6 +6,7 @@ public class CellColor {
             new Color(0, 255, 0), new Color(255, 255, 0), new Color(255, 127, 0), new Color(255, 0, 0) };
     private static int rainbowColorIndex = 0;
 
+    private static Color rainbowColor = null;
     private static Color randomColor = null;
 
     public static synchronized void handleCellColor(Cell cell) {
@@ -36,8 +37,7 @@ public class CellColor {
                 cell.setAliveColor(Color.WHITE);
                 break;
             case Rainbow:
-                cell.setAliveColor(rainbowColors[rainbowColorIndex]);
-                rainbowColorIndex = Main.getGeneration() % 7;
+                cell.setAliveColor(rainbowColor);
                 break;
             case Random:
                 cell.setAliveColor(randomColor);
@@ -46,6 +46,16 @@ public class CellColor {
                 cell.setAliveColor(AdvancedOptions.getChosenColor());
                 break;
         }
+    }
+
+    // generate colors for the one-color generation mode
+    public static void generateColors() {
+        rainbowColorIndex = Main.getGeneration() % 7;
+        rainbowColor = rainbowColors[rainbowColorIndex];
+
+        randomColor = new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
+        (int) (Math.random() * 255));
+        System.out.println("generate");
     }
 
     public static Color getRandomColor() {
