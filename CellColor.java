@@ -7,17 +7,14 @@ public class CellColor {
     private static int rainbowColorIndex = 0;
 
     private static Color randomColor = null;
-    private static int generationCounter = 1;
 
     public static synchronized void handleCellColor(Cell cell) {
         switch (AdvancedOptions.getColorMode()) {
             case Normal:
                 cell.setAliveColor(Color.WHITE);
-                cell.setDeadColor(Color.BLACK);
                 break;
             case Rainbow:
                 cell.setAliveColor(rainbowColors[rainbowColorIndex]);
-                cell.setDeadColor(Color.BLACK);
                 rainbowColorIndex++;
                 if (rainbowColorIndex > 6) {
                     rainbowColorIndex = 0;
@@ -26,11 +23,9 @@ public class CellColor {
             case Random:
                 cell.setAliveColor(new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
                         (int) (Math.random() * 255)));
-                cell.setDeadColor(Color.BLACK);
                 break;
             case Specific:
                 cell.setAliveColor(AdvancedOptions.getChosenColor());
-                cell.setDeadColor(Color.BLACK);
                 break;
         }
     }
@@ -39,35 +34,25 @@ public class CellColor {
         switch (AdvancedOptions.getColorMode()) {
             case Normal:
                 cell.setAliveColor(Color.WHITE);
-                cell.setDeadColor(Color.BLACK);
                 break;
             case Rainbow:
                 cell.setAliveColor(rainbowColors[rainbowColorIndex]);
-                cell.setDeadColor(Color.BLACK);
                 rainbowColorIndex = Main.getGeneration() % 7;
                 break;
             case Random:
-                // TO-DO: Fix that color doesnt change at first step
-
-                // ensures that only one random color is created per generation
-                // probably a really bad solution for that problem
-                if (generationCounter == Main.getGeneration()) {
-                    randomColor = new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
-                            (int) (Math.random() * 255));
-                    generationCounter++;
-                }
-
                 cell.setAliveColor(randomColor);
-                cell.setDeadColor(Color.BLACK);
                 break;
             case Specific:
                 cell.setAliveColor(AdvancedOptions.getChosenColor());
-                cell.setDeadColor(Color.BLACK);
                 break;
         }
     }
 
-    public static void setGenerationCounter(int generationCounter) {
-        CellColor.generationCounter = generationCounter;
+    public static Color getRandomColor() {
+        return randomColor;
+    }
+
+    public static void setRandomColor(Color randomColor) {
+        CellColor.randomColor = randomColor;
     }
 }

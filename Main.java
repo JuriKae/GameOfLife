@@ -121,7 +121,14 @@ public class Main extends JPanel {
                      * }
                      */
 
+                    // generate random color for one-generation random color mode
+                    CellColor.setRandomColor(new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
+                            (int) (Math.random() * 255)));
+
+                    // count all neighbours and assign colors
                     Cell.makeCountingThreads();
+
+                    generation++;
 
                     // wait until all counting threads are finished
                     for (Thread t : Thread.getAllStackTraces().keySet()) {
@@ -136,14 +143,12 @@ public class Main extends JPanel {
                     }
 
                     main.repaint();
-                    generation++;
                     BasicOptions.getGenerationLabel().setText("Generation: " + generation);
                 }
                 // resetted
                 reset = false;
                 generation = 1;
                 BasicOptions.getGenerationLabel().setText("Generation: " + generation);
-                CellColor.setGenerationCounter(1);
             }
         });
         // thread always starts immediately, but paused is enabled
@@ -156,7 +161,6 @@ public class Main extends JPanel {
 
         // execute
         if (initialized) {
-            System.out.println("repaint");
             for (int i = 1; i < xGrids - 1; i++) {
                 for (int j = 1; j < yGrids - 1; j++) {
                     int x = (int) (Cell.getCells()[i][j].getX());
