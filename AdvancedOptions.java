@@ -1,8 +1,11 @@
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
+import javax.swing.JColorChooser;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,16 +17,19 @@ public class AdvancedOptions {
     private static JFrame optionsFrame;
     private static JPanel colorPanel, firstCellsPanel, cellSizePanel;
 
-
     // color panel stuff
     private static JLabel colorLabel, chooseColorModeLabel, chooseColorLabel, oneGenColorLabel;
     private static JComboBox<Object> colorModeBox;
-    private static ColorMode[] colorModes = {ColorMode.Normal, ColorMode.Rainbow, ColorMode.Random, ColorMode.Specific};
+    private static ColorMode[] colorModes = { ColorMode.Normal, ColorMode.Rainbow, ColorMode.Random,
+            ColorMode.Specific };
     private static JCheckBox oneGenColorCheckBox;
+    private static JPanel chosenColorPanel;
+    private static Color chosenColor = Color.WHITE;
 
     private static ColorMode colorMode = ColorMode.Normal;
     private static boolean oneGenerationColor = false;
 
+    private static boolean colorsSwitched = false;
 
     // first cell panel stuff
     private static JLabel firstCellsLabel, firstCellPatternLabel, percRandomLabel;
@@ -35,16 +41,18 @@ public class AdvancedOptions {
     private static FirstCellMode firstCellMode = FirstCellMode.Random;
     private static int percOfAliveCells = 40;
 
-
     // cell size panel stuff
     private static JLabel cellSizeLabel, setCellSizeLabel;
     private static JSpinner cellSizeSpinner;
     private static SpinnerNumberModel cellSizeSpinnerModel = new SpinnerNumberModel(5, 1, 50, 1);
 
-
     private static Font titleFont = new Font(null, Font.BOLD, 20);
     private static Font normalFont = new Font(null, Font.PLAIN, 16);
-    
+    private static Font boxFont = new Font(null, Font.BOLD, 14);
+
+    private static Color buttonColor = new Color(255, 255, 255);
+    private static Color boxFontColor = Color.BLACK;
+
     public AdvancedOptions() {
         optionsFrame = new JFrame();
         optionsFrame.setTitle("Options");
@@ -73,7 +81,6 @@ public class AdvancedOptions {
         colorPanel.setBackground(Color.BLACK);
         colorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-
         colorLabel = new JLabel("Color Options");
         colorLabel.setBounds(10, 0, 200, 40);
         colorLabel.setForeground(Color.WHITE);
@@ -83,22 +90,52 @@ public class AdvancedOptions {
         chooseColorModeLabel.setBounds(10, 50, 200, 30);
         chooseColorModeLabel.setForeground(Color.WHITE);
         chooseColorModeLabel.setFont(normalFont);
-        
+
         chooseColorLabel = new JLabel("Choose a Color:");
         chooseColorLabel.setBounds(10, 90, 200, 30);
         chooseColorLabel.setForeground(Color.WHITE);
         chooseColorLabel.setFont(normalFont);
-        
+
         oneGenColorLabel = new JLabel("One color per generation:");
         oneGenColorLabel.setBounds(10, 130, 200, 30);
         oneGenColorLabel.setForeground(Color.WHITE);
         oneGenColorLabel.setFont(normalFont);
 
         colorModeBox = new JComboBox<Object>(colorModes);
+        colorModeBox.setFocusable(false);
         colorModeBox.setBounds(300, 50, 100, 30);
+        colorModeBox.setBackground(buttonColor);
+        colorModeBox.setForeground(boxFontColor);
+        colorModeBox.setFont(boxFont);
         colorModeBox.addActionListener(e -> {
             colorMode = (ColorMode) colorModeBox.getSelectedItem();
+
+            // directly change mode when color mode is changed
+            for (int i = 1; i < Cell.getxGrids() - 1; i++) {
+                for (int j = 1; j < Cell.getyGrids() - 1; j++) {
+                    if (!oneGenerationColor) {
+                        CellColor.handleCellColor(Cell.getCells()[i][j]);
+                    } else {
+                        CellColor.handleGenerationColor(Cell.getCells()[i][j]);
+                    }
+                }
+            }
+            Main.getMain().repaint();
         });
+
+        chosenColorPanel = new JPanel();
+        chosenColorPanel.setBounds(300, 90, 23, 23);
+        chosenColorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
+        chosenColorPanel.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                chosenColor = JColorChooser.showDialog(null, "Choose a color", null);
+                chosenColorPanel.setBackground(chosenColor);
+                colorMode = ColorMode.Specific;
+                colorModeBox.setSelectedItem(ColorMode.Specific);
+            }
+        });
+
 
         oneGenColorCheckBox = new JCheckBox();
         oneGenColorCheckBox.setBounds(300, 130, 100, 30);
@@ -109,6 +146,18 @@ public class AdvancedOptions {
             } else {
                 oneGenerationColor = false;
             }
+
+            // directly change mode when color mode is changed
+            for (int i = 1; i < Cell.getxGrids() - 1; i++) {
+                for (int j = 1; j < Cell.getyGrids() - 1; j++) {
+                    if (!oneGenerationColor) {
+                        CellColor.handleCellColor(Cell.getCells()[i][j]);
+                    } else {
+                        CellColor.handleGenerationColor(Cell.getCells()[i][j]);
+                    }
+                }
+            }
+            Main.getMain().repaint();
         });
 
 
@@ -116,6 +165,7 @@ public class AdvancedOptions {
         colorPanel.add(chooseColorModeLabel);
         colorPanel.add(chooseColorLabel);
         colorPanel.add(oneGenColorLabel);
+        colorPanel.add(chosenColorPanel);
         colorPanel.add(colorModeBox);
         colorPanel.add(oneGenColorCheckBox);
     }
@@ -126,7 +176,6 @@ public class AdvancedOptions {
         firstCellsPanel.setBounds(0, 200, 500, 150);
         firstCellsPanel.setBackground(Color.BLACK);
         firstCellsPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
-
 
         firstCellsLabel = new JLabel("Options for first alive cells");
         firstCellsLabel.setBounds(10, 0, 300, 40);
@@ -144,7 +193,11 @@ public class AdvancedOptions {
         percRandomLabel.setFont(normalFont);
 
         cellModeBox = new JComboBox<Object>(cellModes);
+        cellModeBox.setFocusable(false);
         cellModeBox.setBounds(300, 50, 100, 30);
+        cellModeBox.setBackground(buttonColor);
+        cellModeBox.setForeground(boxFontColor);
+        cellModeBox.setFont(boxFont);
         cellModeBox.addActionListener(e -> {
             firstCellMode = (FirstCellMode) cellModeBox.getSelectedItem();
             // BasicOptions.reset();
@@ -152,11 +205,14 @@ public class AdvancedOptions {
 
         percRandomSpinner = new JSpinner(firstCellsSpinnerModel);
         percRandomSpinner.setBounds(300, 90, 100, 30);
+        percRandomSpinner.getEditor().getComponent(0).setBackground(buttonColor);
+        percRandomSpinner.getEditor().getComponent(0).setForeground(boxFontColor);
+        percRandomSpinner.setFont(boxFont);
         percRandomSpinner.addChangeListener(e -> {
             percOfAliveCells = (int) percRandomSpinner.getValue();
         });
 
-
+ 
         firstCellsPanel.add(firstCellPatternLabel);
         firstCellsPanel.add(percRandomLabel);
         firstCellsPanel.add(cellModeBox);
@@ -171,12 +227,10 @@ public class AdvancedOptions {
         cellSizePanel.setBackground(Color.BLACK);
         cellSizePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
-
         cellSizeLabel = new JLabel("Cell size");
         cellSizeLabel.setBounds(10, 0, 200, 40);
         cellSizeLabel.setForeground(Color.WHITE);
         cellSizeLabel.setFont(titleFont);
-
 
         setCellSizeLabel = new JLabel("Set size of cells:");
         setCellSizeLabel.setBounds(10, 50, 200, 30);
@@ -185,12 +239,14 @@ public class AdvancedOptions {
 
         cellSizeSpinner = new JSpinner(cellSizeSpinnerModel);
         cellSizeSpinner.setBounds(300, 50, 100, 30);
+        cellSizeSpinner.getEditor().getComponent(0).setBackground(buttonColor);
+        cellSizeSpinner.getEditor().getComponent(0).setForeground(boxFontColor);
+        cellSizeSpinner.setFont(boxFont);
         cellSizeSpinner.addChangeListener(e -> {
             Cell.setCellWidth((int) cellSizeSpinner.getValue());
             Cell.setCellHeight((int) cellSizeSpinner.getValue());
             // BasicOptions.reset();
         });
-
 
         cellSizePanel.add(setCellSizeLabel);
         cellSizePanel.add(cellSizeSpinner);
@@ -201,7 +257,7 @@ public class AdvancedOptions {
         return optionsFrame;
     }
 
-     public static ColorMode getColorMode() {
+    public static ColorMode getColorMode() {
         return colorMode;
     }
 
@@ -209,12 +265,19 @@ public class AdvancedOptions {
         return oneGenerationColor;
     }
 
-
     public static FirstCellMode getAliveCellMode() {
         return firstCellMode;
     }
 
     public static float getPercOfAliveCells() {
         return percOfAliveCells;
+    }
+
+    public static Color getChosenColor() {
+        return chosenColor;
+    }
+
+    public static boolean isColorsSwitched() {
+        return colorsSwitched;
     }
 }

@@ -20,6 +20,7 @@ public class BasicOptions {
     private static int delay = 50;
 
     private static Font buttonFont = new Font(null, Font.BOLD, 12);
+    private static Color buttonColor = new Color(0, 71, 179);
 
     public BasicOptions() {
         startButton = new JButton("Start");
@@ -51,7 +52,7 @@ public class BasicOptions {
         for (JButton button : buttonArray) {
             button.setPreferredSize(new Dimension(100, 30));
             button.setFocusable(false);
-            button.setBackground(new Color(0, 71, 179));
+            button.setBackground(buttonColor);
             button.setForeground(Color.WHITE);
             button.setFont(buttonFont);
             button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));

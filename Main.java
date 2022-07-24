@@ -122,7 +122,6 @@ public class Main extends JPanel {
                      */
 
                     Cell.makeCountingThreads();
-                    
 
                     // wait until all counting threads are finished
                     for (Thread t : Thread.getAllStackTraces().keySet()) {
@@ -157,6 +156,7 @@ public class Main extends JPanel {
 
         // execute
         if (initialized) {
+            System.out.println("repaint");
             for (int i = 1; i < xGrids - 1; i++) {
                 for (int j = 1; j < yGrids - 1; j++) {
                     int x = (int) (Cell.getCells()[i][j].getX());
@@ -169,15 +169,24 @@ public class Main extends JPanel {
                         Cell.getCells()[i][j].setLastGenAlive(false);
                     }
 
-                    // set color depnding of status of cell
+                    // set color depending of status of cell
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
-                        g.setColor(Cell.getCells()[i][j].getAliveColor());
+                        if (AdvancedOptions.isColorsSwitched()) {
+                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                        } else {
+                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                        }
                         Cell.getCells()[i][j].setAlive(true);
+
                     } else {
-                        g.setColor(Cell.getCells()[i][j].getDeadColor());
+                        // if color switch is on, reverse the colors
+                        if (AdvancedOptions.isColorsSwitched()) {
+                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                        } else {
+                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                        }
                         Cell.getCells()[i][j].setAlive(false);
                     }
-
 
                     g.fillRect(x, y, currentCellWidth, currentCellHeight);
                 }
@@ -191,17 +200,31 @@ public class Main extends JPanel {
 
             for (int i = 0; i < xGrids - 1; i++) {
                 for (int j = 0; j < yGrids - 1; j++) {
+
+                    int x = (int) (Cell.getCells()[i][j].getX());
+                    int y = (int) (Cell.getCells()[i][j].getY());
+
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
-                        int x = (int) (Cell.getCells()[i][j].getX());
-                        int y = (int) (Cell.getCells()[i][j].getY());
-                        g.setColor(Cell.getCells()[i][j].getAliveColor());
-                        g.fillRect(x, y, currentCellWidth, currentCellHeight);
+                        if (AdvancedOptions.isColorsSwitched()) {
+                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                        } else {
+                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                        }
                         Cell.getCells()[i][j].setAlive(true);
+
+                    } else if (!Cell.getCells()[i][j].isNextGenAlive()) {
+                        if (AdvancedOptions.isColorsSwitched()) {
+                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                        } else {
+                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                        }
+                        Cell.getCells()[i][j].setAlive(false);
                     }
+                    g.fillRect(x, y, currentCellWidth, currentCellHeight);
                 }
             }
             initialized = true;
-        } 
+        }
 
         repainted = true;
     }
