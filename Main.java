@@ -331,4 +331,12 @@ public class Main extends JPanel {
     public static void setZoomFactor(double zoomFactor) {
         Main.zoomFactor = zoomFactor;
     }
+
+    public static double getxOffset() {
+        return xOffset;
+    }
+
+    public static double getyOffset() {
+        return yOffset;
+    }
 }

@@ -320,7 +320,7 @@ public class AdvancedOptions {
         cellSizeSpinner.addChangeListener(e -> {
             Cell.setCellWidth((int) cellSizeSpinner.getValue());
             Cell.setCellHeight((int) cellSizeSpinner.getValue());
-            // BasicOptions.reset();
+            BasicOptions.reset();
         });
 
         cellSizePanel.add(setCellSizeLabel);

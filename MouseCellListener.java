@@ -5,11 +5,20 @@ import java.awt.event.MouseWheelEvent;
 import javax.swing.SwingUtilities;
 
 public class MouseCellListener extends MouseAdapter {
+
+    private double xDifference;
+    private double yDifference;
+
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
-        int x = e.getX() / Cell.getCellWidth();
-        int y = e.getY() / Cell.getCellHeight();
+
+        xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
+        yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
+
+        // converts x and y to correct value, even when zoomed in
+        double x = e.getX() / xDifference - (Main.getxOffset() / xDifference);
+        double y = e.getY() / yDifference - (Main.getyOffset() / yDifference);
 
         if (x < 0 || x > Cell.getxGrids() - 1 || y < 0 || y > Cell.getyGrids() - 1) {
             return;
@@ -26,8 +35,13 @@ public class MouseCellListener extends MouseAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
-        int x = e.getX() / Cell.getCellWidth();
-        int y = e.getY() / Cell.getCellHeight();
+
+        xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
+        yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
+
+        // converts x and y to correct value, even when zoomed in
+        double x = e.getX() / xDifference - (Main.getxOffset() / xDifference);
+        double y = e.getY() / yDifference - (Main.getyOffset() / yDifference);
 
         if (x < 0 || x > Cell.getxGrids() - 1 || y < 0 || y > Cell.getyGrids() - 1) {
             return;
