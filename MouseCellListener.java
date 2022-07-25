@@ -1,7 +1,8 @@
-import javax.swing.SwingUtilities;
-
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseWheelEvent;
+
+import javax.swing.SwingUtilities;
 
 public class MouseCellListener extends MouseAdapter {
     @Override
@@ -15,10 +16,10 @@ public class MouseCellListener extends MouseAdapter {
         }
 
         if (SwingUtilities.isLeftMouseButton(e)) {
-            Cell.getCells()[x][y].setNextGenAlive(true);
+            Cell.getCells()[(int) x][(int) y].setNextGenAlive(true);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            Cell.getCells()[x][y].setNextGenAlive(false);
-        }
+            Cell.getCells()[(int) x][(int) y].setNextGenAlive(false);
+        } 
         Main.getMain().repaint();
     }
 
@@ -32,10 +33,38 @@ public class MouseCellListener extends MouseAdapter {
             return;
         }
         if (SwingUtilities.isLeftMouseButton(e)) {
-            Cell.getCells()[x][y].setNextGenAlive(true);
+            Cell.getCells()[(int) x][(int) y].setNextGenAlive(true);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            Cell.getCells()[x][y].setNextGenAlive(false);
+            Cell.getCells()[(int) x][(int) y].setNextGenAlive(false);
         }
         Main.getMain().repaint();
+    }
+
+    // reset the zoom if mouse wheel has been clicked
+    @Override
+    public void mouseClicked(MouseEvent e) {
+        super.mouseClicked(e);
+
+        if (SwingUtilities.isMiddleMouseButton(e)) {
+            Main.resetZoom();
+        }
+    }
+
+    @Override
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        super.mouseWheelMoved(e);
+
+        Main.setHasZoomed(true);
+
+        // Zoom in
+        if (e.getWheelRotation() < 0) {
+            Main.setZoomFactor(Main.getZoomFactor() * 1.1);
+            Main.getMain().repaint();
+        }
+        // Zoom out
+        if (e.getWheelRotation() > 0) {
+            Main.setZoomFactor(Main.getZoomFactor() / 1.1);
+            Main.getMain().repaint();
+        }
     }
 }

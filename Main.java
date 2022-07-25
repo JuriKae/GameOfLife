@@ -3,6 +3,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.MouseInfo;
+import java.awt.geom.AffineTransform;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -36,6 +38,13 @@ public class Main extends JPanel {
     private static boolean reset;
     private static boolean repainted;
     private static boolean initialized;
+
+    private static double zoomFactor = 1;
+    private static double prevZoomFactor = 1;
+    private static boolean hasZoomed;
+
+    private static double xOffset = 0;
+    private static double yOffset = 0;
 
     Graphics2D g2 = null;
 
@@ -167,11 +176,40 @@ public class Main extends JPanel {
         main.repaint();
     }
 
+    public static void resetZoom() {
+        hasZoomed = true;
+        zoomFactor = 1;
+        prevZoomFactor = 1;
+        xOffset = 0;
+        yOffset = 0;
+
+        main.repaint();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
         g2 = (Graphics2D) g;
+
+        AffineTransform at = new AffineTransform();
+        if (hasZoomed) {
+
+            double xRel = MouseInfo.getPointerInfo().getLocation().getX() - getLocationOnScreen().getX();
+            double yRel = MouseInfo.getPointerInfo().getLocation().getY() - getLocationOnScreen().getY();
+
+            double zoomDiv = zoomFactor / prevZoomFactor;
+
+            xOffset = (zoomDiv) * (xOffset) + (1 - zoomDiv) * xRel;
+            yOffset = (zoomDiv) * (yOffset) + (1 - zoomDiv) * yRel;
+
+            prevZoomFactor = zoomFactor;
+            hasZoomed = false;
+        }
+
+        at.translate(xOffset, yOffset);
+        at.scale(zoomFactor, zoomFactor);
+        g2.transform(at);
 
         if (initialized) {
             for (int i = 1; i < xGrids - 1; i++) {
@@ -280,5 +318,17 @@ public class Main extends JPanel {
 
     public static int getGeneration() {
         return generation;
+    }
+
+    public static void setHasZoomed(boolean hasZoomed) {
+        Main.hasZoomed = hasZoomed;
+    }
+
+    public static double getZoomFactor() {
+        return zoomFactor;
+    }
+
+    public static void setZoomFactor(double zoomFactor) {
+        Main.zoomFactor = zoomFactor;
     }
 }
