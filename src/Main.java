@@ -1,3 +1,5 @@
+package src;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -34,6 +36,8 @@ public class Main extends JPanel {
     private static Main main;
 
     private static Thread thread;
+
+    private static boolean isThread;
 
     private static boolean reset;
     private static boolean repainted;
@@ -84,10 +88,10 @@ public class Main extends JPanel {
         Cell.initializeCells();
 
         CellColor.generateColors();
-        createThread();
+        createThread(isThread);
     }
 
-    public static void createThread() {
+    public static void createThread(boolean isThread) {
         thread = new Thread(new Runnable() {
 
             @Override
@@ -129,27 +133,29 @@ public class Main extends JPanel {
                     // generate colors for one-generation color mode
                     CellColor.generateColors();
 
-                    /*
-                     * for (int i = 1; i < xGrids - 1; i++) {
-                     * for (int j = 1; j < yGrids - 1; j++) {
-                     * Cell.countNeighbours(Cell.getCells()[i][j], i, j);
-                     * }
-                     * }
-                     */
+                    if (isThread) {
+                        // count all neighbours and assign colors
+                        Cell.makeCountingThreads();
 
-                    // count all neighbours and assign colors
-                    Cell.makeCountingThreads();
-
-                    // wait until all counting threads are finished
-                    for (Thread t : Thread.getAllStackTraces().keySet()) {
-                        if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3")
-                                || t.getName().equals("4")) {
-                            try {
-                                t.join();
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
+                        // wait until all counting threads are finished
+                        for (Thread t : Thread.getAllStackTraces().keySet()) {
+                            if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3")
+                                    || t.getName().equals("4")) {
+                                try {
+                                    t.join();
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
+                    } else {
+
+                        for (int i = 1; i < xGrids - 1; i++) {
+                            for (int j = 1; j < yGrids - 1; j++) {
+                                Cell.countNeighbours(Cell.getCells()[i][j], i, j);
+                            }
+                        }
+
                     }
 
                     main.repaint();
@@ -170,7 +176,7 @@ public class Main extends JPanel {
         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
         Cell.initializeCells();
-        createThread();
+        createThread(isThread);
 
         initialized = false;
         main.repaint();
@@ -338,5 +344,9 @@ public class Main extends JPanel {
 
     public static double getyOffset() {
         return yOffset;
+    }
+
+    public static void setThread(boolean isThread) {
+        Main.isThread = isThread;
     }
 }

@@ -1,3 +1,4 @@
+package src;
 public class Threadmaker {
     private static int counter = 0;
     private static Thread thread;
