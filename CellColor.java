@@ -50,12 +50,14 @@ public class CellColor {
 
     // generate colors for the one-color generation mode
     public static void generateColors() {
-        rainbowColorIndex = Main.getGeneration() % 7;
+        if (++rainbowColorIndex > 6) {
+            rainbowColorIndex = 0;
+        }
         rainbowColor = rainbowColors[rainbowColorIndex];
 
+        
         randomColor = new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
         (int) (Math.random() * 255));
-        System.out.println("generate");
     }
 
     public static Color getRandomColor() {

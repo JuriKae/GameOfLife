@@ -80,22 +80,15 @@ public class BasicOptions {
 
     public static void reset() {
         Main.setReset(true);
-        Cell.initializeCells();
 
         if (!paused) {
             togglePause();
         }
 
+        startButton.setEnabled(true);
         previousButton.setEnabled(false);
         pauseButton.setEnabled(false);
         pauseButton.setText("Pause");
-
-        Main.setInitialized(false);
-        Main.getMain().repaint();
-
-        startButton.setEnabled(true);
-
-        Main.createThread();
     }
 
     public static void togglePause() {

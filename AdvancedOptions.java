@@ -256,7 +256,8 @@ public class AdvancedOptions {
                 lineDistanceSpinner.setVisible(true);
 
             } else if (firstCellMode == FirstCellMode.Empty) {
-                cellModeSpinnerLabel.setVisible(false);
+                cellModeSpinnerLabel.setText("You can draw cells with the mouse.");
+                
                 percRandomSpinner.setVisible(false);
                 lineDistanceSpinner.setVisible(false);
             }

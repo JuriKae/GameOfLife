@@ -2,6 +2,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -36,6 +37,8 @@ public class Main extends JPanel {
     private static boolean repainted;
     private static boolean initialized;
 
+    Graphics2D g2 = null;
+
     private static MouseCellListener mouseListener = new MouseCellListener();
 
     public Main() {
@@ -50,6 +53,7 @@ public class Main extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 1));
         this.addMouseListener(mouseListener);
         this.addMouseMotionListener(mouseListener);
+        this.addMouseWheelListener(mouseListener);
 
         topPanel = new JPanel();
         topPanel.setBackground(Color.BLACK);
@@ -70,6 +74,7 @@ public class Main extends JPanel {
         main = new Main();
         Cell.initializeCells();
 
+        CellColor.generateColors();
         createThread();
     }
 
@@ -100,9 +105,6 @@ public class Main extends JPanel {
                     }
                     repainted = false;
 
-                    // generate colors for one-generation color mode
-                    CellColor.generateColors();
-
                     // wait if the game has been paused
                     while (BasicOptions.isPaused() && !reset) {
                         try {
@@ -115,6 +117,8 @@ public class Main extends JPanel {
                             break;
                         }
                     }
+                    // generate colors for one-generation color mode
+                    CellColor.generateColors();
 
                     /*
                      * for (int i = 1; i < xGrids - 1; i++) {
@@ -123,7 +127,6 @@ public class Main extends JPanel {
                      * }
                      * }
                      */
-
 
                     // count all neighbours and assign colors
                     Cell.makeCountingThreads();
@@ -144,21 +147,32 @@ public class Main extends JPanel {
                     generation++;
                     BasicOptions.getGenerationLabel().setText("Generation: " + generation);
                 }
-                // resetted
-                reset = false;
-                generation = 1;
-                BasicOptions.getGenerationLabel().setText("Generation: " + generation);
+                // here when user resets
+                resetSuff();
             }
         });
         // thread always starts immediately, but paused is enabled
         thread.start();
     }
 
+    public static void resetSuff() {
+        reset = false;
+        generation = 1;
+        BasicOptions.getGenerationLabel().setText("Generation: " + generation);
+
+        Cell.initializeCells();
+        createThread();
+
+        initialized = false;
+        main.repaint();
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // execute
+        g2 = (Graphics2D) g;
+
         if (initialized) {
             for (int i = 1; i < xGrids - 1; i++) {
                 for (int j = 1; j < yGrids - 1; j++) {
@@ -175,23 +189,23 @@ public class Main extends JPanel {
                     // set color depending of status of cell
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
                         if (AdvancedOptions.isColorsSwitched()) {
-                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
                         } else {
-                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
                         }
                         Cell.getCells()[i][j].setAlive(true);
 
                     } else {
                         // if color switch is on, reverse the colors
                         if (AdvancedOptions.isColorsSwitched()) {
-                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
                         } else {
-                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
                         }
                         Cell.getCells()[i][j].setAlive(false);
                     }
 
-                    g.fillRect(x, y, currentCellWidth, currentCellHeight);
+                    g2.fillRect(x, y, currentCellWidth, currentCellHeight);
                 }
             }
 
@@ -209,21 +223,21 @@ public class Main extends JPanel {
 
                     if (Cell.getCells()[i][j].isNextGenAlive()) {
                         if (AdvancedOptions.isColorsSwitched()) {
-                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
                         } else {
-                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
                         }
                         Cell.getCells()[i][j].setAlive(true);
 
                     } else if (!Cell.getCells()[i][j].isNextGenAlive()) {
                         if (AdvancedOptions.isColorsSwitched()) {
-                            g.setColor(Cell.getCells()[i][j].getAliveColor());
+                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
                         } else {
-                            g.setColor(Cell.getCells()[i][j].getDeadColor());
+                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
                         }
                         Cell.getCells()[i][j].setAlive(false);
                     }
-                    g.fillRect(x, y, currentCellWidth, currentCellHeight);
+                    g2.fillRect(x, y, currentCellWidth, currentCellHeight);
                 }
             }
             initialized = true;
