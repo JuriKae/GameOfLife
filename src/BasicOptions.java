@@ -62,6 +62,7 @@ public class BasicOptions {
         delaySlider = new JSlider(JSlider.VERTICAL, 1, 100, 40);
         delaySlider.setPreferredSize(new Dimension(20, 70));
         delaySlider.setBackground(Color.BLACK);
+        delaySlider.setToolTipText("Delay between generations");
         delaySlider.addChangeListener(e -> {
 
             // function to calculate logarithmic values for better slider experience

@@ -36,46 +36,8 @@ public class Cell extends Rectangle {
                 cells[i][j] = new Cell(i, j);
             }
         }
-    }
 
-    public static void countNeighbours(Cell cell, int i, int j) {
-        int neighbours = 0;
-
-        // counts alive neighbours of every single cell
-        if (cells[i - 1][j - 1].isAlive())
-            neighbours++;
-        if (cells[i][j - 1].isAlive())
-            neighbours++;
-        if (cells[i + 1][j - 1].isAlive())
-            neighbours++;
-        if (cells[i - 1][j].isAlive())
-            neighbours++;
-        if (cells[i + 1][j].isAlive())
-            neighbours++;
-        if (cells[i - 1][j + 1].isAlive())
-            neighbours++;
-        if (cells[i][j + 1].isAlive())
-            neighbours++;
-        if (cells[i + 1][j + 1].isAlive())
-            neighbours++;
-
-        // sets next gen cell alive or dead according to number of neighbours
-        if (cell.alive) {
-            if (neighbours <= 1 || neighbours >= 4) {
-                cell.nextGenAlive = false;
-            }
-        } else {
-            if (neighbours == 3) {
-                cell.nextGenAlive = true;
-            }
-        }
-
-        // change color for each cell
-        if (!AdvancedOptions.isOneGenerationColor()) {
-            CellColor.handleCellColor(cells[i][j]);
-        } else {
-            CellColor.handleGenerationColor(cells[i][j]);
-        }
+        initAliveCells();
     }
 
     public static void initAliveCells() {
@@ -109,6 +71,46 @@ public class Cell extends Rectangle {
                     }
                 }
                 break;
+        }
+    }
+
+    public static void countNeighbours(Cell cell, int i, int j) {
+        int neighbours = 0;
+
+        // counts alive neighbours of every single cell
+        if (cells[i - 1][j - 1].alive)
+            neighbours++;
+        if (cells[i][j - 1].alive)
+            neighbours++;
+        if (cells[i + 1][j - 1].alive)
+            neighbours++;
+        if (cells[i - 1][j].alive)
+            neighbours++;
+        if (cells[i + 1][j].alive)
+            neighbours++;
+        if (cells[i - 1][j + 1].alive)
+            neighbours++;
+        if (cells[i][j + 1].alive)
+            neighbours++;
+        if (cells[i + 1][j + 1].alive)
+            neighbours++;
+
+        // sets next gen cell alive or dead according to number of neighbours
+        if (!cell.alive) {
+            if (neighbours == 3) {
+                cell.nextGenAlive = true;
+            }
+        } else {
+            if (neighbours <= 1 || neighbours >= 4) {
+                cell.nextGenAlive = false;
+            }
+        }
+
+        // change color for each cell
+        if (!AdvancedOptions.isOneGenerationColor()) {
+            CellColor.handleCellColor(cells[i][j]);
+        } else {
+            CellColor.handleGenerationColor(cells[i][j]);
         }
     }
 

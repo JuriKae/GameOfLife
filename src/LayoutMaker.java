@@ -8,13 +8,11 @@ import javax.swing.JPanel;
 
 public class LayoutMaker {
 
-    private static GridBagConstraints gbc;
-    private static JPanel topPanel;
-
     public LayoutMaker() {
-        topPanel = Main.getTopPanel();
+
+        JPanel topPanel = Main.getTopPanel();
+        GridBagConstraints gbc = new GridBagConstraints();
         topPanel.setLayout(new GridBagLayout());
-        gbc = new GridBagConstraints();
 
         gbc.insets = new Insets(3, -30, 3, 100);
         gbc.gridx = 0;

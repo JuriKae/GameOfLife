@@ -20,13 +20,15 @@ public class Main extends JPanel {
     private static int panelWidth = 600;
     private static int panelHeight = 600;
 
-    private static int topPanelHeight = 75;
+    private static final int topPanelHeight = 75;
 
     private static int width = panelWidth + 16;
     private static int height = panelHeight + 39 + topPanelHeight;
 
     private static int xGrids;
     private static int yGrids;
+
+    private Cell cell;
 
     private static int currentCellWidth;
     private static int currentCellHeight;
@@ -41,7 +43,6 @@ public class Main extends JPanel {
 
     private static boolean reset;
     private static boolean repainted;
-    private static boolean initialized;
 
     private static double zoomFactor = 1;
     private static double prevZoomFactor = 1;
@@ -50,7 +51,7 @@ public class Main extends JPanel {
     private static double xOffset = 0;
     private static double yOffset = 0;
 
-    Graphics2D g2 = null;
+    private static Graphics2D g2 = null;
 
     private static MouseCellListener mouseListener = new MouseCellListener();
 
@@ -63,7 +64,7 @@ public class Main extends JPanel {
 
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
-        this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 1));
+        this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 2));
         this.addMouseListener(mouseListener);
         this.addMouseMotionListener(mouseListener);
         this.addMouseWheelListener(mouseListener);
@@ -80,18 +81,15 @@ public class Main extends JPanel {
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-        this.repaint();
     }
 
     public static void main(String[] args) {
         main = new Main();
-        Cell.initializeCells();
-
-        CellColor.generateColors();
-        createThread(isThread);
+        resetSuff();
     }
 
     public static void createThread(boolean isThread) {
+
         thread = new Thread(new Runnable() {
 
             @Override
@@ -175,10 +173,14 @@ public class Main extends JPanel {
         generation = 1;
         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
+        CellColor.generateColors();
         Cell.initializeCells();
+
+        currentCellWidth = Cell.getCellWidth();
+        currentCellHeight = Cell.getCellHeight();
+
         createThread(isThread);
 
-        initialized = false;
         main.repaint();
     }
 
@@ -195,6 +197,8 @@ public class Main extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
+
+        // long start = System.nanoTime();
 
         g2 = (Graphics2D) g;
 
@@ -217,77 +221,34 @@ public class Main extends JPanel {
         at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
 
-        if (initialized) {
-            for (int i = 1; i < xGrids - 1; i++) {
-                for (int j = 1; j < yGrids - 1; j++) {
-                    int x = (int) (Cell.getCells()[i][j].getX());
-                    int y = (int) (Cell.getCells()[i][j].getY());
+        boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
-                    // save if last generation was alive or dead
-                    if (Cell.getCells()[i][j].isAlive()) {
-                        Cell.getCells()[i][j].setLastGenAlive(true);
-                    } else {
-                        Cell.getCells()[i][j].setLastGenAlive(false);
-                    }
+        for (int i = 1; i < xGrids - 1; i++) {
+            for (int j = 1; j < yGrids - 1; j++) {
 
-                    // set color depending of status of cell
-                    if (Cell.getCells()[i][j].isNextGenAlive()) {
-                        if (AdvancedOptions.isColorsSwitched()) {
-                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
-                        } else {
-                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
-                        }
-                        Cell.getCells()[i][j].setAlive(true);
+                cell = Cell.getCells()[i][j];
 
-                    } else {
-                        // if color switch is on, reverse the colors
-                        if (AdvancedOptions.isColorsSwitched()) {
-                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
-                        } else {
-                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
-                        }
-                        Cell.getCells()[i][j].setAlive(false);
-                    }
-
-                    g2.fillRect(x, y, currentCellWidth, currentCellHeight);
+                // set color depending on status of cell and check if colors are inverted
+                if (cell.isNextGenAlive() == isColorsInverted) {
+                    g2.setColor(cell.getDeadColor());
+                } else {
+                    g2.setColor(cell.getAliveColor());
                 }
+
+                int x = (int) cell.getX();
+                int y = (int) cell.getY();
+                g2.fillRect(x, y, currentCellWidth, currentCellHeight);
+
+                 // save if last generation was alive or dead
+                 cell.setLastGenAlive(cell.isAlive());
+
+                 // set cell alive if it is alive in the next generation
+                 cell.setAlive(cell.isNextGenAlive());
             }
-
-            // executed if the game has been reset
-        } else if (!initialized) {
-            Cell.initAliveCells();
-            currentCellWidth = Cell.getCellWidth();
-            currentCellHeight = Cell.getCellHeight();
-
-            for (int i = 0; i < xGrids - 1; i++) {
-                for (int j = 0; j < yGrids - 1; j++) {
-
-                    int x = (int) (Cell.getCells()[i][j].getX());
-                    int y = (int) (Cell.getCells()[i][j].getY());
-
-                    if (Cell.getCells()[i][j].isNextGenAlive()) {
-                        if (AdvancedOptions.isColorsSwitched()) {
-                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
-                        } else {
-                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
-                        }
-                        Cell.getCells()[i][j].setAlive(true);
-
-                    } else if (!Cell.getCells()[i][j].isNextGenAlive()) {
-                        if (AdvancedOptions.isColorsSwitched()) {
-                            g2.setColor(Cell.getCells()[i][j].getAliveColor());
-                        } else {
-                            g2.setColor(Cell.getCells()[i][j].getDeadColor());
-                        }
-                        Cell.getCells()[i][j].setAlive(false);
-                    }
-                    g2.fillRect(x, y, currentCellWidth, currentCellHeight);
-                }
-            }
-            initialized = true;
         }
-
         repainted = true;
+        // long duration = System.nanoTime() - start;
+        // System.out.println(duration / 1000000 + "ms");
     }
 
     public static JPanel getTopPanel() {
@@ -300,10 +261,6 @@ public class Main extends JPanel {
 
     public static Main getMain() {
         return main;
-    }
-
-    public static void setInitialized(boolean initialized) {
-        Main.initialized = initialized;
     }
 
     public static void setxGrids(int xGrids) {
