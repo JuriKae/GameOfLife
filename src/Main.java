@@ -28,7 +28,7 @@ public class Main extends JPanel {
     private static int xGrids;
     private static int yGrids;
 
-    private Cell cell;
+    private static Cell cell;
 
     private static int currentCellWidth;
     private static int currentCellHeight;
@@ -89,12 +89,12 @@ public class Main extends JPanel {
     }
 
     public static void createThread(boolean isThread) {
-
         thread = new Thread(new Runnable() {
 
             @Override
             public void run() {
                 while (!reset) {
+
                     try {
                         // do not sleep if user makes steps
                         if (!BasicOptions.isStep()) {
@@ -102,63 +102,38 @@ public class Main extends JPanel {
                         } else {
                             BasicOptions.setStep(false);
                         }
+
+                        // wait until all the cells have been repainted
+                        while (!repainted) {
+                            Thread.sleep(0);
+                        }
+                        repainted = false;
+
+                        // wait if the game has been paused
+                        while (BasicOptions.isPaused() && !reset) {
+                            Thread.sleep(0);
+                            // if user pressed step, break out of the while loop for one iteration
+                            if (BasicOptions.isStep()) {
+                                break;
+                            }
+                        }
+                        // generate colors for one-generation color mode
+                        CellColor.generateColors();
+
+                        // long start = System.nanoTime();
+
+                        Cell.countNeighbours();
+
+                        // long duration = System.nanoTime() - start;
+                        // System.out.println(duration / 1000000 + "ms");
+
+                        main.repaint();
+                        generation++;
+                        BasicOptions.getGenerationLabel().setText("Generation: " + generation);
+
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
-
-                    // wait until all the cells have been repainted
-                    while (!repainted) {
-                        try {
-                            Thread.sleep(0);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    repainted = false;
-
-                    // wait if the game has been paused
-                    while (BasicOptions.isPaused() && !reset) {
-                        try {
-                            Thread.sleep(10);
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        }
-                        // if user pressed step, break out of the while loop for one iteration
-                        if (BasicOptions.isStep()) {
-                            break;
-                        }
-                    }
-                    // generate colors for one-generation color mode
-                    CellColor.generateColors();
-
-                    if (isThread) {
-                        // count all neighbours and assign colors
-                        Cell.makeCountingThreads();
-
-                        // wait until all counting threads are finished
-                        for (Thread t : Thread.getAllStackTraces().keySet()) {
-                            if (t.getName().equals("1") || t.getName().equals("2") || t.getName().equals("3")
-                                    || t.getName().equals("4")) {
-                                try {
-                                    t.join();
-                                } catch (InterruptedException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }
-                    } else {
-
-                        for (int i = 1; i < xGrids - 1; i++) {
-                            for (int j = 1; j < yGrids - 1; j++) {
-                                Cell.countNeighbours(Cell.getCells()[i][j], i, j);
-                            }
-                        }
-
-                    }
-
-                    main.repaint();
-                    generation++;
-                    BasicOptions.getGenerationLabel().setText("Generation: " + generation);
                 }
                 // here when user resets
                 resetSuff();
@@ -214,7 +189,6 @@ public class Main extends JPanel {
             yOffset = (zoomDiv) * (yOffset) + (1 - zoomDiv) * yRel;
 
             prevZoomFactor = zoomFactor;
-            hasZoomed = false;
         }
 
         at.translate(xOffset, yOffset);
@@ -239,13 +213,16 @@ public class Main extends JPanel {
                 int y = (int) cell.getY();
                 g2.fillRect(x, y, currentCellWidth, currentCellHeight);
 
-                 // save if last generation was alive or dead
-                 cell.setLastGenAlive(cell.isAlive());
+                if (!hasZoomed) {
+                    // save if last generation was alive or dead
+                    cell.setLastGenAlive(cell.isAlive());
 
-                 // set cell alive if it is alive in the next generation
-                 cell.setAlive(cell.isNextGenAlive());
+                    // set cell alive if it is alive in the next generation
+                    cell.setAlive(cell.isNextGenAlive());
+                }
             }
         }
+        hasZoomed = false;
         repainted = true;
         // long duration = System.nanoTime() - start;
         // System.out.println(duration / 1000000 + "ms");

@@ -1,4 +1,5 @@
 package src;
+
 import java.awt.Color;
 import java.awt.Rectangle;
 
@@ -74,77 +75,47 @@ public class Cell extends Rectangle {
         }
     }
 
-    public static void countNeighbours(Cell cell, int i, int j) {
-        int neighbours = 0;
+    public static void countNeighbours() {
+        for (int i = 1; i < xGrids - 1; i++) {
+            for (int j = 1; j < yGrids - 1; j++) {
+                int neighbours = 0;
 
-        // counts alive neighbours of every single cell
-        if (cells[i - 1][j - 1].alive)
-            neighbours++;
-        if (cells[i][j - 1].alive)
-            neighbours++;
-        if (cells[i + 1][j - 1].alive)
-            neighbours++;
-        if (cells[i - 1][j].alive)
-            neighbours++;
-        if (cells[i + 1][j].alive)
-            neighbours++;
-        if (cells[i - 1][j + 1].alive)
-            neighbours++;
-        if (cells[i][j + 1].alive)
-            neighbours++;
-        if (cells[i + 1][j + 1].alive)
-            neighbours++;
+                if (cells[i - 1][j - 1].alive)
+                    neighbours++;
+                if (cells[i][j - 1].alive)
+                    neighbours++;
+                if (cells[i + 1][j - 1].alive)
+                    neighbours++;
+                if (cells[i - 1][j].alive)
+                    neighbours++;
+                if (cells[i + 1][j].alive)
+                    neighbours++;
+                if (cells[i - 1][j + 1].alive)
+                    neighbours++;
+                if (cells[i][j + 1].alive)
+                    neighbours++;
+                if (cells[i + 1][j + 1].alive)
+                    neighbours++;
 
-        // sets next gen cell alive or dead according to number of neighbours
-        if (!cell.alive) {
-            if (neighbours == 3) {
-                cell.nextGenAlive = true;
-            }
-        } else {
-            if (neighbours <= 1 || neighbours >= 4) {
-                cell.nextGenAlive = false;
+                // sets next gen cell alive or dead according to number of neighbours
+                if (!cells[i][j].alive) {
+                    if (neighbours == 3) {
+                        cells[i][j].nextGenAlive = true;
+                    }
+                } else {
+                    if (neighbours <= 1 || neighbours >= 4) {
+                        cells[i][j].nextGenAlive = false;
+                    }
+                }
+
+                // change color for each cell
+                if (!AdvancedOptions.isOneGenerationColor()) {
+                    CellColor.handleCellColor(cells[i][j]);
+                } else {
+                    CellColor.handleGenerationColor(cells[i][j]);
+                }
             }
         }
-
-        // change color for each cell
-        if (!AdvancedOptions.isOneGenerationColor()) {
-            CellColor.handleCellColor(cells[i][j]);
-        } else {
-            CellColor.handleGenerationColor(cells[i][j]);
-        }
-    }
-
-    // Creates 4 threads that count the neighbours of every cell
-    public static void makeCountingThreads() {
-
-        Threadmaker.runInThread(() -> {
-            for (int i = 1; i < (xGrids / 2) - 1; i++) {
-                for (int j = 1; j < (yGrids / 2) - 1; j++) {
-                    countNeighbours(cells[i][j], i, j);
-                }
-            }
-        });
-        Threadmaker.runInThread(() -> {
-            for (int i = (xGrids / 2) - 1; i < xGrids - 1; i++) {
-                for (int j = 1; j < (yGrids / 2) - 1; j++) {
-                    countNeighbours(cells[i][j], i, j);
-                }
-            }
-        });
-        Threadmaker.runInThread(() -> {
-            for (int i = 1; i < (xGrids / 2) - 1; i++) {
-                for (int j = (yGrids / 2) - 1; j < yGrids - 1; j++) {
-                    countNeighbours(cells[i][j], i, j);
-                }
-            }
-        });
-        Threadmaker.runInThread(() -> {
-            for (int i = (xGrids / 2) - 1; i < xGrids - 1; i++) {
-                for (int j = (yGrids / 2) - 1; j < yGrids - 1; j++) {
-                    countNeighbours(cells[i][j], i, j);
-                }
-            }
-        });
     }
 
     public boolean isAlive() {
