@@ -42,7 +42,10 @@ public class BasicOptions {
         stepButton.addActionListener(e -> makeAStep());
 
         optionsButton = new JButton("Options");
-        optionsButton.addActionListener(e -> AdvancedOptions.getOptionsFrame().setVisible(true));
+        optionsButton.addActionListener(e -> {
+            AdvancedOptions.getOptionsFrame().setLocation(Main.getFrame().getX() + Main.getFrame().getWidth(), Main.getFrame().getY());
+            AdvancedOptions.getOptionsFrame().setVisible(true);
+        });
 
         generationLabel = new JLabel("Generation: 1");
         generationLabel.setFont(new Font(null, Font.BOLD, 16));

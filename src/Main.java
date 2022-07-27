@@ -278,4 +278,8 @@ public class Main extends JPanel {
     public static double getyOffset() {
         return yOffset;
     }
+
+    public static JFrame getFrame() {
+        return frame;
+    }
 }

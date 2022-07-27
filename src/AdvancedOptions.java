@@ -44,7 +44,7 @@ public class AdvancedOptions {
         optionsFrame.setTitle("Options");
         optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         optionsFrame.setBackground(Color.BLACK);
-        optionsFrame.setSize(500 + 16, 500 + 39);
+        optionsFrame.setSize(350 + 16, 500 + 39);
         optionsFrame.setLayout(null);
         optionsFrame.setResizable(false);
 
@@ -59,7 +59,7 @@ public class AdvancedOptions {
     public static void fillColorPanel() {
         JPanel colorPanel = new JPanel();
         colorPanel.setLayout(null);
-        colorPanel.setBounds(0, 0, 500, 200);
+        colorPanel.setBounds(0, 0, 350, 200);
         colorPanel.setBackground(Color.BLACK);
         colorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -86,7 +86,7 @@ public class AdvancedOptions {
         colorOptionLabel3.setVisible(false);
 
         JCheckBox invertColorsBox = new JCheckBox();
-        invertColorsBox.setBounds(300, 90, 100, 30);
+        invertColorsBox.setBounds(225, 90, 100, 30);
         invertColorsBox.setBackground(Color.BLACK);
         invertColorsBox.addActionListener(e -> {
             if (invertColorsBox.isSelected()) {
@@ -98,7 +98,7 @@ public class AdvancedOptions {
         });
 
         JCheckBox oneGenColorCheckBox = new JCheckBox();
-        oneGenColorCheckBox.setBounds(300, 130, 100, 30);
+        oneGenColorCheckBox.setBounds(225, 130, 100, 30);
         oneGenColorCheckBox.setBackground(Color.BLACK);
         oneGenColorCheckBox.addActionListener(e -> {
             if (oneGenColorCheckBox.isSelected()) {
@@ -126,12 +126,12 @@ public class AdvancedOptions {
         JComboBox<Object> colorModeBox = new JComboBox<Object>(colorModes);
 
         JPanel chosenColorPanel = new JPanel();
-        chosenColorPanel.setBounds(300, 130, 23, 23);
+        chosenColorPanel.setBounds(225, 130, 23, 23);
         chosenColorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         chosenColorPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                chosenColor = JColorChooser.showDialog(null, "Choose a color", chosenColor);
+                chosenColor = JColorChooser.showDialog(optionsFrame, "Choose a color", chosenColor);
                 chosenColorPanel.setBackground(chosenColor);
                 colorMode = ColorMode.Specific;
                 colorModeBox.setSelectedItem(ColorMode.Specific);
@@ -140,7 +140,7 @@ public class AdvancedOptions {
         chosenColorPanel.setVisible(false);
 
         colorModeBox.setFocusable(false);
-        colorModeBox.setBounds(300, 50, 100, 30);
+        colorModeBox.setBounds(225, 50, 100, 30);
         colorModeBox.setBackground(buttonColor);
         colorModeBox.setForeground(boxFontColor);
         colorModeBox.setFont(boxFont);
@@ -198,7 +198,7 @@ public class AdvancedOptions {
     public static void fillFirstCellsPanel() {
         JPanel firstCellsPanel = new JPanel();
         firstCellsPanel.setLayout(null);
-        firstCellsPanel.setBounds(0, 200, 500, 150);
+        firstCellsPanel.setBounds(0, 200, 350, 150);
         firstCellsPanel.setBackground(Color.BLACK);
         firstCellsPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -220,7 +220,7 @@ public class AdvancedOptions {
 
         SpinnerNumberModel firstCellsSpinnerModel = new SpinnerNumberModel(50, 1, 100, 5);
         JSpinner percRandomSpinner = new JSpinner(firstCellsSpinnerModel);
-        percRandomSpinner.setBounds(300, 90, 100, 30);
+        percRandomSpinner.setBounds(225, 90, 100, 30);
         percRandomSpinner.getEditor().getComponent(0).setBackground(buttonColor);
         percRandomSpinner.getEditor().getComponent(0).setForeground(boxFontColor);
         percRandomSpinner.setFont(boxFont);
@@ -232,7 +232,7 @@ public class AdvancedOptions {
 
         SpinnerNumberModel lineDistanceSpinnerModel = new SpinnerNumberModel(7, 1, 200, 1);
         JSpinner lineDistanceSpinner = new JSpinner(lineDistanceSpinnerModel);
-        lineDistanceSpinner.setBounds(300, 90, 100, 30);
+        lineDistanceSpinner.setBounds(225, 90, 100, 30);
         lineDistanceSpinner.getEditor().getComponent(0).setBackground(buttonColor);
         lineDistanceSpinner.getEditor().getComponent(0).setForeground(boxFontColor);
         lineDistanceSpinner.setFont(boxFont);
@@ -245,7 +245,7 @@ public class AdvancedOptions {
         FirstCellMode[] cellModes = { FirstCellMode.Random, FirstCellMode.Line, FirstCellMode.Empty };
         JComboBox<Object> cellModeBox = new JComboBox<Object>(cellModes);
         cellModeBox.setFocusable(false);
-        cellModeBox.setBounds(300, 50, 100, 30);
+        cellModeBox.setBounds(225, 50, 100, 30);
         cellModeBox.setBackground(buttonColor);
         cellModeBox.setForeground(boxFontColor);
         cellModeBox.setFont(boxFont);
@@ -288,7 +288,7 @@ public class AdvancedOptions {
     public static void fillCellSizePanel() {
         JPanel cellSizePanel = new JPanel();
         cellSizePanel.setLayout(null);
-        cellSizePanel.setBounds(0, 350, 500, 150);
+        cellSizePanel.setBounds(0, 350, 350, 150);
         cellSizePanel.setBackground(Color.BLACK);
         cellSizePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -304,7 +304,7 @@ public class AdvancedOptions {
 
         SpinnerNumberModel cellSizeSpinnerModel = new SpinnerNumberModel(6, 1, 50, 1);
         JSpinner cellSizeSpinner = new JSpinner(cellSizeSpinnerModel);
-        cellSizeSpinner.setBounds(300, 50, 100, 30);
+        cellSizeSpinner.setBounds(225, 50, 100, 30);
         cellSizeSpinner.getEditor().getComponent(0).setBackground(buttonColor);
         cellSizeSpinner.getEditor().getComponent(0).setForeground(boxFontColor);
         cellSizeSpinner.setFont(boxFont);
