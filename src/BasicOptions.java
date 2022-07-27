@@ -1,7 +1,9 @@
 package src;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Point;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -16,7 +18,6 @@ public class BasicOptions {
 
     private static boolean paused = true;
     private static boolean step = false;
-
 
     private static int delay = 50;
 
@@ -43,7 +44,17 @@ public class BasicOptions {
 
         optionsButton = new JButton("Options");
         optionsButton.addActionListener(e -> {
-            AdvancedOptions.getOptionsFrame().setLocation(Main.getFrame().getX() + Main.getFrame().getWidth(), Main.getFrame().getY());
+
+            // check if optionsFrame fits to the right of the main frame
+            // if not, set its location relative to the main frame
+            Point point = new Point(Main.getFrame().getX() + Main.getFrame().getWidth(), Main.getFrame().getY());
+            Point rightMostPoint = new Point((int) (point.getX() + AdvancedOptions.getOptionsFrame().getWidth()), (int) point.getY());
+
+            if (SwingUtil.isLocationInScreenBounds(rightMostPoint)) {
+                AdvancedOptions.getOptionsFrame().setLocation(point);
+            } else {
+                AdvancedOptions.getOptionsFrame().setLocationRelativeTo(Main.getMain());
+            }
             AdvancedOptions.getOptionsFrame().setVisible(true);
         });
 
@@ -77,7 +88,7 @@ public class BasicOptions {
     }
 
     public static void startGame() {
-        if (paused) {   
+        if (paused) {
             togglePause();
             startButton.setEnabled(false);
         }

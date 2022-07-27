@@ -172,8 +172,6 @@ public class Main extends JPanel {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        // long start = System.nanoTime();
-
         g2 = (Graphics2D) g;
 
         AffineTransform at = new AffineTransform();
@@ -223,8 +221,6 @@ public class Main extends JPanel {
         }
         hasZoomed = false;
         repainted = true;
-        // long duration = System.nanoTime() - start;
-        // System.out.println(duration / 1000000 + "ms");
     }
 
     public static JPanel getTopPanel() {
