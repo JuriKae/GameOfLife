@@ -45,63 +45,56 @@ public class Cell extends Rectangle {
 
         switch (AdvancedOptions.getAliveCellMode()) {
             case Empty:
+                for (int i = 0; i < xGrids - 0; i++) {
+                    for (int j = 0; j < yGrids - 0; j++) {
+                        CellColor.startColorChange(cells[i][j]);
+                    }
+                }
                 break;
             case Line:
-                for (int i = 1; i < xGrids - 1; i++) {
-                    for (int j = 1; j < yGrids - 1; j++) {
+                for (int i = 0; i < xGrids - 0; i++) {
+                    for (int j = 0; j < yGrids - 0; j++) {
                         // sets cell alive in lines; line distance can be changed in the options
                         if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
                             cells[i][j].nextGenAlive = true;
+                            CellColor.startColorChange(cells[i][j]);
                         }
                     }
                 }
                 break;
             case Random:
-                for (int i = 1; i < xGrids - 1; i++) {
-                    for (int j = 1; j < yGrids - 1; j++) {
+                for (int i = 0; i < xGrids - 0; i++) {
+                    for (int j = 0; j < yGrids - 0; j++) {
                         // sets cell alive randomly; % of alive cells can be changed in options
                         cells[i][j].nextGenAlive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
+                        CellColor.startColorChange(cells[i][j]);
                     }
                 }
                 break;
         }
 
-        // set color of every cell
-        if (!AdvancedOptions.isOneGenerationColor()) {
-            for (int i = 1; i < xGrids - 1; i++) {
-                for (int j = 1; j < yGrids - 1; j++) {
-                    CellColor.handleCellColor(cells[i][j]);
-                }
-            }
-        } else {
-            for (int i = 1; i < xGrids - 1; i++) {
-                for (int j = 1; j < yGrids - 1; j++) {
-                    CellColor.handleGenerationColor(cells[i][j]);
-                }
-            }
-        }
     }
 
     public static void countNeighbours() {
-        for (int i = 1; i < xGrids - 1; i++) {
-            for (int j = 1; j < yGrids - 1; j++) {
+        for (int i = 0; i < xGrids - 0; i++) {
+            for (int j = 0; j < yGrids - 0; j++) {
                 int neighbours = 0;
 
-                if (cells[i - 1][j - 1].alive)
+                if (cells[(i + xGrids - 1) % xGrids][(j + yGrids - 1) % yGrids].alive)
                     neighbours++;
-                if (cells[i][j - 1].alive)
+                if (cells[(i + xGrids) % xGrids][(j + yGrids - 1) % yGrids].alive)
                     neighbours++;
-                if (cells[i + 1][j - 1].alive)
+                if (cells[(i + xGrids + 1) % xGrids][(j + yGrids - 1) % yGrids].alive)
                     neighbours++;
-                if (cells[i - 1][j].alive)
+                if (cells[(i + xGrids - 1) % xGrids][(j + yGrids) % yGrids].alive)
                     neighbours++;
-                if (cells[i + 1][j].alive)
+                if (cells[(i + xGrids + 1) % xGrids][(j + yGrids) % yGrids].alive)
                     neighbours++;
-                if (cells[i - 1][j + 1].alive)
+                if (cells[(i + xGrids - 1) % xGrids][(j + yGrids + 1) % yGrids].alive)
                     neighbours++;
-                if (cells[i][j + 1].alive)
+                if (cells[(i + xGrids) % xGrids][(j + yGrids + 1) % yGrids].alive)
                     neighbours++;
-                if (cells[i + 1][j + 1].alive)
+                if (cells[(i + xGrids + 1) % xGrids][(j + yGrids + 1) % yGrids].alive)
                     neighbours++;
 
                 // sets next gen cell alive or dead according to number of neighbours
@@ -115,12 +108,7 @@ public class Cell extends Rectangle {
                     }
                 }
 
-                // change color for each cell
-                if (!AdvancedOptions.isOneGenerationColor()) {
-                    CellColor.handleCellColor(cells[i][j]);
-                } else {
-                    CellColor.handleGenerationColor(cells[i][j]);
-                }
+                CellColor.startColorChange(cells[i][j]);
             }
         }
     }

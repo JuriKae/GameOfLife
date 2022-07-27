@@ -21,7 +21,7 @@ public class MouseCellListener extends MouseAdapter {
         double x = e.getX() / xDifference - (Main.getxOffset() / xDifference);
         double y = e.getY() / yDifference - (Main.getyOffset() / yDifference);
 
-        if (x < 0 || x > Cell.getxGrids() - 1 || y < 0 || y > Cell.getyGrids() - 1) {
+        if (x < 0 || x > Cell.getxGrids()|| y < 0 || y > Cell.getyGrids()) {
             return;
         }
 
@@ -44,7 +44,7 @@ public class MouseCellListener extends MouseAdapter {
         double x = e.getX() / xDifference - (Main.getxOffset() / xDifference);
         double y = e.getY() / yDifference - (Main.getyOffset() / yDifference);
 
-        if (x < 0 || x > Cell.getxGrids() - 1 || y < 0 || y > Cell.getyGrids() - 1) {
+        if (x < 0 || x > Cell.getxGrids() || y < 0 || y > Cell.getyGrids()) {
             return;
         }
         if (SwingUtilities.isLeftMouseButton(e)) {

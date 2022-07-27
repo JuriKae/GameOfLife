@@ -175,13 +175,9 @@ public class AdvancedOptions {
             }
 
             // directly change mode when color mode is changed
-            for (int i = 1; i < Cell.getxGrids() - 1; i++) {
-                for (int j = 1; j < Cell.getyGrids() - 1; j++) {
-                    if (!oneGenerationColor) {
-                        CellColor.handleCellColor(Cell.getCells()[i][j]);
-                    } else {
-                        CellColor.handleGenerationColor(Cell.getCells()[i][j]);
-                    }
+            for (int i = 0; i < Cell.getxGrids(); i++) {
+                for (int j = 0; j < Cell.getyGrids(); j++) {
+                    CellColor.startColorChange(Cell.getCells()[i][j]);
                 }
             }
             Main.getMain().repaint();

@@ -196,8 +196,8 @@ public class Main extends JPanel {
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
-        for (int i = 1; i < xGrids - 1; i++) {
-            for (int j = 1; j < yGrids - 1; j++) {
+        for (int i = 0; i < xGrids - 0; i++) {
+            for (int j = 0; j < yGrids - 0; j++) {
 
                 cell = Cell.getCells()[i][j];
 

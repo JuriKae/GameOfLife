@@ -1,4 +1,5 @@
 package src;
+
 import java.awt.Color;
 
 public class CellColor {
@@ -10,6 +11,7 @@ public class CellColor {
     private static Color rainbowColor = null;
     private static Color randomColor = null;
 
+    // changes the color so that the cells of one generation can have different colors
     public static synchronized void handleCellColor(Cell cell) {
         switch (AdvancedOptions.getColorMode()) {
             case Normal:
@@ -32,6 +34,7 @@ public class CellColor {
         }
     }
 
+    // changes the color so that every cell of one generation has the same color
     public static synchronized void handleGenerationColor(Cell cell) {
         switch (AdvancedOptions.getColorMode()) {
             case Normal:
@@ -49,6 +52,15 @@ public class CellColor {
         }
     }
 
+    // calls the correct function for changing the color of every cell
+    public static void startColorChange(Cell cell) {
+        if (!AdvancedOptions.isOneGenerationColor()) {
+            CellColor.handleCellColor(cell);
+        } else {
+            CellColor.handleGenerationColor(cell);
+        }
+    }
+
     // generate colors for the one-color generation mode
     public static void generateColors() {
         if (++rainbowColorIndex > 6) {
@@ -56,9 +68,8 @@ public class CellColor {
         }
         rainbowColor = rainbowColors[rainbowColorIndex];
 
-        
         randomColor = new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
-        (int) (Math.random() * 255));
+                (int) (Math.random() * 255));
     }
 
     public static Color getRandomColor() {
