@@ -39,7 +39,6 @@ public class Main extends JPanel {
 
     private static Thread thread;
 
-    private static boolean isThread;
 
     private static boolean reset;
     private static boolean repainted;
@@ -88,7 +87,7 @@ public class Main extends JPanel {
         resetSuff();
     }
 
-    public static void createThread(boolean isThread) {
+    public static void createThread() {
         thread = new Thread(new Runnable() {
 
             @Override
@@ -154,7 +153,7 @@ public class Main extends JPanel {
         currentCellWidth = Cell.getCellWidth();
         currentCellHeight = Cell.getCellHeight();
 
-        createThread(isThread);
+        createThread();
 
         main.repaint();
     }
@@ -278,9 +277,5 @@ public class Main extends JPanel {
 
     public static double getyOffset() {
         return yOffset;
-    }
-
-    public static void setThread(boolean isThread) {
-        Main.isThread = isThread;
     }
 }

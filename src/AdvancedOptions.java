@@ -131,7 +131,7 @@ public class AdvancedOptions {
         chosenColorPanel.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                chosenColor = JColorChooser.showDialog(null, "Choose a color", null);
+                chosenColor = JColorChooser.showDialog(null, "Choose a color", chosenColor);
                 chosenColorPanel.setBackground(chosenColor);
                 colorMode = ColorMode.Specific;
                 colorModeBox.setSelectedItem(ColorMode.Specific);
@@ -151,19 +151,25 @@ public class AdvancedOptions {
                 colorOptionLabel3.setVisible(false);
                 chosenColorPanel.setVisible(false);
                 oneGenColorCheckBox.setVisible(false);
+                chosenColorPanel.setVisible(false);
 
             } else if (colorMode == ColorMode.Rainbow) {
                 colorOptionLabel3.setVisible(true);
                 oneGenColorCheckBox.setVisible(true);
+
+                chosenColorPanel.setVisible(false);
                 colorOptionLabel3.setText("One color per generation:");
 
             } else if (colorMode == ColorMode.Random) {
                 colorOptionLabel3.setVisible(true);
                 oneGenColorCheckBox.setVisible(true);
+
+                chosenColorPanel.setVisible(false);
                 colorOptionLabel3.setText("One color per generation:");
             } else if (colorMode == ColorMode.Specific) {
                 colorOptionLabel3.setVisible(true);
                 chosenColorPanel.setVisible(true);
+
                 oneGenColorCheckBox.setVisible(false);
                 colorOptionLabel3.setText("Choose a color:");
             }
@@ -300,7 +306,7 @@ public class AdvancedOptions {
         setCellSizeLabel.setForeground(Color.WHITE);
         setCellSizeLabel.setFont(normalFont);
 
-        SpinnerNumberModel cellSizeSpinnerModel = new SpinnerNumberModel(5, 1, 50, 1);
+        SpinnerNumberModel cellSizeSpinnerModel = new SpinnerNumberModel(6, 1, 50, 1);
         JSpinner cellSizeSpinner = new JSpinner(cellSizeSpinnerModel);
         cellSizeSpinner.setBounds(300, 50, 100, 30);
         cellSizeSpinner.getEditor().getComponent(0).setBackground(buttonColor);

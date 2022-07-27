@@ -49,13 +49,9 @@ public class Cell extends Rectangle {
             case Line:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
+                        // sets cell alive in lines; line distance can be changed in the options
                         if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
                             cells[i][j].nextGenAlive = true;
-                            if (!AdvancedOptions.isOneGenerationColor()) {
-                                CellColor.handleCellColor(cells[i][j]);
-                            } else {
-                                CellColor.handleGenerationColor(cells[i][j]);
-                            }
                         }
                     }
                 }
@@ -63,15 +59,26 @@ public class Cell extends Rectangle {
             case Random:
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
+                        // sets cell alive randomly; % of alive cells can be changed in options
                         cells[i][j].nextGenAlive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
-                        if (!AdvancedOptions.isOneGenerationColor()) {
-                            CellColor.handleCellColor(cells[i][j]);
-                        } else {
-                            CellColor.handleGenerationColor(cells[i][j]);
-                        }
                     }
                 }
                 break;
+        }
+
+        // set color of every cell
+        if (!AdvancedOptions.isOneGenerationColor()) {
+            for (int i = 1; i < xGrids - 1; i++) {
+                for (int j = 1; j < yGrids - 1; j++) {
+                    CellColor.handleCellColor(cells[i][j]);
+                }
+            }
+        } else {
+            for (int i = 1; i < xGrids - 1; i++) {
+                for (int j = 1; j < yGrids - 1; j++) {
+                    CellColor.handleGenerationColor(cells[i][j]);
+                }
+            }
         }
     }
 
