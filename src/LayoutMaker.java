@@ -10,7 +10,7 @@ public class LayoutMaker {
 
     public LayoutMaker() {
 
-        JPanel topPanel = Main.getTopPanel();
+        JPanel topPanel = GoLMain.getTopPanel();
         GridBagConstraints gbc = new GridBagConstraints();
         topPanel.setLayout(new GridBagLayout());
 

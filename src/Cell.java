@@ -24,13 +24,13 @@ public class Cell extends Rectangle {
     }
 
     public static void initializeCells() {
-        xGrids = Main.getMain().getWidth() / cellWidth;
-        yGrids = Main.getMain().getHeight() / cellHeight;
+        xGrids = GoLMain.getMain().getWidth() / cellWidth;
+        yGrids = GoLMain.getMain().getHeight() / cellHeight;
 
         cells = new Cell[xGrids][yGrids];
 
-        Main.setxGrids(xGrids);
-        Main.setyGrids(yGrids);
+        GoLMain.setxGrids(xGrids);
+        GoLMain.setyGrids(yGrids);
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {

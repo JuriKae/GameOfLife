@@ -47,13 +47,13 @@ public class BasicOptions {
 
             // check if optionsFrame fits to the right of the main frame
             // if not, set its location relative to the main frame
-            Point point = new Point(Main.getFrame().getX() + Main.getFrame().getWidth(), Main.getFrame().getY());
+            Point point = new Point(GoLMain.getFrame().getX() + GoLMain.getFrame().getWidth(), GoLMain.getFrame().getY());
             Point rightMostPoint = new Point((int) (point.getX() + AdvancedOptions.getOptionsFrame().getWidth()), (int) point.getY());
 
             if (SwingUtil.isLocationInScreenBounds(rightMostPoint)) {
                 AdvancedOptions.getOptionsFrame().setLocation(point);
             } else {
-                AdvancedOptions.getOptionsFrame().setLocationRelativeTo(Main.getMain());
+                AdvancedOptions.getOptionsFrame().setLocationRelativeTo(GoLMain.getMain());
             }
             AdvancedOptions.getOptionsFrame().setVisible(true);
         });
@@ -95,7 +95,7 @@ public class BasicOptions {
     }
 
     public static void reset() {
-        Main.setReset(true);
+        GoLMain.setReset(true);
 
         if (!paused) {
             togglePause();
@@ -124,7 +124,7 @@ public class BasicOptions {
     }
 
     public static void makeAStep() {
-        if (!Main.getThread().isAlive()) {
+        if (!GoLMain.getThread().isAlive()) {
             startGame();
             togglePause();
         }
@@ -147,9 +147,9 @@ public class BasicOptions {
                 }
             }
         }
-        Main.setGeneration(Main.getGeneration() - 1);
-        generationLabel.setText("Generation: " + Main.getGeneration());
-        Main.getMain().repaint();
+        GoLMain.setGeneration(GoLMain.getGeneration() - 1);
+        generationLabel.setText("Generation: " + GoLMain.getGeneration());
+        GoLMain.getMain().repaint();
     }
 
     public static boolean isPaused() {

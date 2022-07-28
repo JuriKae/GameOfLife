@@ -93,7 +93,7 @@ public class AdvancedOptions {
             } else {
                 colorsInverted = false;
             }
-            Main.getMain().repaint();
+            GoLMain.getMain().repaint();
         });
 
         JCheckBox oneGenColorCheckBox = new JCheckBox();
@@ -108,7 +108,7 @@ public class AdvancedOptions {
 
             CellColor.callChangeColorFunction();
 
-            Main.getMain().repaint();
+            GoLMain.getMain().repaint();
         });
         oneGenColorCheckBox.setVisible(false);
 
@@ -166,7 +166,7 @@ public class AdvancedOptions {
             }
 
             CellColor.callChangeColorFunction();
-            Main.getMain().repaint();
+            GoLMain.getMain().repaint();
         });
 
         colorPanel.add(colorLabel);

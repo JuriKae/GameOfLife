@@ -12,7 +12,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Main extends JPanel {
+public class GoLMain extends JPanel {
 
     private static JFrame frame;
     private static JPanel topPanel;
@@ -35,7 +35,7 @@ public class Main extends JPanel {
 
     private static int generation = 1;
 
-    private static Main main;
+    private static GoLMain main;
 
     private static Thread thread;
 
@@ -54,7 +54,7 @@ public class Main extends JPanel {
 
     private static MouseCellListener mouseListener = new MouseCellListener();
 
-    public Main() {
+    public GoLMain() {
         frame = new JFrame();
         frame.setTitle("Game of Life");
         frame.setSize(width, height);
@@ -83,7 +83,7 @@ public class Main extends JPanel {
     }
 
     public static void main(String[] args) {
-        main = new Main();
+        main = new GoLMain();
         resetSuff();
     }
 
@@ -226,24 +226,24 @@ public class Main extends JPanel {
         return thread;
     }
 
-    public static Main getMain() {
+    public static GoLMain getMain() {
         return main;
     }
 
     public static void setxGrids(int xGrids) {
-        Main.xGrids = xGrids;
+        GoLMain.xGrids = xGrids;
     }
 
     public static void setyGrids(int yGrids) {
-        Main.yGrids = yGrids;
+        GoLMain.yGrids = yGrids;
     }
 
     public static void setReset(boolean reset) {
-        Main.reset = reset;
+        GoLMain.reset = reset;
     }
 
     public static void setGeneration(int generation) {
-        Main.generation = generation;
+        GoLMain.generation = generation;
     }
 
     public static int getGeneration() {
@@ -251,7 +251,7 @@ public class Main extends JPanel {
     }
 
     public static void setHasZoomed(boolean hasZoomed) {
-        Main.hasZoomed = hasZoomed;
+        GoLMain.hasZoomed = hasZoomed;
     }
 
     public static double getZoomFactor() {
@@ -259,7 +259,7 @@ public class Main extends JPanel {
     }
 
     public static void setZoomFactor(double zoomFactor) {
-        Main.zoomFactor = zoomFactor;
+        GoLMain.zoomFactor = zoomFactor;
     }
 
     public static double getxOffset() {
