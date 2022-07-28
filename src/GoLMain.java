@@ -22,8 +22,8 @@ public class GoLMain extends JPanel {
 
     private static final int topPanelHeight = 75;
 
-    private static int width = panelWidth + 16;
-    private static int height = panelHeight + 39 + topPanelHeight;
+    private static int frameWidth = panelWidth + 16 + 150;
+    private static int frameHeight = panelHeight + 39 + PatternPanel.getPatternpanelwidth();
 
     private static int xGrids;
     private static int yGrids;
@@ -57,7 +57,7 @@ public class GoLMain extends JPanel {
     public GoLMain() {
         frame = new JFrame();
         frame.setTitle("Game of Life");
-        frame.setSize(width, height);
+        frame.setSize(frameWidth, frameHeight);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setLayout(new BorderLayout());
 
@@ -75,6 +75,7 @@ public class GoLMain extends JPanel {
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
 
+        new PatternPanel();
         new BasicOptions();
         new AdvancedOptions();
 

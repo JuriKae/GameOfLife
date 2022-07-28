@@ -17,19 +17,30 @@ public class MouseCellListener extends MouseAdapter {
         xDifference = (Cell.getCellWidth() * GoLMain.getZoomFactor());
         yDifference = (Cell.getCellHeight() * GoLMain.getZoomFactor());
 
-        // converts x and y to correct value, even when zoomed in
-        double x = e.getX() / xDifference - (GoLMain.getxOffset() / xDifference);
-        double y = e.getY() / yDifference - (GoLMain.getyOffset() / yDifference);
+        // // converts x and y to correct value, even when zoomed in
+        double xDouble = e.getX() / xDifference - (GoLMain.getxOffset() / xDifference);
+        double yDouble = e.getY() / yDifference - (GoLMain.getyOffset() / yDifference);
 
-        if (x < 0 || x > Cell.getxGrids()|| y < 0 || y > Cell.getyGrids()) {
-            return;
+        int x = (int) xDouble;
+        int y = (int) yDouble;
+
+        if (PatternPanel.isPattern()) {
+
+            CellPattern.createPattern(x, y);
+
+        } else {
+            
+            if (x < 0 || x > Cell.getxGrids()|| y < 0 || y > Cell.getyGrids()) {
+                return;
+            }
+    
+            if (SwingUtilities.isLeftMouseButton(e)) {
+                Cell.getCells()[x][y].setNextGenAlive(true);
+            } else if (SwingUtilities.isRightMouseButton(e)) {
+                Cell.getCells()[x][y].setNextGenAlive(false);
+            } 
         }
 
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            Cell.getCells()[(int) x][(int) y].setNextGenAlive(true);
-        } else if (SwingUtilities.isRightMouseButton(e)) {
-            Cell.getCells()[(int) x][(int) y].setNextGenAlive(false);
-        } 
         GoLMain.getMain().repaint();
     }
 
@@ -41,16 +52,19 @@ public class MouseCellListener extends MouseAdapter {
         yDifference = (Cell.getCellHeight() * GoLMain.getZoomFactor());
 
         // converts x and y to correct value, even when zoomed in
-        double x = e.getX() / xDifference - (GoLMain.getxOffset() / xDifference);
-        double y = e.getY() / yDifference - (GoLMain.getyOffset() / yDifference);
+        double xDouble = e.getX() / xDifference - (GoLMain.getxOffset() / xDifference);
+        double yDouble = e.getY() / yDifference - (GoLMain.getyOffset() / yDifference);
 
-        if (x < 0 || (int) x >= Cell.getxGrids() || y < 0 || (int) y >= Cell.getyGrids()) {
+        int x = (int) xDouble;
+        int y = (int) yDouble;
+
+        if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
             return;
         }
         if (SwingUtilities.isLeftMouseButton(e)) {
-            Cell.getCells()[(int) x][(int) y].setNextGenAlive(true);
+            Cell.getCells()[x][y].setNextGenAlive(true);
         } else if (SwingUtilities.isRightMouseButton(e)) {
-            Cell.getCells()[(int) x][(int) y].setNextGenAlive(false);
+            Cell.getCells()[x][y].setNextGenAlive(false);
         }
         GoLMain.getMain().repaint();
     }

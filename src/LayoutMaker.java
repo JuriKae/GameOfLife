@@ -42,7 +42,7 @@ public class LayoutMaker {
         BasicOptions.getStepButton().setPreferredSize(new Dimension(50, 30));
         topPanel.add(BasicOptions.getStepButton(), gbc);
 
-        gbc.insets = new Insets(3, 20, 3, 0);
+        gbc.insets = new Insets(3, 30, 3, 0);
         gbc.gridx = 3;
         gbc.gridy = 0;
         topPanel.add(BasicOptions.getGenerationLabel(), gbc);

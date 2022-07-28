@@ -60,7 +60,7 @@ public class BasicOptions {
 
         generationLabel = new JLabel("Generation: 1");
         generationLabel.setFont(new Font(null, Font.BOLD, 16));
-        generationLabel.setPreferredSize(new Dimension(130, 20));
+        generationLabel.setPreferredSize(new Dimension(140, 20));
         generationLabel.setForeground(Color.WHITE);
 
         JButton[] buttonArray = { startButton, resetButton, pauseButton, previousButton, stepButton, optionsButton };

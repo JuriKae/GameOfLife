@@ -204,7 +204,7 @@ public class AdvancedOptions {
         cellModeSpinnerLabel.setFont(normalFont);
         cellModeSpinnerLabel.setVisible(true);
 
-        SpinnerNumberModel firstCellsSpinnerModel = new SpinnerNumberModel(50, 1, 100, 5);
+        SpinnerNumberModel firstCellsSpinnerModel = new SpinnerNumberModel(40, 0, 100, 5);
         JSpinner percRandomSpinner = new JSpinner(firstCellsSpinnerModel);
         percRandomSpinner.setBounds(225, 90, 100, 30);
         percRandomSpinner.getEditor().getComponent(0).setBackground(buttonColor);
