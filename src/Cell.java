@@ -45,39 +45,32 @@ public class Cell extends Rectangle {
 
         switch (AdvancedOptions.getAliveCellMode()) {
             case Empty:
-                for (int i = 0; i < xGrids - 0; i++) {
-                    for (int j = 0; j < yGrids - 0; j++) {
-                        CellColor.startColorChange(cells[i][j]);
-                    }
-                }
                 break;
             case Line:
-                for (int i = 0; i < xGrids - 0; i++) {
-                    for (int j = 0; j < yGrids - 0; j++) {
+                for (int i = 1; i < xGrids - 1; i++) {
+                    for (int j = 1; j < yGrids - 1; j++) {
                         // sets cell alive in lines; line distance can be changed in the options
                         if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
                             cells[i][j].nextGenAlive = true;
-                            CellColor.startColorChange(cells[i][j]);
                         }
                     }
                 }
                 break;
             case Random:
-                for (int i = 0; i < xGrids - 0; i++) {
-                    for (int j = 0; j < yGrids - 0; j++) {
+                for (int i = 0; i < xGrids; i++) {
+                    for (int j = 0; j < yGrids; j++) {
                         // sets cell alive randomly; % of alive cells can be changed in options
                         cells[i][j].nextGenAlive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
-                        CellColor.startColorChange(cells[i][j]);
                     }
                 }
                 break;
         }
-
+        CellColor.callChangeColorFunction();
     }
 
     public static void countNeighbours() {
-        for (int i = 0; i < xGrids - 0; i++) {
-            for (int j = 0; j < yGrids - 0; j++) {
+        for (int i = 0; i < xGrids; i++) {
+            for (int j = 0; j < yGrids; j++) {
                 int neighbours = 0;
 
                 if (cells[(i + xGrids - 1) % xGrids][(j + yGrids - 1) % yGrids].alive)
@@ -107,10 +100,9 @@ public class Cell extends Rectangle {
                         cells[i][j].nextGenAlive = false;
                     }
                 }
-
-                CellColor.startColorChange(cells[i][j]);
             }
         }
+        CellColor.callChangeColorFunction();
     }
 
     public boolean isAlive() {

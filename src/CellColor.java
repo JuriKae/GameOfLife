@@ -12,7 +12,7 @@ public class CellColor {
     private static Color randomColor = null;
 
     // changes the color so that the cells of one generation can have different colors
-    public static synchronized void handleCellColor(Cell cell) {
+    public static synchronized void changeCellColor(Cell cell) {
         switch (AdvancedOptions.getColorMode()) {
             case Normal:
                 cell.setAliveColor(Color.WHITE);
@@ -35,7 +35,7 @@ public class CellColor {
     }
 
     // changes the color so that every cell of one generation has the same color
-    public static synchronized void handleGenerationColor(Cell cell) {
+    public static synchronized void changeGenerationColor(Cell cell) {
         switch (AdvancedOptions.getColorMode()) {
             case Normal:
                 cell.setAliveColor(Color.WHITE);
@@ -53,11 +53,25 @@ public class CellColor {
     }
 
     // calls the correct function for changing the color of every cell
-    public static void startColorChange(Cell cell) {
+    public static void callChangeColorFunction() {
+
+        int xGrids = Cell.getxGrids();
+        int yGrids = Cell.getyGrids();
+        Cell[][] cells = Cell.getCells();
+
+        // call the correct function, depending on the one-generation color option
         if (!AdvancedOptions.isOneGenerationColor()) {
-            CellColor.handleCellColor(cell);
+            for (int i = 0; i < xGrids; i++) {
+                for (int j = 0; j < yGrids; j++) {
+                    CellColor.changeCellColor(cells[i][j]);
+                }
+            }
         } else {
-            CellColor.handleGenerationColor(cell);
+            for (int i = 0; i < xGrids; i++) {
+                for (int j = 0; j < yGrids; j++) {
+                    CellColor.changeGenerationColor(cells[i][j]);
+                }
+            }
         }
     }
 

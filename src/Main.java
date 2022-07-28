@@ -119,12 +119,7 @@ public class Main extends JPanel {
                         // generate colors for one-generation color mode
                         CellColor.generateColors();
 
-                        // long start = System.nanoTime();
-
                         Cell.countNeighbours();
-
-                        // long duration = System.nanoTime() - start;
-                        // System.out.println(duration / 1000000 + "ms");
 
                         main.repaint();
                         generation++;
@@ -194,8 +189,8 @@ public class Main extends JPanel {
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
-        for (int i = 0; i < xGrids - 0; i++) {
-            for (int j = 0; j < yGrids - 0; j++) {
+        for (int i = 0; i < xGrids; i++) {
+            for (int j = 0; j < yGrids; j++) {
 
                 cell = Cell.getCells()[i][j];
 
