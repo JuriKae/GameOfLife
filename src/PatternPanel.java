@@ -3,12 +3,14 @@ package src;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
+import java.awt.*;
 
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.ScrollPaneConstants;
 
-public class PatternPanel extends JPanel {
+public class PatternPanel {
 
     private static final int patternPanelWidth = 150;
 
@@ -17,14 +19,18 @@ public class PatternPanel extends JPanel {
     private static Pattern chosenPattern;
 
     private static JButton gliderButton, pulsarButton, lwssButton, hwssButton, pentaDecaButton;
+    
+    private static int buttonHeight = 150;
+    private static int numberOfPatterns = 5;
 
-    private static JButton[] buttons = new JButton[5];
+    private static JButton[] buttonArray = new JButton[numberOfPatterns];
 
     public PatternPanel() {
 
-        this.setBackground(Color.DARK_GRAY);
-        this.setPreferredSize(new Dimension(patternPanelWidth, 0));
-        this.setLayout(new GridLayout(5, 1, 20, 0));
+        JPanel patternPanel = new JPanel();
+        patternPanel.setBackground(Color.DARK_GRAY);
+        patternPanel.setPreferredSize(new Dimension(patternPanelWidth, buttonHeight * numberOfPatterns));
+        patternPanel.setLayout(new GridLayout(numberOfPatterns, 1, 20, 0));
 
         gliderButton = new JButton("Glider");
         gliderButton.addActionListener(e -> {
@@ -52,7 +58,7 @@ public class PatternPanel extends JPanel {
                 isPattern = false;
                 pulsarButton.setBackground(Color.GRAY);
             }
-            
+
         });
 
         lwssButton = new JButton("Lightweight spaceship");
@@ -67,7 +73,7 @@ public class PatternPanel extends JPanel {
                 isPattern = false;
                 lwssButton.setBackground(Color.GRAY);
             }
-            
+
         });
 
         hwssButton = new JButton("Heavyweight spaceship");
@@ -82,7 +88,7 @@ public class PatternPanel extends JPanel {
                 isPattern = false;
                 hwssButton.setBackground(Color.GRAY);
             }
-            
+
         });
 
         pentaDecaButton = new JButton("Pentadecathlon");
@@ -97,32 +103,33 @@ public class PatternPanel extends JPanel {
                 isPattern = false;
                 pentaDecaButton.setBackground(Color.GRAY);
             }
-            
+
         });
 
+        buttonArray[0] = gliderButton;
+        buttonArray[1] = pulsarButton;
+        buttonArray[2] = lwssButton;
+        buttonArray[3] = hwssButton;
+        buttonArray[4] = pentaDecaButton;
 
-        buttons[0] = gliderButton;
-        buttons[1] = pulsarButton;
-        buttons[2] = lwssButton;
-        buttons[3] = hwssButton;
-        buttons[4] = pentaDecaButton;
-
-        for (JButton button : buttons) {
+        for (JButton button : buttonArray) {
             button.setFocusable(false);
             button.setBackground(Color.GRAY);
+            patternPanel.add(button);
         }
 
-        this.add(gliderButton);
-        this.add(pulsarButton);
-        this.add(lwssButton);
-        this.add(hwssButton);
-        this.add(pentaDecaButton);
+        // creates a scroll pane and puts the patternPanel inside
+        // only show the vertical scollbar and increase the scrolling speed
+        JScrollPane scrollPane = new JScrollPane(patternPanel);
+        scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        GoLMain.getFrame().add(this, BorderLayout.EAST);
+        GoLMain.getFrame().add(scrollPane, BorderLayout.EAST);
     }
 
     public static void deselectButtons() {
-        for (JButton button : buttons) {
+        for (JButton button : buttonArray) {
             button.setBackground(Color.GRAY);
         }
     }

@@ -15,7 +15,7 @@ public class CellPattern {
         totalYGrids = Cell.getyGrids();
 
         inBoundsXGrid = (totalXGrids + xGrid) % totalXGrids;
-        inBoundsYGrid = (totalYGrids + yGrid) % totalXGrids;
+        inBoundsYGrid = (totalYGrids + yGrid) % totalYGrids;
 
         switch (PatternPanel.getChosenPattern()) {
             case Glider:
