@@ -16,9 +16,9 @@ public class PatternPanel extends JPanel {
 
     private static Pattern chosenPattern;
 
-    private static JButton gliderButton, pulsarButton, lwssButton, hwssButton;
+    private static JButton gliderButton, pulsarButton, lwssButton, hwssButton, pentaDecaButton;
 
-    private static JButton[] buttons = new JButton[4];
+    private static JButton[] buttons = new JButton[5];
 
     public PatternPanel() {
 
@@ -85,11 +85,27 @@ public class PatternPanel extends JPanel {
             
         });
 
+        pentaDecaButton = new JButton("Pentadecathlon");
+        pentaDecaButton.addActionListener(e -> {
+            if (chosenPattern != Pattern.PENTDADECA) {
+                chosenPattern = Pattern.PENTDADECA;
+                isPattern = true;
+                deselectButtons();
+                pentaDecaButton.setBackground(Color.DARK_GRAY);
+            } else {
+                chosenPattern = null;
+                isPattern = false;
+                pentaDecaButton.setBackground(Color.GRAY);
+            }
+            
+        });
+
 
         buttons[0] = gliderButton;
         buttons[1] = pulsarButton;
         buttons[2] = lwssButton;
         buttons[3] = hwssButton;
+        buttons[4] = pentaDecaButton;
 
         for (JButton button : buttons) {
             button.setFocusable(false);
@@ -100,6 +116,7 @@ public class PatternPanel extends JPanel {
         this.add(pulsarButton);
         this.add(lwssButton);
         this.add(hwssButton);
+        this.add(pentaDecaButton);
 
         GoLMain.getFrame().add(this, BorderLayout.EAST);
     }
