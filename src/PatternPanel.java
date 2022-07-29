@@ -3,8 +3,13 @@ package src;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.*;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.Image;
 
+import javax.swing.AbstractButton;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -18,8 +23,6 @@ public class PatternPanel {
 
     private static Pattern chosenPattern;
 
-    private static JButton gliderButton, lwssButton, hwssButton, pulsarButton, pentaDecaButton, playButtonButton;
-    
     private static int buttonHeight = 150;
     private static int numberOfPatterns = 6;
 
@@ -32,7 +35,9 @@ public class PatternPanel {
         patternPanel.setPreferredSize(new Dimension(patternPanelWidth, buttonHeight * numberOfPatterns));
         patternPanel.setLayout(new GridLayout(numberOfPatterns, 1, 20, 0));
 
-        gliderButton = new JButton("Glider");
+        ImageIcon gliderIcon = new ImageIcon(PatternPanel.class.getResource("icons/gliderIcon.png"));
+        JButton gliderButton = new JButton("Glider");
+        gliderButton.setIcon(gliderIcon);
         gliderButton.addActionListener(e -> {
             if (chosenPattern != Pattern.Glider) {
                 chosenPattern = Pattern.Glider;
@@ -46,7 +51,9 @@ public class PatternPanel {
             }
         });
 
-        lwssButton = new JButton("Lightweight spaceship");
+        ImageIcon smallShipIcon = new ImageIcon(PatternPanel.class.getResource("icons/smallShipIcon.png"));
+        JButton lwssButton = new JButton("Small spaceship");
+        lwssButton.setIcon(smallShipIcon);
         lwssButton.addActionListener(e -> {
             if (chosenPattern != Pattern.LWSS) {
                 chosenPattern = Pattern.LWSS;
@@ -61,7 +68,9 @@ public class PatternPanel {
 
         });
 
-        hwssButton = new JButton("Heavyweight spaceship");
+        ImageIcon bigShipIcon = new ImageIcon(PatternPanel.class.getResource("icons/bigShipIcon.png"));
+        JButton hwssButton = new JButton("Big spaceship");
+        hwssButton.setIcon(bigShipIcon);
         hwssButton.addActionListener(e -> {
             if (chosenPattern != Pattern.HWSS) {
                 chosenPattern = Pattern.HWSS;
@@ -76,7 +85,9 @@ public class PatternPanel {
 
         });
 
-        pulsarButton = new JButton("Pulsar");
+        ImageIcon pulsarIcon = new ImageIcon(PatternPanel.class.getResource("icons/pulsarIcon.png"));
+        JButton pulsarButton = new JButton("Pulsar");
+        pulsarButton.setIcon(pulsarIcon);
         pulsarButton.addActionListener(e -> {
             if (chosenPattern != Pattern.Pulsar) {
                 chosenPattern = Pattern.Pulsar;
@@ -91,7 +102,9 @@ public class PatternPanel {
 
         });
 
-        pentaDecaButton = new JButton("Pentadecathlon");
+        ImageIcon pentaDecaIcon = new ImageIcon(PatternPanel.class.getResource("icons/pentaDecaIcon.png"));
+        JButton pentaDecaButton = new JButton("Pentadecathlon");
+        pentaDecaButton.setIcon(pentaDecaIcon);
         pentaDecaButton.addActionListener(e -> {
             if (chosenPattern != Pattern.Pentadeca) {
                 chosenPattern = Pattern.Pentadeca;
@@ -106,7 +119,9 @@ public class PatternPanel {
 
         });
 
-        playButtonButton = new JButton("Playbutton");
+        ImageIcon playButtonIcon = new ImageIcon(PatternPanel.class.getResource("icons/playButtonIcon.png"));
+        JButton playButtonButton = new JButton("Playbutton");
+        playButtonButton.setIcon(playButtonIcon);
         playButtonButton.addActionListener(e -> {
             if (chosenPattern != Pattern.Playbutton) {
                 chosenPattern = Pattern.Playbutton;
@@ -132,6 +147,19 @@ public class PatternPanel {
             button.setFocusable(false);
             button.setBackground(Color.GRAY);
             patternPanel.add(button);
+            button.setVerticalTextPosition(AbstractButton.TOP);
+            button.setHorizontalTextPosition(AbstractButton.CENTER);
+            button.setFont(new Font(null, Font.BOLD, 14));
+            button.setBorder(BorderFactory.createLineBorder(Color.WHITE));
+
+            // create a scaled icon that fits on the JButton
+            if (button.getIcon() != null) {
+                Image buttonImage = ((ImageIcon) button.getIcon()).getImage();
+                Image newButtonImage = buttonImage.getScaledInstance(buttonHeight - 40, buttonHeight - 40,
+                        Image.SCALE_SMOOTH);
+                gliderIcon = new ImageIcon(newButtonImage);
+                button.setIcon(gliderIcon);
+            }
         }
 
         // creates a scroll pane and puts the patternPanel inside

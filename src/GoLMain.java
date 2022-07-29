@@ -208,12 +208,6 @@ public class GoLMain extends JPanel {
 
                 cell = cells[i][j];
 
-                // sometimes a cell is null
-                if (cell == null) {
-                    cell = new Cell(i, j);
-                    System.out.println("cell " + i + ", " + j + " was null");
-                }
-
                 // set color depending on status of cell and check if colors are inverted
                 if (cell.isNextGenAlive() == isColorsInverted) {
                     g2.setColor(cell.getDeadColor());
@@ -241,11 +235,11 @@ public class GoLMain extends JPanel {
             g2.setColor(new Color(50,50,50, 75));
 
             for (int i = 0; i < yGrids; i++) {
-                g2.drawLine(0, i * Cell.getCellHeight(), main.getWidth(), i * Cell.getCellHeight());
+                g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
             }
 
             for (int i = 0; i < xGrids; i++) {
-                g2.drawLine(i * Cell.getCellWidth(), 0, i * Cell.getCellWidth(), main.getHeight());
+                g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
             }
         }
 

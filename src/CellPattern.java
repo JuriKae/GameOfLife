@@ -32,6 +32,7 @@ public class CellPattern {
                 break;
             case Pentadeca:
                 makePentaDeca(xGrid, yGrid);
+                break;
             case Playbutton:
                 makePlayButton(xGrid, yGrid);
                 break;
