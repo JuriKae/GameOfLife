@@ -18,10 +18,10 @@ public class PatternPanel {
 
     private static Pattern chosenPattern;
 
-    private static JButton gliderButton, pulsarButton, lwssButton, hwssButton, pentaDecaButton;
+    private static JButton gliderButton, lwssButton, hwssButton, pulsarButton, pentaDecaButton, playButtonButton;
     
     private static int buttonHeight = 150;
-    private static int numberOfPatterns = 5;
+    private static int numberOfPatterns = 6;
 
     private static JButton[] buttonArray = new JButton[numberOfPatterns];
 
@@ -44,21 +44,6 @@ public class PatternPanel {
                 isPattern = false;
                 gliderButton.setBackground(Color.GRAY);
             }
-        });
-
-        pulsarButton = new JButton("Pulsar");
-        pulsarButton.addActionListener(e -> {
-            if (chosenPattern != Pattern.Pulsar) {
-                chosenPattern = Pattern.Pulsar;
-                isPattern = true;
-                deselectButtons();
-                pulsarButton.setBackground(Color.DARK_GRAY);
-            } else {
-                chosenPattern = null;
-                isPattern = false;
-                pulsarButton.setBackground(Color.GRAY);
-            }
-
         });
 
         lwssButton = new JButton("Lightweight spaceship");
@@ -91,10 +76,25 @@ public class PatternPanel {
 
         });
 
+        pulsarButton = new JButton("Pulsar");
+        pulsarButton.addActionListener(e -> {
+            if (chosenPattern != Pattern.Pulsar) {
+                chosenPattern = Pattern.Pulsar;
+                isPattern = true;
+                deselectButtons();
+                pulsarButton.setBackground(Color.DARK_GRAY);
+            } else {
+                chosenPattern = null;
+                isPattern = false;
+                pulsarButton.setBackground(Color.GRAY);
+            }
+
+        });
+
         pentaDecaButton = new JButton("Pentadecathlon");
         pentaDecaButton.addActionListener(e -> {
-            if (chosenPattern != Pattern.PENTDADECA) {
-                chosenPattern = Pattern.PENTDADECA;
+            if (chosenPattern != Pattern.Pentadeca) {
+                chosenPattern = Pattern.Pentadeca;
                 isPattern = true;
                 deselectButtons();
                 pentaDecaButton.setBackground(Color.DARK_GRAY);
@@ -106,11 +106,27 @@ public class PatternPanel {
 
         });
 
+        playButtonButton = new JButton("Playbutton");
+        playButtonButton.addActionListener(e -> {
+            if (chosenPattern != Pattern.Playbutton) {
+                chosenPattern = Pattern.Playbutton;
+                isPattern = true;
+                deselectButtons();
+                playButtonButton.setBackground(Color.DARK_GRAY);
+            } else {
+                chosenPattern = null;
+                isPattern = false;
+                playButtonButton.setBackground(Color.GRAY);
+            }
+
+        });
+
         buttonArray[0] = gliderButton;
-        buttonArray[1] = pulsarButton;
-        buttonArray[2] = lwssButton;
-        buttonArray[3] = hwssButton;
+        buttonArray[1] = lwssButton;
+        buttonArray[2] = hwssButton;
+        buttonArray[3] = pulsarButton;
         buttonArray[4] = pentaDecaButton;
+        buttonArray[5] = playButtonButton;
 
         for (JButton button : buttonArray) {
             button.setFocusable(false);
