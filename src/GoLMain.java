@@ -25,9 +25,6 @@ public class GoLMain extends JPanel {
     private static int frameWidth = panelWidth + 16 + PatternPanel.getPatternpanelwidth();
     private static int frameHeight = panelHeight + 39 + topPanelHeight;
 
-    private static int xGrids;
-    private static int yGrids;
-
     private static int currentCellWidth;
     private static int currentCellHeight;
 
@@ -39,6 +36,7 @@ public class GoLMain extends JPanel {
 
     private static boolean reset;
     private static boolean repainted;
+    private static boolean initialized;
 
     private static double zoomFactor = 1;
     private static double prevZoomFactor = 1;
@@ -137,6 +135,7 @@ public class GoLMain extends JPanel {
 
     public static void resetSuff() {
         reset = false;
+        initialized = false;
         generation = 1;
         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
@@ -187,23 +186,32 @@ public class GoLMain extends JPanel {
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
+        // initialized is set true by the Cell.java class when the 2D cell array has
+        // been initalized with the correct values
+        while (!initialized) {
+            try {
+                Thread.sleep(0);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+
         Cell[][] cells = Cell.getCells();
+        int xGrids = cells.length;
+        int yGrids = cells[0].length;
+
+        Cell cell = null;
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
 
-                Cell cell = null;
+                cell = cells[i][j];
 
-                try {
-                    cell = cells[i][j];
-                } catch (Exception e) {
-                    e.printStackTrace();
+                // sometimes a cell is null
+                if (cell == null) {
+                    cell = new Cell(i, j);
+                    System.out.println("cell " + i + ", " + j + " was null");
                 }
-
-                // // sometimes a cell is null for some reason
-                // if (cell == null) {
-                //     cell = new Cell(i, j);
-                // }
 
                 // set color depending on status of cell and check if colors are inverted
                 if (cell.isNextGenAlive() == isColorsInverted) {
@@ -241,14 +249,6 @@ public class GoLMain extends JPanel {
         return main;
     }
 
-    public static void setxGrids(int xGrids) {
-        GoLMain.xGrids = xGrids;
-    }
-
-    public static void setyGrids(int yGrids) {
-        GoLMain.yGrids = yGrids;
-    }
-
     public static void setReset(boolean reset) {
         GoLMain.reset = reset;
     }
@@ -283,5 +283,9 @@ public class GoLMain extends JPanel {
 
     public static JFrame getFrame() {
         return frame;
+    }
+
+    public static void setInitialized(boolean initialized) {
+        GoLMain.initialized = initialized;
     }
 }

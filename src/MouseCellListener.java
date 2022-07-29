@@ -24,6 +24,10 @@ public class MouseCellListener extends MouseAdapter {
         int x = (int) xDouble;
         int y = (int) yDouble;
 
+        if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
+            return;
+        }
+
         if (PatternPanel.isPattern() && SwingUtilities.isLeftMouseButton(e)) {
 
             CellPattern.createPattern(x, y);
