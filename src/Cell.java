@@ -69,6 +69,7 @@ public class Cell extends Rectangle {
     }
 
     public static void countNeighbours() {
+        
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
                 int neighbours = 0;

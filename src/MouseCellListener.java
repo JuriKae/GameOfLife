@@ -24,7 +24,7 @@ public class MouseCellListener extends MouseAdapter {
         int x = (int) xDouble;
         int y = (int) yDouble;
 
-        if (PatternPanel.isPattern()) {
+        if (PatternPanel.isPattern() && SwingUtilities.isLeftMouseButton(e)) {
 
             CellPattern.createPattern(x, y);
 
@@ -47,6 +47,11 @@ public class MouseCellListener extends MouseAdapter {
     @Override
     public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
+
+        // if a pattern is selected the user cant draw by dragging the mouse
+        if (PatternPanel.isPattern() && SwingUtilities.isLeftMouseButton(e)) {
+            return;
+        }
 
         xDifference = (Cell.getCellWidth() * GoLMain.getZoomFactor());
         yDifference = (Cell.getCellHeight() * GoLMain.getZoomFactor());

@@ -22,13 +22,11 @@ public class GoLMain extends JPanel {
 
     private static final int topPanelHeight = 75;
 
-    private static int frameWidth = panelWidth + 16 + 150;
-    private static int frameHeight = panelHeight + 39 + PatternPanel.getPatternpanelwidth();
+    private static int frameWidth = panelWidth + 16 + PatternPanel.getPatternpanelwidth();
+    private static int frameHeight = panelHeight + 39 + topPanelHeight;
 
     private static int xGrids;
     private static int yGrids;
-
-    private static Cell cell;
 
     private static int currentCellWidth;
     private static int currentCellHeight;
@@ -38,7 +36,6 @@ public class GoLMain extends JPanel {
     private static GoLMain main;
 
     private static Thread thread;
-
 
     private static boolean reset;
     private static boolean repainted;
@@ -190,10 +187,23 @@ public class GoLMain extends JPanel {
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
+        Cell[][] cells = Cell.getCells();
+
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
 
-                cell = Cell.getCells()[i][j];
+                Cell cell = null;
+
+                try {
+                    cell = cells[i][j];
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                // // sometimes a cell is null for some reason
+                // if (cell == null) {
+                //     cell = new Cell(i, j);
+                // }
 
                 // set color depending on status of cell and check if colors are inverted
                 if (cell.isNextGenAlive() == isColorsInverted) {

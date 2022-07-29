@@ -1,5 +1,5 @@
 package src;
 
 public enum Pattern {
-    Glider, Pulsar
+    Glider, Pulsar, LWSS, HWSS
 }

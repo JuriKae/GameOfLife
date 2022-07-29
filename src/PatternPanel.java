@@ -16,9 +16,9 @@ public class PatternPanel extends JPanel {
 
     private static Pattern chosenPattern;
 
-    private static JButton gliderButton, pulsarButton;
+    private static JButton gliderButton, pulsarButton, lwssButton, hwssButton;
 
-    private static JButton[] buttons = new JButton[2];
+    private static JButton[] buttons = new JButton[4];
 
     public PatternPanel() {
 
@@ -55,9 +55,41 @@ public class PatternPanel extends JPanel {
             
         });
 
+        lwssButton = new JButton("Lightweight spaceship");
+        lwssButton.addActionListener(e -> {
+            if (chosenPattern != Pattern.LWSS) {
+                chosenPattern = Pattern.LWSS;
+                isPattern = true;
+                deselectButtons();
+                lwssButton.setBackground(Color.DARK_GRAY);
+            } else {
+                chosenPattern = null;
+                isPattern = false;
+                lwssButton.setBackground(Color.GRAY);
+            }
+            
+        });
+
+        hwssButton = new JButton("Heavyweight spaceship");
+        hwssButton.addActionListener(e -> {
+            if (chosenPattern != Pattern.HWSS) {
+                chosenPattern = Pattern.HWSS;
+                isPattern = true;
+                deselectButtons();
+                hwssButton.setBackground(Color.DARK_GRAY);
+            } else {
+                chosenPattern = null;
+                isPattern = false;
+                hwssButton.setBackground(Color.GRAY);
+            }
+            
+        });
+
 
         buttons[0] = gliderButton;
         buttons[1] = pulsarButton;
+        buttons[2] = lwssButton;
+        buttons[3] = hwssButton;
 
         for (JButton button : buttons) {
             button.setFocusable(false);
@@ -66,6 +98,8 @@ public class PatternPanel extends JPanel {
 
         this.add(gliderButton);
         this.add(pulsarButton);
+        this.add(lwssButton);
+        this.add(hwssButton);
 
         GoLMain.getFrame().add(this, BorderLayout.EAST);
     }
