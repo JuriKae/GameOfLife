@@ -55,11 +55,11 @@ public class CellPattern {
     }
 
     public static void makePulsar(int xGrid, int yGrid) {
-        // 13x13
+        // 15x15
         Cell[][] cells = Cell.getCells();
 
-        for (int i = 0; i < 13; i++) {
-            for (int j = 0; j < 13; j++) {
+        for (int i = -1; i < 14; i++) {
+            for (int j = -1; j < 14; j++) {
                 cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
             }
         }

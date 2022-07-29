@@ -31,6 +31,9 @@ public class AdvancedOptions {
     private static int percOfAliveCells = 40;
     private static int lineDistance = 9;
 
+    // grid
+    private static boolean showGrid;
+
     private static Font titleFont = new Font(null, Font.BOLD, 20);
     private static Font normalFont = new Font(null, Font.PLAIN, 16);
     private static Font boxFont = new Font(null, Font.BOLD, 14);
@@ -300,9 +303,29 @@ public class AdvancedOptions {
             BasicOptions.reset();
         });
 
+        JLabel showGridLabel = new JLabel("Show Grid:");
+        showGridLabel.setBounds(10, 90, 200, 30);
+        showGridLabel.setForeground(Color.WHITE);
+        showGridLabel.setFont(normalFont);
+
+        JCheckBox gridCheckBox = new JCheckBox();
+        gridCheckBox.setBounds(225, 90, 100, 30);
+        gridCheckBox.setBackground(Color.BLACK);
+        gridCheckBox.addActionListener(e -> {
+            if (gridCheckBox.isSelected()) {
+                showGrid = true;
+            } else {
+                showGrid = false;
+            }
+            GoLMain.getMain().repaint();
+        });
+
+
         cellSizePanel.add(setCellSizeLabel);
         cellSizePanel.add(cellSizeSpinner);
         cellSizePanel.add(cellSizeLabel);
+        cellSizePanel.add(showGridLabel);
+        cellSizePanel.add(gridCheckBox);
 
         optionsFrame.add(cellSizePanel);
     }
@@ -337,5 +360,9 @@ public class AdvancedOptions {
 
     public static int getLineDistance() {
         return lineDistance;
+    }
+
+    public static boolean isShowGrid() {
+        return showGrid;
     }
 }

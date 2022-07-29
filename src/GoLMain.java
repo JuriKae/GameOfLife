@@ -94,7 +94,7 @@ public class GoLMain extends JPanel {
                         // do not sleep if user makes steps
                         if (!BasicOptions.isStep()) {
                             Thread.sleep(BasicOptions.getDelay());
-                        } 
+                        }
 
                         // wait until all the cells have been repainted
                         while (!repainted) {
@@ -234,6 +234,21 @@ public class GoLMain extends JPanel {
                 }
             }
         }
+
+         // show the grid if user enabled it
+         if (AdvancedOptions.isShowGrid()) {
+            g2.setColor(Color.DARK_GRAY);
+            g2.setColor(new Color(50,50,50, 75));
+
+            for (int i = 0; i < yGrids; i++) {
+                g2.drawLine(0, i * Cell.getCellHeight(), main.getWidth(), i * Cell.getCellHeight());
+            }
+
+            for (int i = 0; i < xGrids; i++) {
+                g2.drawLine(i * Cell.getCellWidth(), 0, i * Cell.getCellWidth(), main.getHeight());
+            }
+        }
+
         hasZoomed = false;
         repainted = true;
     }
