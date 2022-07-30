@@ -65,7 +65,6 @@ public class PatternPanel {
                 isPattern = false;
                 lwssButton.setBackground(Color.GRAY);
             }
-
         });
 
         ImageIcon bigShipIcon = new ImageIcon(PatternPanel.class.getResource("icons/bigShipIcon.png"));
@@ -82,7 +81,6 @@ public class PatternPanel {
                 isPattern = false;
                 hwssButton.setBackground(Color.GRAY);
             }
-
         });
 
         ImageIcon pulsarIcon = new ImageIcon(PatternPanel.class.getResource("icons/pulsarIcon.png"));
@@ -99,7 +97,6 @@ public class PatternPanel {
                 isPattern = false;
                 pulsarButton.setBackground(Color.GRAY);
             }
-
         });
 
         ImageIcon pentaDecaIcon = new ImageIcon(PatternPanel.class.getResource("icons/pentaDecaIcon.png"));
@@ -116,7 +113,6 @@ public class PatternPanel {
                 isPattern = false;
                 pentaDecaButton.setBackground(Color.GRAY);
             }
-
         });
 
         ImageIcon playButtonIcon = new ImageIcon(PatternPanel.class.getResource("icons/playButtonIcon.png"));
@@ -133,7 +129,6 @@ public class PatternPanel {
                 isPattern = false;
                 playButtonButton.setBackground(Color.GRAY);
             }
-
         });
 
         buttonArray[0] = gliderButton;

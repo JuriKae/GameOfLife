@@ -72,32 +72,20 @@ public class Cell extends Rectangle {
             for (int j = 0; j < yGrids; j++) {
                 int neighbours = 0;
 
-                if (cells[(i + xGrids - 1) % xGrids][(j + yGrids - 1) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids) % xGrids][(j + yGrids - 1) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids + 1) % xGrids][(j + yGrids - 1) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids - 1) % xGrids][(j + yGrids) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids + 1) % xGrids][(j + yGrids) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids - 1) % xGrids][(j + yGrids + 1) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids) % xGrids][(j + yGrids + 1) % yGrids].alive)
-                    neighbours++;
-                if (cells[(i + xGrids + 1) % xGrids][(j + yGrids + 1) % yGrids].alive)
-                    neighbours++;
+                neighbours += cells[(i + xGrids - 1) % xGrids][(j + yGrids - 1) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids + 0) % xGrids][(j + yGrids - 1) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids + 1) % xGrids][(j + yGrids - 1) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids - 1) % xGrids][(j + yGrids + 0) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids + 1) % xGrids][(j + yGrids + 0) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids - 1) % xGrids][(j + yGrids + 1) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids + 0) % xGrids][(j + yGrids + 1) % yGrids].alive ? 1 : 0;
+                neighbours += cells[(i + xGrids + 1) % xGrids][(j + yGrids + 1) % yGrids].alive ? 1 : 0;
 
                 // sets next gen cell alive or dead according to number of neighbours
                 if (!cells[i][j].alive) {
-                    if (neighbours == 3) {
-                        cells[i][j].nextGenAlive = true;
-                    }
+                    cells[i][j].nextGenAlive = neighbours == 3 ? true : false;
                 } else {
-                    if (neighbours <= 1 || neighbours >= 4) {
-                        cells[i][j].nextGenAlive = false;
-                    }
+                    cells[i][j].nextGenAlive = neighbours <= 1 || neighbours >= 4 ? false : true;
                 }
             }
         }

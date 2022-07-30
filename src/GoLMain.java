@@ -178,11 +178,7 @@ public class GoLMain extends JPanel {
         at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
 
-        if (cell.isNextGenAlive() == AdvancedOptions.isColorsInverted()) {
-            g2.setColor(cell.getDeadColor());
-        } else {
-            g2.setColor(cell.getAliveColor());
-        }
+        g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor() : cell.getAliveColor());
         g2.fill(cell);
 
         if (lastCell != null) {
@@ -242,8 +238,6 @@ public class GoLMain extends JPanel {
             }
         }
 
-        boolean isColorsInverted = AdvancedOptions.isColorsInverted();
-
         Cell[][] cells = Cell.getCells();
         int xGrids = cells.length;
         int yGrids = cells[0].length;
@@ -256,12 +250,7 @@ public class GoLMain extends JPanel {
                 cell = cells[i][j];
 
                 // set color depending on status of cell and check if colors are inverted
-                if (cell.isNextGenAlive() == isColorsInverted) {
-                    g2.setColor(cell.getDeadColor());
-                } else {
-                    g2.setColor(cell.getAliveColor());
-                }
-
+                g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor() : cell.getAliveColor());
                 g2.fill(cell);
 
                 if (!hasZoomed) {

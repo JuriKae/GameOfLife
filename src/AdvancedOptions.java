@@ -27,12 +27,12 @@ public class AdvancedOptions {
 
     // first cell panel stuff
 
-    private static FirstCellMode firstCellMode = FirstCellMode.Random;
+    private static FirstCellMode firstCellMode = FirstCellMode.Empty;
     private static int percOfAliveCells = 40;
     private static int lineDistance = 9;
 
     // grid
-    private static boolean showGrid;
+    private static boolean showGrid = true;
 
     private static Font titleFont = new Font(null, Font.BOLD, 20);
     private static Font normalFont = new Font(null, Font.PLAIN, 16);
@@ -91,11 +91,7 @@ public class AdvancedOptions {
         invertColorsBox.setBounds(225, 90, 100, 30);
         invertColorsBox.setBackground(Color.BLACK);
         invertColorsBox.addActionListener(e -> {
-            if (invertColorsBox.isSelected()) {
-                colorsInverted = true;
-            } else {
-                colorsInverted = false;
-            }
+            colorsInverted = invertColorsBox.isSelected();
             GoLMain.getMain().repaint();
         });
 
@@ -103,14 +99,8 @@ public class AdvancedOptions {
         oneGenColorCheckBox.setBounds(225, 130, 100, 30);
         oneGenColorCheckBox.setBackground(Color.BLACK);
         oneGenColorCheckBox.addActionListener(e -> {
-            if (oneGenColorCheckBox.isSelected()) {
-                oneGenerationColor = true;
-            } else {
-                oneGenerationColor = false;
-            }
-
+            oneGenerationColor = oneGenColorCheckBox.isSelected();
             CellColor.callChangeColorFunction();
-
             GoLMain.getMain().repaint();
         });
         oneGenColorCheckBox.setVisible(false);
@@ -141,31 +131,34 @@ public class AdvancedOptions {
         colorModeBox.addActionListener(e -> {
             colorMode = (ColorMode) colorModeBox.getSelectedItem();
 
-            if (colorMode == ColorMode.Normal) {
-                colorOptionLabel3.setVisible(false);
-                chosenColorPanel.setVisible(false);
-                oneGenColorCheckBox.setVisible(false);
-                chosenColorPanel.setVisible(false);
+            switch (colorMode) {
+                case Normal:
+                    colorOptionLabel3.setVisible(false);
+                    chosenColorPanel.setVisible(false);
+                    oneGenColorCheckBox.setVisible(false);
+                    chosenColorPanel.setVisible(false);
+                    break;
+                case Rainbow:
+                    colorOptionLabel3.setVisible(true);
+                    oneGenColorCheckBox.setVisible(true);
 
-            } else if (colorMode == ColorMode.Rainbow) {
-                colorOptionLabel3.setVisible(true);
-                oneGenColorCheckBox.setVisible(true);
+                    chosenColorPanel.setVisible(false);
+                    colorOptionLabel3.setText("One color per generation:");
+                    break;
+                case Random:
+                    colorOptionLabel3.setVisible(true);
+                    oneGenColorCheckBox.setVisible(true);
 
-                chosenColorPanel.setVisible(false);
-                colorOptionLabel3.setText("One color per generation:");
+                    chosenColorPanel.setVisible(false);
+                    colorOptionLabel3.setText("One color per generation:");
+                    break;
+                case Specific:
+                    colorOptionLabel3.setVisible(true);
+                    chosenColorPanel.setVisible(true);
 
-            } else if (colorMode == ColorMode.Random) {
-                colorOptionLabel3.setVisible(true);
-                oneGenColorCheckBox.setVisible(true);
-
-                chosenColorPanel.setVisible(false);
-                colorOptionLabel3.setText("One color per generation:");
-            } else if (colorMode == ColorMode.Specific) {
-                colorOptionLabel3.setVisible(true);
-                chosenColorPanel.setVisible(true);
-
-                oneGenColorCheckBox.setVisible(false);
-                colorOptionLabel3.setText("Choose a color:");
+                    oneGenColorCheckBox.setVisible(false);
+                    colorOptionLabel3.setText("Choose a color:");
+                    break;
             }
 
             CellColor.callChangeColorFunction();
@@ -201,7 +194,7 @@ public class AdvancedOptions {
         firstCellPatternLabel.setForeground(Color.WHITE);
         firstCellPatternLabel.setFont(normalFont);
 
-        JLabel cellModeSpinnerLabel = new JLabel("Percentage of alive cells:");
+        JLabel cellModeSpinnerLabel = new JLabel("You can draw cells with the mouse.");
         cellModeSpinnerLabel.setBounds(10, 90, 250, 30);
         cellModeSpinnerLabel.setForeground(Color.WHITE);
         cellModeSpinnerLabel.setFont(normalFont);
@@ -217,7 +210,7 @@ public class AdvancedOptions {
             percOfAliveCells = (int) percRandomSpinner.getValue();
             BasicOptions.reset();
         });
-        percRandomSpinner.setVisible(true);
+        percRandomSpinner.setVisible(false);
 
         SpinnerNumberModel lineDistanceSpinnerModel = new SpinnerNumberModel(7, 1, 200, 1);
         JSpinner lineDistanceSpinner = new JSpinner(lineDistanceSpinnerModel);
@@ -231,7 +224,7 @@ public class AdvancedOptions {
         });
         lineDistanceSpinner.setVisible(false);
 
-        FirstCellMode[] cellModes = { FirstCellMode.Random, FirstCellMode.Line, FirstCellMode.Empty };
+        FirstCellMode[] cellModes = { FirstCellMode.Empty, FirstCellMode.Line, FirstCellMode.Random };
         JComboBox<Object> cellModeBox = new JComboBox<Object>(cellModes);
         cellModeBox.setFocusable(false);
         cellModeBox.setBounds(225, 50, 100, 30);
@@ -243,23 +236,25 @@ public class AdvancedOptions {
             firstCellMode = (FirstCellMode) cellModeBox.getSelectedItem();
 
             // show correct label and spinner depening on first cell mode
-            if (firstCellMode == FirstCellMode.Random) {
-                cellModeSpinnerLabel.setText("Percentage of alive cells:");
+            switch (firstCellMode) {
+                case Empty:
+                    cellModeSpinnerLabel.setText("You can draw cells with the mouse.");
 
-                percRandomSpinner.setVisible(true);
-                lineDistanceSpinner.setVisible(false);
+                    percRandomSpinner.setVisible(false);
+                    lineDistanceSpinner.setVisible(false);
+                    break;
+                case Line:
+                    cellModeSpinnerLabel.setText("Distance of lines:");
 
-            } else if (firstCellMode == FirstCellMode.Line) {
-                cellModeSpinnerLabel.setText("Distance of lines:");
+                    percRandomSpinner.setVisible(false);
+                    lineDistanceSpinner.setVisible(true);
+                    break;
+                case Random:
+                    cellModeSpinnerLabel.setText("Percentage of alive cells:");
 
-                percRandomSpinner.setVisible(false);
-                lineDistanceSpinner.setVisible(true);
-
-            } else if (firstCellMode == FirstCellMode.Empty) {
-                cellModeSpinnerLabel.setText("You can draw cells with the mouse.");
-
-                percRandomSpinner.setVisible(false);
-                lineDistanceSpinner.setVisible(false);
+                    percRandomSpinner.setVisible(true);
+                    lineDistanceSpinner.setVisible(false);
+                    break;
             }
             BasicOptions.reset();
         });
@@ -311,15 +306,11 @@ public class AdvancedOptions {
         JCheckBox gridCheckBox = new JCheckBox();
         gridCheckBox.setBounds(225, 90, 100, 30);
         gridCheckBox.setBackground(Color.BLACK);
+        gridCheckBox.setSelected(true);
         gridCheckBox.addActionListener(e -> {
-            if (gridCheckBox.isSelected()) {
-                showGrid = true;
-            } else {
-                showGrid = false;
-            }
+            showGrid = gridCheckBox.isSelected();
             GoLMain.getMain().repaint();
         });
-
 
         cellSizePanel.add(setCellSizeLabel);
         cellSizePanel.add(cellSizeSpinner);

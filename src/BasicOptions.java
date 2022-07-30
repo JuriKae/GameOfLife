@@ -138,13 +138,13 @@ public class BasicOptions {
     public static void makeAStepBack() {
         previousButton.setEnabled(false);
 
-        for (int i = 0; i < Cell.getxGrids() - 1; i++) {
-            for (int j = 0; j < Cell.getyGrids() - 1; j++) {
-                if (Cell.getCells()[i][j].isLastGenAlive()) {
-                    Cell.getCells()[i][j].setNextGenAlive(true);
-                } else {
-                    Cell.getCells()[i][j].setNextGenAlive(false);
-                }
+        int xGrid = Cell.getxGrids();
+        int yGrid = Cell.getyGrids();
+        Cell[][] cells = Cell.getCells();
+
+        for (int i = 0; i < xGrid - 1; i++) {
+            for (int j = 0; j < yGrid - 1; j++) {
+                cells[i][j].setNextGenAlive(cells[i][j].isLastGenAlive());
             }
         }
         GoLMain.setGeneration(GoLMain.getGeneration() - 1);

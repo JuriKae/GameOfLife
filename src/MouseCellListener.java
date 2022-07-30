@@ -44,7 +44,7 @@ public class MouseCellListener extends MouseAdapter {
                 Cell.getCells()[x][y].setNextGenAlive(false);
             } 
         }
-        
+        GoLMain.setLastCell(Cell.getCells()[x][y]);
         paintedWithMouse = true;
     }
 
