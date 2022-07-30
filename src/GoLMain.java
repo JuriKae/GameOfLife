@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
+import java.awt.Point;
 import java.awt.geom.AffineTransform;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -29,6 +31,8 @@ public class GoLMain extends JPanel {
     private static int currentCellHeight;
 
     private static int generation = 1;
+
+    private static Cell lastCell;
 
     private static GoLMain main;
 
@@ -161,11 +165,12 @@ public class GoLMain extends JPanel {
         main.repaint();
     }
 
-    // is called when user is dragging the mouse so that more pixel will be recognized
+    // is called when user is dragging the mouse so that more pixel will be
+    // recognized
     // only the pixels that have been painted will be repainted here
     // not calling super.paint(), because that would reset everything
-    public void paintWithMouse(Graphics g, int x, int y, Cell cell) {
-        
+    public void paintWithMouse(Graphics g, int x, int y, Cell cell, Boolean isLeftClick) {
+
         g2 = (Graphics2D) g;
 
         AffineTransform at = new AffineTransform();
@@ -178,7 +183,29 @@ public class GoLMain extends JPanel {
         } else {
             g2.setColor(cell.getAliveColor());
         }
-        g2.fill(cell.getBounds());
+        g2.fill(cell);
+
+        if (lastCell != null) {
+            // if the drawn cell is not next to the cell drawn before
+            // calculating the line between these cell with the Bresenham algorithm
+            if (new Point((int) lastCell.getCenterX(), (int) lastCell.getCenterY()).distance(cell.getCenterX(),
+                    cell.getCenterY()) > currentCellWidth) {
+
+                int lastCellX = (int) lastCell.getX() / currentCellWidth;
+                int lastCellY = (int) lastCell.getY() / currentCellHeight;
+
+                int cellxGrid = (int) cell.getX() / currentCellWidth;
+                int cellyGrid = (int) cell.getY() / currentCellHeight;
+
+                ArrayList<Cell> list = Bresenham.findLine(Cell.getCells(), lastCellX, lastCellY, cellxGrid, cellyGrid);
+
+                for (int i = 0; i < list.size(); i++) {
+                    g2.fill(list.get(i));
+                    list.get(i).setNextGenAlive(isLeftClick);
+                }
+            }
+        }
+        lastCell = cell;
     }
 
     @Override
@@ -247,10 +274,10 @@ public class GoLMain extends JPanel {
             }
         }
 
-         // show the grid if user enabled it
-         if (AdvancedOptions.isShowGrid()) {
+        // show the grid if user enabled it
+        if (AdvancedOptions.isShowGrid()) {
             g2.setColor(Color.DARK_GRAY);
-            g2.setColor(new Color(50,50,50, 75));
+            g2.setColor(new Color(50, 50, 50, 75));
 
             for (int i = 0; i < yGrids; i++) {
                 g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
@@ -315,5 +342,9 @@ public class GoLMain extends JPanel {
 
     public static void setInitialized(boolean initialized) {
         GoLMain.initialized = initialized;
+    }
+
+    public static void setLastCell(Cell lastCell) {
+        GoLMain.lastCell = lastCell;
     }
 }

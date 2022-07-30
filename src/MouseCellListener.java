@@ -10,7 +10,7 @@ public class MouseCellListener extends MouseAdapter {
     private double xDifference;
     private double yDifference;
 
-    private static boolean wasDragged;
+    private static boolean paintedWithMouse;
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -30,6 +30,7 @@ public class MouseCellListener extends MouseAdapter {
         if (PatternPanel.isPattern() && SwingUtilities.isLeftMouseButton(e)) {
 
             CellPattern.createPattern(x, y);
+            GoLMain.getMain().repaint();
 
         } else {
             
@@ -43,8 +44,8 @@ public class MouseCellListener extends MouseAdapter {
                 Cell.getCells()[x][y].setNextGenAlive(false);
             } 
         }
-
-        GoLMain.getMain().repaint();
+        
+        paintedWithMouse = true;
     }
 
     @Override
@@ -64,29 +65,34 @@ public class MouseCellListener extends MouseAdapter {
         int y = (int) (e.getY() / yDifference - (GoLMain.getyOffset() / yDifference));
 
         if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
+            GoLMain.setLastCell(null);
             return;
         }
+
         if (SwingUtilities.isLeftMouseButton(e)) {
             Cell.getCells()[x][y].setNextGenAlive(true);
+            GoLMain.getMain().paintWithMouse(GoLMain.getMain().getGraphics(), x, y, Cell.getCells()[x][y], true);
+            paintedWithMouse = true;
         } else if (SwingUtilities.isRightMouseButton(e)) {
             Cell.getCells()[x][y].setNextGenAlive(false);
+            GoLMain.getMain().paintWithMouse(GoLMain.getMain().getGraphics(), x, y, Cell.getCells()[x][y], false);
+            paintedWithMouse = true;
         }
-        GoLMain.getMain().paintWithMouse(GoLMain.getMain().getGraphics(), x, y, Cell.getCells()[x][y]);
-        wasDragged = true;
     }
 
     @Override
     public void mouseReleased(MouseEvent e) {
-        if (wasDragged) {
-            System.out.println("repainted");
+        if (paintedWithMouse) {
             GoLMain.getMain().repaint();
-            wasDragged = false;
+            paintedWithMouse = false;
+            GoLMain.setLastCell(null);
         }
     }
 
     // reset the zoom if mouse wheel has been clicked
     @Override
     public void mouseClicked(MouseEvent e) {
+
         super.mouseClicked(e);
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
