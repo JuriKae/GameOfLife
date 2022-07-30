@@ -10,6 +10,8 @@ public class MouseCellListener extends MouseAdapter {
     private double xDifference;
     private double yDifference;
 
+    private static boolean wasDragged;
+
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
@@ -18,11 +20,8 @@ public class MouseCellListener extends MouseAdapter {
         yDifference = (Cell.getCellHeight() * GoLMain.getZoomFactor());
 
         // // converts x and y to correct value, even when zoomed in
-        double xDouble = e.getX() / xDifference - (GoLMain.getxOffset() / xDifference);
-        double yDouble = e.getY() / yDifference - (GoLMain.getyOffset() / yDifference);
-
-        int x = (int) xDouble;
-        int y = (int) yDouble;
+        int x = (int) (e.getX() / xDifference - (GoLMain.getxOffset() / xDifference));
+        int y = (int) (e.getY() / yDifference - (GoLMain.getyOffset() / yDifference));
 
         if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
             return;
@@ -61,12 +60,8 @@ public class MouseCellListener extends MouseAdapter {
         yDifference = (Cell.getCellHeight() * GoLMain.getZoomFactor());
 
         // converts x and y to correct value, even when zoomed in
-        double xDouble = e.getX() / xDifference - (GoLMain.getxOffset() / xDifference);
-        double yDouble = e.getY() / yDifference - (GoLMain.getyOffset() / yDifference);
-
-        int x = (int) xDouble;
-        int y = (int) yDouble;
-
+        int x = (int) (e.getX() / xDifference - (GoLMain.getxOffset() / xDifference));
+        int y = (int) (e.getY() / yDifference - (GoLMain.getyOffset() / yDifference));
 
         if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
             return;
@@ -76,7 +71,17 @@ public class MouseCellListener extends MouseAdapter {
         } else if (SwingUtilities.isRightMouseButton(e)) {
             Cell.getCells()[x][y].setNextGenAlive(false);
         }
-        GoLMain.getMain().repaint();
+        GoLMain.getMain().paintWithMouse(GoLMain.getMain().getGraphics(), x, y, Cell.getCells()[x][y]);
+        wasDragged = true;
+    }
+
+    @Override
+    public void mouseReleased(MouseEvent e) {
+        if (wasDragged) {
+            System.out.println("repainted");
+            GoLMain.getMain().repaint();
+            wasDragged = false;
+        }
     }
 
     // reset the zoom if mouse wheel has been clicked

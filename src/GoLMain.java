@@ -161,6 +161,26 @@ public class GoLMain extends JPanel {
         main.repaint();
     }
 
+    // is called when user is dragging the mouse so that more pixel will be recognized
+    // only the pixels that have been painted will be repainted here
+    // not calling super.paint(), because that would reset everything
+    public void paintWithMouse(Graphics g, int x, int y, Cell cell) {
+        
+        g2 = (Graphics2D) g;
+
+        AffineTransform at = new AffineTransform();
+        at.translate(xOffset, yOffset);
+        at.scale(zoomFactor, zoomFactor);
+        g2.transform(at);
+
+        if (cell.isNextGenAlive() == AdvancedOptions.isColorsInverted()) {
+            g2.setColor(cell.getDeadColor());
+        } else {
+            g2.setColor(cell.getAliveColor());
+        }
+        g2.fill(cell.getBounds());
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
@@ -185,8 +205,6 @@ public class GoLMain extends JPanel {
         at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
 
-        boolean isColorsInverted = AdvancedOptions.isColorsInverted();
-
         // initialized is set true by the Cell.java class when the 2D cell array has
         // been initalized with the correct values
         while (!initialized) {
@@ -196,6 +214,8 @@ public class GoLMain extends JPanel {
                 e.printStackTrace();
             }
         }
+
+        boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
         Cell[][] cells = Cell.getCells();
         int xGrids = cells.length;
@@ -215,9 +235,7 @@ public class GoLMain extends JPanel {
                     g2.setColor(cell.getAliveColor());
                 }
 
-                int x = (int) cell.getX();
-                int y = (int) cell.getY();
-                g2.fillRect(x, y, currentCellWidth, currentCellHeight);
+                g2.fill(cell);
 
                 if (!hasZoomed) {
                     // save if last generation was alive or dead
