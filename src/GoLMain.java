@@ -12,9 +12,10 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
+import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class GoLMain extends JPanel {
+public class GoLMain extends JLayeredPane {
 
     private static JFrame frame;
     private static JPanel topPanel;
@@ -197,6 +198,7 @@ public class GoLMain extends JPanel {
 
                 for (int i = 0; i < list.size(); i++) {
                     g2.fill(list.get(i));
+                    list.get(i).setAlive(isLeftClick);
                     list.get(i).setNextGenAlive(isLeftClick);
                 }
             }
@@ -265,6 +267,7 @@ public class GoLMain extends JPanel {
 
         // show the grid if user enabled it
         if (AdvancedOptions.isShowGrid()) {
+            main.setLayer(this, JLayeredPane.PALETTE_LAYER);
             g2.setColor(Color.DARK_GRAY);
             g2.setColor(new Color(50, 50, 50, 75));
 
@@ -275,6 +278,7 @@ public class GoLMain extends JPanel {
             for (int i = 0; i < xGrids; i++) {
                 g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
             }
+            main.setLayer(this, JLayeredPane.DEFAULT_LAYER);
         }
 
         hasZoomed = false;

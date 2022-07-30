@@ -51,6 +51,12 @@ public class CellPattern {
             }
         }
 
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+
         cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
@@ -67,6 +73,16 @@ public class CellPattern {
                 cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
             }
         }
+
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
 
         cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
@@ -88,6 +104,20 @@ public class CellPattern {
                 cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalXGrids].setNextGenAlive(false);
             }
         }
+
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 6) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 6) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 6) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
 
         cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
@@ -113,6 +143,55 @@ public class CellPattern {
                 cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
             }
         }
+
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
 
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
@@ -174,6 +253,25 @@ public class CellPattern {
             }
         }
 
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+
         cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
@@ -203,6 +301,51 @@ public class CellPattern {
                 cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
             }
         }
+
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 13) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
+        cells[(inBoundsXGrid + 13) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
 
         cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
