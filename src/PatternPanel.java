@@ -164,7 +164,7 @@ public class PatternPanel {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        GoLMain.getFrame().add(scrollPane, BorderLayout.EAST);
+        Main.getFrame().add(scrollPane, BorderLayout.EAST);
     }
 
     public static void deselectButtons() {

@@ -92,7 +92,7 @@ public class AdvancedOptions {
         invertColorsBox.setBackground(Color.BLACK);
         invertColorsBox.addActionListener(e -> {
             colorsInverted = invertColorsBox.isSelected();
-            GoLMain.getMain().repaint();
+            Main.getMain().repaint();
         });
 
         JCheckBox oneGenColorCheckBox = new JCheckBox();
@@ -101,7 +101,7 @@ public class AdvancedOptions {
         oneGenColorCheckBox.addActionListener(e -> {
             oneGenerationColor = oneGenColorCheckBox.isSelected();
             CellColor.callChangeColorFunction();
-            GoLMain.getMain().repaint();
+            Main.getMain().repaint();
         });
         oneGenColorCheckBox.setVisible(false);
 
@@ -162,7 +162,7 @@ public class AdvancedOptions {
             }
 
             CellColor.callChangeColorFunction();
-            GoLMain.getMain().repaint();
+            Main.getMain().repaint();
         });
 
         colorPanel.add(colorLabel);
@@ -309,7 +309,7 @@ public class AdvancedOptions {
         gridCheckBox.setSelected(true);
         gridCheckBox.addActionListener(e -> {
             showGrid = gridCheckBox.isSelected();
-            GoLMain.getMain().repaint();
+            Main.getMain().repaint();
         });
 
         cellSizePanel.add(setCellSizeLabel);

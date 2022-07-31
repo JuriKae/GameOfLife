@@ -12,10 +12,9 @@ import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
-import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
 
-public class GoLMain extends JLayeredPane {
+public class Main extends JPanel {
 
     private static JFrame frame;
     private static JPanel topPanel;
@@ -35,11 +34,12 @@ public class GoLMain extends JLayeredPane {
 
     private static Cell lastCell;
 
-    private static GoLMain main;
+    private static Main main;
 
     private static Thread thread;
 
     private static boolean reset;
+    private static boolean inPaint;
     private static boolean repainted;
     private static boolean initialized;
 
@@ -54,7 +54,7 @@ public class GoLMain extends JLayeredPane {
 
     private static MouseCellListener mouseListener = new MouseCellListener();
 
-    public GoLMain() {
+    public Main() {
         frame = new JFrame();
         frame.setTitle("Game of Life");
         frame.setSize(frameWidth, frameHeight);
@@ -63,6 +63,7 @@ public class GoLMain extends JLayeredPane {
 
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
         this.setBackground(Color.BLACK);
+        this.setOpaque(true);
         this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 2));
         this.addMouseListener(mouseListener);
         this.addMouseMotionListener(mouseListener);
@@ -84,7 +85,7 @@ public class GoLMain extends JLayeredPane {
     }
 
     public static void main(String[] args) {
-        main = new GoLMain();
+        main = new Main();
         resetSuff();
     }
 
@@ -120,6 +121,10 @@ public class GoLMain extends JLayeredPane {
                         // generate colors for one-generation color mode
                         CellColor.generateColors();
 
+                        while (inPaint) {
+                            Thread.sleep(0);
+                        }
+
                         Cell.countNeighbours();
 
                         main.repaint();
@@ -152,8 +157,6 @@ public class GoLMain extends JLayeredPane {
         currentCellHeight = Cell.getCellHeight();
 
         createThread();
-
-        main.repaint();
     }
 
     public static void resetZoom() {
@@ -162,15 +165,13 @@ public class GoLMain extends JLayeredPane {
         prevZoomFactor = 1;
         xOffset = 0;
         yOffset = 0;
-
-        main.repaint();
     }
 
     // is called when user is dragging the mouse so that more pixel will be
     // recognized
     // only the pixels that have been painted will be repainted here
     // not calling super.paint(), because that would reset everything
-    public void paintWithMouse(Graphics g, int x, int y, Cell cell, Boolean isLeftClick) {
+    public void paintWithMouse(Graphics g, int x, int y, Cell cell, Boolean isLeftClick, Boolean wasDragged) {
 
         g2 = (Graphics2D) g;
 
@@ -179,10 +180,11 @@ public class GoLMain extends JLayeredPane {
         at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
 
-        g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor() : cell.getAliveColor());
+        g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor()
+                : cell.getAliveColor());
         g2.fill(cell);
 
-        if (lastCell != null) {
+        if (lastCell != null && wasDragged) {
             // if the drawn cell is not next to the cell drawn before
             // calculating the line between these cell with the Bresenham algorithm
             if (new Point((int) lastCell.getCenterX(), (int) lastCell.getCenterY()).distance(cell.getCenterX(),
@@ -206,8 +208,65 @@ public class GoLMain extends JLayeredPane {
         lastCell = cell;
     }
 
+    public void zoom(Graphics g) {
+        g2 = (Graphics2D) g;
+
+        AffineTransform at = new AffineTransform();
+
+        double xRel = MouseInfo.getPointerInfo().getLocation().getX() - getLocationOnScreen().getX();
+        double yRel = MouseInfo.getPointerInfo().getLocation().getY() - getLocationOnScreen().getY();
+
+        double zoomDiv = zoomFactor / prevZoomFactor;
+
+        xOffset = (zoomDiv) * (xOffset) + (1 - zoomDiv) * xRel;
+        yOffset = (zoomDiv) * (yOffset) + (1 - zoomDiv) * yRel;
+
+        prevZoomFactor = zoomFactor;
+
+        // frame only doesnt look weird if this is called here
+        super.paintComponent(g);
+
+        at.translate(xOffset, yOffset);
+        at.scale(zoomFactor, zoomFactor);
+        g2.transform(at);
+
+        Cell[][] cells = Cell.getCells();
+        int xGrids = cells.length;
+        int yGrids = cells[0].length;
+
+        Cell cell = null;
+
+        for (int i = 0; i < xGrids; i++) {
+            for (int j = 0; j < yGrids; j++) {
+
+                cell = cells[i][j];
+
+                // set color depending on status of cell and check if colors are inverted
+                g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor()
+                        : cell.getAliveColor());
+                g2.fill(cell);
+            }
+        }
+
+        // show the grid if user enabled it
+        if (AdvancedOptions.isShowGrid()) {
+            g2.setColor(Color.DARK_GRAY);
+            g2.setColor(new Color(50, 50, 50, 75));
+
+            for (int i = 0; i < yGrids; i++) {
+                g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
+            }
+
+            for (int i = 0; i < xGrids; i++) {
+                g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
+            }
+        }
+    }
+
     @Override
     public void paintComponent(Graphics g) {
+        hasZoomed = MouseCellListener.isHasZoomed();
+        inPaint = true;
         super.paintComponent(g);
 
         g2 = (Graphics2D) g;
@@ -252,22 +311,20 @@ public class GoLMain extends JLayeredPane {
                 cell = cells[i][j];
 
                 // set color depending on status of cell and check if colors are inverted
-                g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor() : cell.getAliveColor());
+                g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor()
+                        : cell.getAliveColor());
                 g2.fill(cell);
 
-                if (!hasZoomed) {
-                    // save if last generation was alive or dead
-                    cell.setLastGenAlive(cell.isAlive());
+                // save if last generation was alive or dead
+                cell.setLastGenAlive(cell.isAlive());
 
-                    // set cell alive if it is alive in the next generation
-                    cell.setAlive(cell.isNextGenAlive());
-                }
+                // set cell alive if it is alive in the next generation
+                cell.setAlive(cell.isNextGenAlive());
             }
         }
 
         // show the grid if user enabled it
         if (AdvancedOptions.isShowGrid()) {
-            main.setLayer(this, JLayeredPane.PALETTE_LAYER);
             g2.setColor(Color.DARK_GRAY);
             g2.setColor(new Color(50, 50, 50, 75));
 
@@ -278,11 +335,11 @@ public class GoLMain extends JLayeredPane {
             for (int i = 0; i < xGrids; i++) {
                 g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
             }
-            main.setLayer(this, JLayeredPane.DEFAULT_LAYER);
         }
 
-        hasZoomed = false;
+        MouseCellListener.setHasZoomed(false);
         repainted = true;
+        inPaint = false;
     }
 
     public static JPanel getTopPanel() {
@@ -293,16 +350,16 @@ public class GoLMain extends JLayeredPane {
         return thread;
     }
 
-    public static GoLMain getMain() {
+    public static Main getMain() {
         return main;
     }
 
     public static void setReset(boolean reset) {
-        GoLMain.reset = reset;
+        Main.reset = reset;
     }
 
     public static void setGeneration(int generation) {
-        GoLMain.generation = generation;
+        Main.generation = generation;
     }
 
     public static int getGeneration() {
@@ -310,7 +367,7 @@ public class GoLMain extends JLayeredPane {
     }
 
     public static void setHasZoomed(boolean hasZoomed) {
-        GoLMain.hasZoomed = hasZoomed;
+        Main.hasZoomed = hasZoomed;
     }
 
     public static double getZoomFactor() {
@@ -318,7 +375,7 @@ public class GoLMain extends JLayeredPane {
     }
 
     public static void setZoomFactor(double zoomFactor) {
-        GoLMain.zoomFactor = zoomFactor;
+        Main.zoomFactor = zoomFactor;
     }
 
     public static double getxOffset() {
@@ -334,10 +391,18 @@ public class GoLMain extends JLayeredPane {
     }
 
     public static void setInitialized(boolean initialized) {
-        GoLMain.initialized = initialized;
+        Main.initialized = initialized;
     }
 
     public static void setLastCell(Cell lastCell) {
-        GoLMain.lastCell = lastCell;
+        Main.lastCell = lastCell;
+    }
+
+    public static boolean isRepainted() {
+        return repainted;
+    }
+
+    public static boolean isInPaint() {
+        return inPaint;
     }
 }

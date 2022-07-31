@@ -24,8 +24,8 @@ public class Cell extends Rectangle {
     }
 
     public static void initializeCells() {
-        xGrids = GoLMain.getMain().getWidth() / cellWidth;
-        yGrids = GoLMain.getMain().getHeight() / cellHeight;
+        xGrids = Main.getMain().getWidth() / cellWidth;
+        yGrids = Main.getMain().getHeight() / cellHeight;
 
         cells = new Cell[xGrids][yGrids];
         
@@ -36,7 +36,7 @@ public class Cell extends Rectangle {
         }
 
         initAliveCells();
-        GoLMain.setInitialized(true);
+        Main.setInitialized(true);
     }
 
     public static void initAliveCells() {
