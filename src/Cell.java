@@ -49,6 +49,7 @@ public class Cell extends Rectangle {
                     for (int j = 1; j < yGrids - 1; j++) {
                         // sets cell alive in lines; line distance can be changed in the options
                         if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
+                            cells[i][j].alive = true;
                             cells[i][j].nextGenAlive = true;
                         }
                     }
@@ -58,6 +59,7 @@ public class Cell extends Rectangle {
                 for (int i = 0; i < xGrids; i++) {
                     for (int j = 0; j < yGrids; j++) {
                         // sets cell alive randomly; % of alive cells can be changed in options
+                        cells[i][j].alive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
                         cells[i][j].nextGenAlive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
                     }
                 }

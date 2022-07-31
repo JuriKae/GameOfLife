@@ -44,11 +44,9 @@ public class MouseCellListener extends MouseAdapter {
         if (SwingUtilities.isLeftMouseButton(e)) {
             Cell.getCells()[x][y].setAlive(true);
             Cell.getCells()[x][y].setNextGenAlive(true);
-            Main.getMain().paintWithMouse(Main.getMain().getGraphics(), x, y, Cell.getCells()[x][y], true, false);
         } else if (SwingUtilities.isRightMouseButton(e)) {
             Cell.getCells()[x][y].setAlive(false);
             Cell.getCells()[x][y].setNextGenAlive(false);
-            Main.getMain().paintWithMouse(Main.getMain().getGraphics(), x, y, Cell.getCells()[x][y], false, false);
         }
 
         Main.setLastCell(Cell.getCells()[x][y]);
@@ -92,7 +90,7 @@ public class MouseCellListener extends MouseAdapter {
     @Override
     public void mouseReleased(MouseEvent e) {
         if (paintedWithMouse && !PatternPanel.isPattern()) {
-            // Main.getMain().repaint();
+            Main.getMain().repaint();
             paintedWithMouse = false;
             Main.setLastCell(null);
         }
@@ -107,7 +105,7 @@ public class MouseCellListener extends MouseAdapter {
         if (SwingUtilities.isMiddleMouseButton(e)) {
             hasZoomed = true;
             Main.resetZoom();
-            Main.getMain().zoom(Main.getMain().getGraphics());
+            Main.getMain().repaint();
         }
     }
 
@@ -120,12 +118,12 @@ public class MouseCellListener extends MouseAdapter {
         // Zoom in
         if (e.getWheelRotation() < 0) {
             Main.setZoomFactor(Main.getZoomFactor() * 1.1);
-            Main.getMain().zoom(Main.getMain().getGraphics());
+            Main.getMain().repaint();
         }
         // Zoom out
         if (e.getWheelRotation() > 0) {
             Main.setZoomFactor(Main.getZoomFactor() / 1.1);
-            Main.getMain().zoom(Main.getMain().getGraphics());
+            Main.getMain().repaint();
         }
     }
 

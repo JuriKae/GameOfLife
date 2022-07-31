@@ -33,6 +33,10 @@ public class Main extends JPanel {
     private static int generation = 1;
 
     private static Cell lastCell;
+    private static Cell cell = null;
+
+    private static int xGrids;
+    private static int yGrids;
 
     private static Main main;
 
@@ -127,6 +131,24 @@ public class Main extends JPanel {
 
                         Cell.countNeighbours();
 
+                        cell = null;
+                        Cell[][] cells = Cell.getCells();
+                        xGrids = cells.length;
+                        yGrids = cells[0].length;
+
+                        for (int i = 0; i < xGrids; i++) {
+                            for (int j = 0; j < yGrids; j++) {
+
+                                cell = cells[i][j];
+
+                                // save if last generation was alive or dead
+                                cell.setLastGenAlive(cell.isAlive());
+
+                                // set cell alive if it is alive in the next generation
+                                cell.setAlive(cell.isNextGenAlive());
+                            }
+                        }
+
                         main.repaint();
                         generation++;
                         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
@@ -208,61 +230,6 @@ public class Main extends JPanel {
         lastCell = cell;
     }
 
-    public void zoom(Graphics g) {
-        g2 = (Graphics2D) g;
-
-        AffineTransform at = new AffineTransform();
-
-        double xRel = MouseInfo.getPointerInfo().getLocation().getX() - getLocationOnScreen().getX();
-        double yRel = MouseInfo.getPointerInfo().getLocation().getY() - getLocationOnScreen().getY();
-
-        double zoomDiv = zoomFactor / prevZoomFactor;
-
-        xOffset = (zoomDiv) * (xOffset) + (1 - zoomDiv) * xRel;
-        yOffset = (zoomDiv) * (yOffset) + (1 - zoomDiv) * yRel;
-
-        prevZoomFactor = zoomFactor;
-
-        // frame only doesnt look weird if this is called here
-        super.paintComponent(g);
-
-        at.translate(xOffset, yOffset);
-        at.scale(zoomFactor, zoomFactor);
-        g2.transform(at);
-
-        Cell[][] cells = Cell.getCells();
-        int xGrids = cells.length;
-        int yGrids = cells[0].length;
-
-        Cell cell = null;
-
-        for (int i = 0; i < xGrids; i++) {
-            for (int j = 0; j < yGrids; j++) {
-
-                cell = cells[i][j];
-
-                // set color depending on status of cell and check if colors are inverted
-                g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor()
-                        : cell.getAliveColor());
-                g2.fill(cell);
-            }
-        }
-
-        // show the grid if user enabled it
-        if (AdvancedOptions.isShowGrid()) {
-            g2.setColor(Color.DARK_GRAY);
-            g2.setColor(new Color(50, 50, 50, 75));
-
-            for (int i = 0; i < yGrids; i++) {
-                g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
-            }
-
-            for (int i = 0; i < xGrids; i++) {
-                g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
-            }
-        }
-    }
-
     @Override
     public void paintComponent(Graphics g) {
         hasZoomed = MouseCellListener.isHasZoomed();
@@ -299,11 +266,13 @@ public class Main extends JPanel {
             }
         }
 
-        Cell[][] cells = Cell.getCells();
-        int xGrids = cells.length;
-        int yGrids = cells[0].length;
+        boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
-        Cell cell = null;
+        Cell[][] cells = Cell.getCells();
+        xGrids = cells.length;
+        yGrids = cells[0].length;
+
+        cell = null;
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
@@ -311,15 +280,8 @@ public class Main extends JPanel {
                 cell = cells[i][j];
 
                 // set color depending on status of cell and check if colors are inverted
-                g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor()
-                        : cell.getAliveColor());
+                g2.setColor(cell.isNextGenAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
                 g2.fill(cell);
-
-                // save if last generation was alive or dead
-                cell.setLastGenAlive(cell.isAlive());
-
-                // set cell alive if it is alive in the next generation
-                cell.setAlive(cell.isNextGenAlive());
             }
         }
 
