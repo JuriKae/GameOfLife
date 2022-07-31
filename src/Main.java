@@ -1,5 +1,6 @@
 package src;
 
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,10 +34,6 @@ public class Main extends JPanel {
     private static int generation = 1;
 
     private static Cell lastCell;
-    private static Cell cell = null;
-
-    private static int xGrids;
-    private static int yGrids;
 
     private static Main main;
 
@@ -131,10 +128,10 @@ public class Main extends JPanel {
 
                         Cell.countNeighbours();
 
-                        cell = null;
+                        Cell cell = null;
                         Cell[][] cells = Cell.getCells();
-                        xGrids = cells.length;
-                        yGrids = cells[0].length;
+                        int xGrids = cells.length;
+                        int yGrids = cells[0].length;
 
                         for (int i = 0; i < xGrids; i++) {
                             for (int j = 0; j < yGrids; j++) {
@@ -227,6 +224,23 @@ public class Main extends JPanel {
             }
         }
         lastCell = cell;
+
+        int xGrids = Cell.getxGrids();
+        int yGrids = Cell.getyGrids();
+
+        // show the grid if user enabled it
+        if (AdvancedOptions.isShowGrid()) {
+            g2.setColor(new Color(14,14,14));
+            g2.setStroke(new BasicStroke(0));
+            for (int i = 0; i < yGrids; i++) {
+                g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
+            }
+
+            for (int i = 0; i < xGrids; i++) {
+                g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
+            }
+            g2.setStroke(new BasicStroke(1));
+        }
     }
 
     @Override
@@ -268,10 +282,9 @@ public class Main extends JPanel {
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
 
         Cell[][] cells = Cell.getCells();
-        xGrids = cells.length;
-        yGrids = cells[0].length;
-
-        cell = null;
+        int xGrids = cells.length;
+        int yGrids = cells[0].length;
+        Cell cell = null;
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
@@ -285,7 +298,9 @@ public class Main extends JPanel {
 
         // show the grid if user enabled it
         if (AdvancedOptions.isShowGrid()) {
-            g2.setColor(new Color(50, 50, 50, 75));
+            // make grid as small as possible
+            g2.setStroke(new BasicStroke(0));
+            g2.setColor(new Color(14,14,14));
 
             for (int i = 0; i < yGrids; i++) {
                 g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
@@ -294,6 +309,8 @@ public class Main extends JPanel {
             for (int i = 0; i < xGrids; i++) {
                 g2.drawLine(i * currentCellWidth, 0, i * currentCellWidth, yGrids * currentCellHeight);
             }
+            // reset the stroke to 1
+            g2.setStroke(new BasicStroke(1));
         }
 
         MouseCellListener.setHasZoomed(false);
