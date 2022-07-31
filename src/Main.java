@@ -189,9 +189,8 @@ public class Main extends JPanel {
         yOffset = 0;
     }
 
-    // is called when user is dragging the mouse so that more pixel will be
-    // recognized
-    // only the pixels that have been painted will be repainted here
+    // is called when user is dragging the mouse so that more pixel will be drawn
+    // only the pixels that have been touched will be repainted here
     // not calling super.paint(), because that would reset everything
     public void paintWithMouse(Graphics g, int x, int y, Cell cell, Boolean isLeftClick, Boolean wasDragged) {
 
@@ -202,8 +201,8 @@ public class Main extends JPanel {
         at.scale(zoomFactor, zoomFactor);
         g2.transform(at);
 
-        g2.setColor(cell.isNextGenAlive() == AdvancedOptions.isColorsInverted() ? cell.getDeadColor()
-                : cell.getAliveColor());
+        boolean isColorsInverted = AdvancedOptions.isColorsInverted();
+        g2.setColor(cell.isNextGenAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
         g2.fill(cell);
 
         if (lastCell != null && wasDragged) {
@@ -276,7 +275,6 @@ public class Main extends JPanel {
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
-
                 cell = cells[i][j];
 
                 // set color depending on status of cell and check if colors are inverted
@@ -287,7 +285,6 @@ public class Main extends JPanel {
 
         // show the grid if user enabled it
         if (AdvancedOptions.isShowGrid()) {
-            g2.setColor(Color.DARK_GRAY);
             g2.setColor(new Color(50, 50, 50, 75));
 
             for (int i = 0; i < yGrids; i++) {

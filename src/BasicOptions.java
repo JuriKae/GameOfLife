@@ -144,6 +144,7 @@ public class BasicOptions {
 
         for (int i = 0; i < xGrid - 1; i++) {
             for (int j = 0; j < yGrid - 1; j++) {
+                cells[i][j].setAlive(cells[i][j].isLastGenAlive());
                 cells[i][j].setNextGenAlive(cells[i][j].isLastGenAlive());
             }
         }

@@ -8,19 +8,22 @@ import javax.swing.SwingUtilities;
 
 public class MouseCellListener extends MouseAdapter {
 
-    private double xDifference;
-    private double yDifference;
-
     private static boolean hasZoomed;
-
     private static boolean paintedWithMouse;
 
     @Override
     public void mousePressed(MouseEvent e) {
         super.mousePressed(e);
 
-        xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
-        yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
+        boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
+
+        // return if it is no left-or-right click
+        if (!isLeftClick && !SwingUtilities.isRightMouseButton(e)) {
+            return;
+        }
+
+        double xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
+        double yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
 
         // // converts x and y to correct value, even when zoomed in
         int x = (int) (e.getX() / xDifference - (Main.getxOffset() / xDifference));
@@ -31,25 +34,18 @@ public class MouseCellListener extends MouseAdapter {
         }
 
         // if a Pattern is selected, return after drawing it
-        if (PatternPanel.isPattern() && SwingUtilities.isLeftMouseButton(e)) {
+        if (PatternPanel.isPattern() && isLeftClick) {
             CellPattern.createPattern(x, y);
             Main.getMain().repaint();
             return;
         }
 
-        if (x < 0 || x > Cell.getxGrids() || y < 0 || y > Cell.getyGrids()) {
-            return;
-        }
+        Cell cell = Cell.getCells()[x][y];
 
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            Cell.getCells()[x][y].setAlive(true);
-            Cell.getCells()[x][y].setNextGenAlive(true);
-        } else if (SwingUtilities.isRightMouseButton(e)) {
-            Cell.getCells()[x][y].setAlive(false);
-            Cell.getCells()[x][y].setNextGenAlive(false);
-        }
+        cell.setAlive(isLeftClick);
+        cell.setNextGenAlive(isLeftClick);
 
-        Main.setLastCell(Cell.getCells()[x][y]);
+        Main.setLastCell(cell);
         paintedWithMouse = true;
     }
 
@@ -57,13 +53,15 @@ public class MouseCellListener extends MouseAdapter {
     public void mouseDragged(MouseEvent e) {
         super.mouseDragged(e);
 
-        // if a pattern is selected the user cant draw by dragging the mouse
-        if (PatternPanel.isPattern() && SwingUtilities.isLeftMouseButton(e)) {
+        boolean isLeftClick = SwingUtilities.isLeftMouseButton(e);
+
+        // return if Pattern is selected or if it is no left-or-right click
+        if ((PatternPanel.isPattern() && isLeftClick) || (!isLeftClick && !SwingUtilities.isRightMouseButton(e))) {
             return;
         }
 
-        xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
-        yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
+        double xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
+        double yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
 
         // converts x and y to correct value, even when zoomed in
         int x = (int) (e.getX() / xDifference - (Main.getxOffset() / xDifference));
@@ -74,17 +72,12 @@ public class MouseCellListener extends MouseAdapter {
             return;
         }
 
-        if (SwingUtilities.isLeftMouseButton(e)) {
-            Cell.getCells()[x][y].setAlive(true);
-            Cell.getCells()[x][y].setNextGenAlive(true);
-            Main.getMain().paintWithMouse(Main.getMain().getGraphics(), x, y, Cell.getCells()[x][y], true, true);
-            paintedWithMouse = true;
-        } else if (SwingUtilities.isRightMouseButton(e)) {
-            Cell.getCells()[x][y].setAlive(false);
-            Cell.getCells()[x][y].setNextGenAlive(false);
-            Main.getMain().paintWithMouse(Main.getMain().getGraphics(), x, y, Cell.getCells()[x][y], false, true);
-            paintedWithMouse = true;
-        }
+        Cell cell = Cell.getCells()[x][y];
+
+        cell.setAlive(isLeftClick);
+        cell.setNextGenAlive(isLeftClick);
+        Main.getMain().paintWithMouse(Main.getMain().getGraphics(), x, y, cell, isLeftClick, true);
+        paintedWithMouse = true;
     }
 
     @Override

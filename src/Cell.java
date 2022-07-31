@@ -59,8 +59,10 @@ public class Cell extends Rectangle {
                 for (int i = 0; i < xGrids; i++) {
                     for (int j = 0; j < yGrids; j++) {
                         // sets cell alive randomly; % of alive cells can be changed in options
-                        cells[i][j].alive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
-                        cells[i][j].nextGenAlive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
+                        if (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100) {
+                            cells[i][j].alive = true;
+                            cells[i][j].nextGenAlive = true;
+                        }
                     }
                 }
                 break;
