@@ -32,7 +32,7 @@ public class AdvancedOptions {
     private static int lineDistance = 9;
 
     // grid
-    private static boolean showGrid = true;
+    private static boolean showGrid = false;
 
     private static Font titleFont = new Font(null, Font.BOLD, 20);
     private static Font normalFont = new Font(null, Font.PLAIN, 16);
@@ -46,7 +46,7 @@ public class AdvancedOptions {
         optionsFrame.setTitle("Options");
         optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         optionsFrame.setBackground(Color.BLACK);
-        optionsFrame.setSize(350 + 16, 500 + 39);
+        optionsFrame.setSize(350 + 16, 480 + 39);
         optionsFrame.setLayout(null);
         optionsFrame.setResizable(false);
 
@@ -61,7 +61,7 @@ public class AdvancedOptions {
     public static void fillColorPanel() {
         JPanel colorPanel = new JPanel();
         colorPanel.setLayout(null);
-        colorPanel.setBounds(0, 0, 350, 200);
+        colorPanel.setBounds(0, 0, 350, 180);
         colorPanel.setBackground(Color.BLACK);
         colorPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -180,7 +180,7 @@ public class AdvancedOptions {
     public static void fillFirstCellsPanel() {
         JPanel firstCellsPanel = new JPanel();
         firstCellsPanel.setLayout(null);
-        firstCellsPanel.setBounds(0, 200, 350, 150);
+        firstCellsPanel.setBounds(0, 180, 350, 150);
         firstCellsPanel.setBackground(Color.BLACK);
         firstCellsPanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -272,7 +272,7 @@ public class AdvancedOptions {
     public static void fillCellSizePanel() {
         JPanel cellSizePanel = new JPanel();
         cellSizePanel.setLayout(null);
-        cellSizePanel.setBounds(0, 350, 350, 150);
+        cellSizePanel.setBounds(0, 330, 350, 150);
         cellSizePanel.setBackground(Color.BLACK);
         cellSizePanel.setBorder(BorderFactory.createLineBorder(Color.WHITE));
 
@@ -306,7 +306,7 @@ public class AdvancedOptions {
         JCheckBox gridCheckBox = new JCheckBox();
         gridCheckBox.setBounds(225, 90, 100, 30);
         gridCheckBox.setBackground(Color.BLACK);
-        gridCheckBox.setSelected(true);
+        gridCheckBox.setSelected(false);
         gridCheckBox.addActionListener(e -> {
             showGrid = gridCheckBox.isSelected();
             Main.getMain().repaint();
