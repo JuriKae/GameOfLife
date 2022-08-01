@@ -47,7 +47,7 @@ public class CellPattern {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 3; j++) {
-                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
+                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setAlive(false);
             }
         }
 
@@ -56,12 +56,6 @@ public class CellPattern {
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
-
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
     }
 
     public static void makeLWSS(int xGrid, int yGrid) {
@@ -70,7 +64,7 @@ public class CellPattern {
 
         for (int i = 0; i < 5; i++) {
             for (int j = 0; j < 4; j++) {
-                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
+                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setAlive(false);
             }
         }
 
@@ -83,16 +77,6 @@ public class CellPattern {
         cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
-
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
     }
 
     public static void makeHWSS(int xGrid, int yGrid) {
@@ -101,7 +85,7 @@ public class CellPattern {
 
         for (int i = 0; i < 7; i++) {
             for (int j = 0; j < 5; j++) {
-                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalXGrids].setNextGenAlive(false);
+                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalXGrids].setAlive(false);
             }
         }
 
@@ -118,20 +102,6 @@ public class CellPattern {
         cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setAlive(true);
-
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 6) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 6) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 6) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
     }
 
     public static void makePulsar(int xGrid, int yGrid) {
@@ -140,7 +110,7 @@ public class CellPattern {
 
         for (int i = -1; i < 14; i++) {
             for (int j = -1; j < 14; j++) {
-                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
+                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setAlive(false);
             }
         }
 
@@ -192,55 +162,6 @@ public class CellPattern {
         cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setAlive(true);
-
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 9) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 10) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 12) % totalYGrids].setNextGenAlive(true);
     }
 
     public static void makePentaDeca(int inBoundsXGrid, int yGrid) {
@@ -249,7 +170,7 @@ public class CellPattern {
 
         for (int i = -3; i < 13; i++) {
             for (int j = 0; j < 9; j++) {
-                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
+                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setAlive(false);
             }
         }
 
@@ -271,25 +192,6 @@ public class CellPattern {
         cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
-
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 9) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 8) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 7) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 5) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
     }
 
     public static void makePlayButton(int inBoundsXGrid, int yGrid) {
@@ -298,7 +200,7 @@ public class CellPattern {
 
         for (int i = 0; i < 15; i++) {
             for (int j = 0; j < 9; j++) {
-                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setNextGenAlive(false);
+                cells[(inBoundsXGrid + i) % totalXGrids][(inBoundsYGrid + j) % totalYGrids].setAlive(false);
             }
         }
 
@@ -346,50 +248,5 @@ public class CellPattern {
         cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
         cells[(inBoundsXGrid + 13) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setAlive(true);
-
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 13) % totalXGrids][(inBoundsYGrid + 0) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 1) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 2) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 3) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 4) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 5) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 4) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 10) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 6) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 0) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 14) % totalXGrids][(inBoundsYGrid + 7) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 1) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 2) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 3) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 11) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 12) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
-        cells[(inBoundsXGrid + 13) % totalXGrids][(inBoundsYGrid + 8) % totalYGrids].setNextGenAlive(true);
     }  
 }

@@ -43,7 +43,6 @@ public class MouseCellListener extends MouseAdapter {
         Cell cell = Cell.getCells()[x][y];
 
         cell.setAlive(isLeftClick);
-        cell.setNextGenAlive(isLeftClick);
 
         Main.setLastCell(cell);
         paintedWithMouse = true;
@@ -75,7 +74,6 @@ public class MouseCellListener extends MouseAdapter {
         Cell cell = Cell.getCells()[x][y];
 
         cell.setAlive(isLeftClick);
-        cell.setNextGenAlive(isLeftClick);
         Main.getMain().paintWithMouse(Main.getMain().getGraphics(), x, y, cell, isLeftClick, true);
         paintedWithMouse = true;
     }

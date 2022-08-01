@@ -20,11 +20,12 @@ public class PatternPanel {
     private static final int patternPanelWidth = 150;
 
     private static boolean isPattern;
-
     private static Pattern chosenPattern;
 
     private static int buttonHeight = 150;
     private static int numberOfPatterns = 6;
+
+    private static Color buttonColor = BasicOptions.getButtonColor();
 
     private static JButton[] buttonArray = new JButton[numberOfPatterns];
 
@@ -47,7 +48,7 @@ public class PatternPanel {
             } else {
                 chosenPattern = null;
                 isPattern = false;
-                gliderButton.setBackground(Color.GRAY);
+                gliderButton.setBackground(buttonColor);
             }
         });
 
@@ -63,7 +64,7 @@ public class PatternPanel {
             } else {
                 chosenPattern = null;
                 isPattern = false;
-                lwssButton.setBackground(Color.GRAY);
+                lwssButton.setBackground(buttonColor);
             }
         });
 
@@ -79,7 +80,7 @@ public class PatternPanel {
             } else {
                 chosenPattern = null;
                 isPattern = false;
-                hwssButton.setBackground(Color.GRAY);
+                hwssButton.setBackground(buttonColor);
             }
         });
 
@@ -95,7 +96,7 @@ public class PatternPanel {
             } else {
                 chosenPattern = null;
                 isPattern = false;
-                pulsarButton.setBackground(Color.GRAY);
+                pulsarButton.setBackground(buttonColor);
             }
         });
 
@@ -111,7 +112,7 @@ public class PatternPanel {
             } else {
                 chosenPattern = null;
                 isPattern = false;
-                pentaDecaButton.setBackground(Color.GRAY);
+                pentaDecaButton.setBackground(buttonColor);
             }
         });
 
@@ -127,7 +128,7 @@ public class PatternPanel {
             } else {
                 chosenPattern = null;
                 isPattern = false;
-                playButtonButton.setBackground(Color.GRAY);
+                playButtonButton.setBackground(buttonColor);
             }
         });
 
@@ -140,7 +141,8 @@ public class PatternPanel {
 
         for (JButton button : buttonArray) {
             button.setFocusable(false);
-            button.setBackground(Color.GRAY);
+            button.setBackground(buttonColor);
+            button.setForeground(Color.WHITE);
             patternPanel.add(button);
             button.setVerticalTextPosition(AbstractButton.TOP);
             button.setHorizontalTextPosition(AbstractButton.CENTER);
@@ -169,7 +171,7 @@ public class PatternPanel {
 
     public static void deselectButtons() {
         for (JButton button : buttonArray) {
-            button.setBackground(Color.GRAY);
+            button.setBackground(buttonColor);
         }
     }
 

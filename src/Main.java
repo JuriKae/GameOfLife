@@ -199,7 +199,7 @@ public class Main extends JPanel {
         g2.transform(at);
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
-        g2.setColor(cell.isNextGenAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
+        g2.setColor(cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
         g2.fill(cell);
 
         if (lastCell != null && wasDragged) {
@@ -219,7 +219,6 @@ public class Main extends JPanel {
                 for (int i = 0; i < list.size(); i++) {
                     g2.fill(list.get(i));
                     list.get(i).setAlive(isLeftClick);
-                    list.get(i).setNextGenAlive(isLeftClick);
                 }
             }
         }
@@ -291,7 +290,7 @@ public class Main extends JPanel {
                 cell = cells[i][j];
 
                 // set color depending on status of cell and check if colors are inverted
-                g2.setColor(cell.isNextGenAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
+                g2.setColor(cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
                 g2.fill(cell);
             }
         }
@@ -312,7 +311,6 @@ public class Main extends JPanel {
             // reset the stroke to 1
             g2.setStroke(new BasicStroke(1));
         }
-
         MouseCellListener.setHasZoomed(false);
         repainted = true;
         inPaint = false;

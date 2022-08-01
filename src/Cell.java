@@ -50,7 +50,6 @@ public class Cell extends Rectangle {
                         // sets cell alive in lines; line distance can be changed in the options
                         if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
                             cells[i][j].alive = true;
-                            cells[i][j].nextGenAlive = true;
                         }
                     }
                 }
@@ -59,10 +58,7 @@ public class Cell extends Rectangle {
                 for (int i = 0; i < xGrids; i++) {
                     for (int j = 0; j < yGrids; j++) {
                         // sets cell alive randomly; % of alive cells can be changed in options
-                        if (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100) {
-                            cells[i][j].alive = true;
-                            cells[i][j].nextGenAlive = true;
-                        }
+                        cells[i][j].alive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
                     }
                 }
                 break;
@@ -106,10 +102,6 @@ public class Cell extends Rectangle {
 
     public boolean isNextGenAlive() {
         return nextGenAlive;
-    }
-
-    public void setNextGenAlive(boolean nextGenAlive) {
-        this.nextGenAlive = nextGenAlive;
     }
 
     public static int getCellWidth() {
