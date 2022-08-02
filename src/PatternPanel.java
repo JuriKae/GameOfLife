@@ -23,7 +23,7 @@ public class PatternPanel {
     private static Pattern chosenPattern;
 
     private static int buttonHeight = 150;
-    private static int numberOfPatterns = 6;
+    private static int numberOfPatterns = 7;
 
     private static Color buttonColor = BasicOptions.getButtonColor();
 
@@ -132,12 +132,29 @@ public class PatternPanel {
             }
         });
 
+        ImageIcon gliderCannonIcon = new ImageIcon(PatternPanel.class.getResource("icons/gliderCannonIcon.png"));
+        JButton gliderCannonButton = new JButton("Glider Cannon");
+        gliderCannonButton.setIcon(gliderCannonIcon);
+        gliderCannonButton.addActionListener(e -> {
+            if (chosenPattern != Pattern.GliderCannon) {
+                chosenPattern = Pattern.GliderCannon;
+                isPattern = true;
+                deselectButtons();
+                gliderCannonButton.setBackground(Color.DARK_GRAY);
+            } else {
+                chosenPattern = null;
+                isPattern = false;
+                gliderCannonButton.setBackground(buttonColor);
+            }
+        });
+
         buttonArray[0] = gliderButton;
         buttonArray[1] = lwssButton;
         buttonArray[2] = hwssButton;
         buttonArray[3] = pulsarButton;
         buttonArray[4] = pentaDecaButton;
         buttonArray[5] = playButtonButton;
+        buttonArray[6] = gliderCannonButton;
 
         for (JButton button : buttonArray) {
             button.setFocusable(false);

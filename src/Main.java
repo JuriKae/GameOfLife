@@ -145,7 +145,6 @@ public class Main extends JPanel {
                                 cell.setAlive(cell.isNextGenAlive());
                             }
                         }
-
                         main.repaint();
                         generation++;
                         BasicOptions.getGenerationLabel().setText("Generation: " + generation);

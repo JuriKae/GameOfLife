@@ -104,6 +104,10 @@ public class Cell extends Rectangle {
         return nextGenAlive;
     }
 
+    public void setNextGenAlive(boolean nextGenAlive) {
+        this.nextGenAlive = nextGenAlive;
+    }
+
     public static int getCellWidth() {
         return cellWidth;
     }
