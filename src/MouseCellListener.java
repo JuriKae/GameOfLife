@@ -25,7 +25,7 @@ public class MouseCellListener extends MouseAdapter {
         double xDifference = (Cell.getCellWidth() * Main.getZoomFactor());
         double yDifference = (Cell.getCellHeight() * Main.getZoomFactor());
 
-        // // converts x and y to correct value, even when zoomed in
+        // converts x and y to correct value, even when zoomed in
         int x = (int) (e.getX() / xDifference - (Main.getxOffset() / xDifference));
         int y = (int) (e.getY() / yDifference - (Main.getyOffset() / yDifference));
 
@@ -106,12 +106,12 @@ public class MouseCellListener extends MouseAdapter {
 
         hasZoomed = true;
 
-        // Zoom in
+        // zoom in
         if (e.getWheelRotation() < 0) {
             Main.setZoomFactor(Main.getZoomFactor() * 1.1);
             Main.getMain().repaint();
         }
-        // Zoom out
+        // zoom out
         if (e.getWheelRotation() > 0) {
             Main.setZoomFactor(Main.getZoomFactor() / 1.1);
             Main.getMain().repaint();

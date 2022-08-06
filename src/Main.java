@@ -116,7 +116,6 @@ public class Main extends JPanel {
                             Thread.sleep(0);
                             // if user pressed step, break out of the while loop for one iteration
                             if (BasicOptions.isStep()) {
-                                // BasicOptions.setStep(false);
                                 break;
                             }
                         }
