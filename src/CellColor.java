@@ -11,6 +11,8 @@ public class CellColor {
     private static Color rainbowColor = null;
     private static Color randomColor = null;
 
+    private static long lastTimeCalled;
+
     // changes the color so that the cells of one generation can have different colors
     public static synchronized void changeCellColor(Cell cell) {
         switch (AdvancedOptions.getColorMode()) {
@@ -76,7 +78,12 @@ public class CellColor {
     }
 
     // generate colors for the one-color generation mode
-    public static void generateColors() {
+    public static void generateColors(long timeWhenCalled) {
+        // colors can only change every 0.2 seconds
+        if (timeWhenCalled - lastTimeCalled < 200000000) {
+            return;
+        }
+        
         if (++rainbowColorIndex > 6) {
             rainbowColorIndex = 0;
         }
@@ -84,6 +91,8 @@ public class CellColor {
 
         randomColor = new Color((int) (Math.random() * 255), (int) (Math.random() * 255),
                 (int) (Math.random() * 255));
+
+        lastTimeCalled = System.nanoTime();
     }
 
     public static Color getRandomColor() {

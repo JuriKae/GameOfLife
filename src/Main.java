@@ -63,7 +63,7 @@ public class Main extends JPanel {
         frame.setLayout(new BorderLayout());
 
         this.setPreferredSize(new Dimension(panelWidth, panelHeight));
-        this.setBackground(Color.BLACK);
+        this.setBackground(Color.DARK_GRAY);
         this.setOpaque(true);
         this.setBorder(BorderFactory.createLineBorder(new Color(230, 230, 255), 2));
         this.addMouseListener(mouseListener);
@@ -120,7 +120,7 @@ public class Main extends JPanel {
                         }
 
                         // generate colors for one-generation color mode
-                        CellColor.generateColors();
+                        CellColor.generateColors(System.nanoTime());
 
                         while (inPaint) {
                             Thread.sleep(0);
@@ -168,7 +168,7 @@ public class Main extends JPanel {
         generation = 1;
         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
-        CellColor.generateColors();
+        CellColor.generateColors(System.nanoTime());
         Cell.initializeCells();
 
         currentCellWidth = Cell.getCellWidth();
