@@ -101,6 +101,8 @@ public class Main extends JPanel {
                         // do not sleep if user makes steps
                         if (!BasicOptions.isStep()) {
                             Thread.sleep(BasicOptions.getDelay());
+                        } else {
+                            BasicOptions.setStep(false);
                         }
 
                         // wait until all the cells have been repainted
@@ -114,7 +116,7 @@ public class Main extends JPanel {
                             Thread.sleep(0);
                             // if user pressed step, break out of the while loop for one iteration
                             if (BasicOptions.isStep()) {
-                                BasicOptions.setStep(false);
+                                // BasicOptions.setStep(false);
                                 break;
                             }
                         }
