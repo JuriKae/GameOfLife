@@ -17,6 +17,7 @@ import javax.swing.SpinnerNumberModel;
 
 public class AdvancedOptions {
     private static JFrame optionsFrame;
+    private static GamePanel panel;
 
     // color panel stuff
     private static Color chosenColor = Color.WHITE;
@@ -41,7 +42,9 @@ public class AdvancedOptions {
     private static Color buttonColor = new Color(255, 255, 255);
     private static Color boxFontColor = Color.BLACK;
 
-    public AdvancedOptions() {
+    public AdvancedOptions(GamePanel panel) {
+        AdvancedOptions.panel = panel;
+        
         optionsFrame = new JFrame();
         optionsFrame.setTitle("Options");
         optionsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -92,7 +95,7 @@ public class AdvancedOptions {
         invertColorsBox.setBackground(Color.BLACK);
         invertColorsBox.addActionListener(e -> {
             colorsInverted = invertColorsBox.isSelected();
-            Main.getMain().repaint();
+            panel.repaint();
         });
 
         JCheckBox oneGenColorCheckBox = new JCheckBox();
@@ -101,7 +104,7 @@ public class AdvancedOptions {
         oneGenColorCheckBox.addActionListener(e -> {
             oneGenerationColor = oneGenColorCheckBox.isSelected();
             CellColor.callChangeColorFunction();
-            Main.getMain().repaint();
+            panel.repaint();
         });
         oneGenColorCheckBox.setVisible(false);
 
@@ -162,7 +165,7 @@ public class AdvancedOptions {
             }
 
             CellColor.callChangeColorFunction();
-            Main.getMain().repaint();
+            panel.repaint();
         });
 
         colorPanel.add(colorLabel);
@@ -309,7 +312,7 @@ public class AdvancedOptions {
         gridCheckBox.setSelected(false);
         gridCheckBox.addActionListener(e -> {
             showGrid = gridCheckBox.isSelected();
-            Main.getMain().repaint();
+            panel.repaint();
         });
 
         cellSizePanel.add(setCellSizeLabel);

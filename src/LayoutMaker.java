@@ -12,7 +12,7 @@ public class LayoutMaker {
 
     public LayoutMaker(JButton[] buttons, JSlider delaySlider) {
 
-        JPanel topPanel = Main.getTopPanel();
+        JPanel topPanel = GamePanel.getTopPanel();
         GridBagConstraints gbc = new GridBagConstraints();
         topPanel.setLayout(new GridBagLayout());
 

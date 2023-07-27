@@ -25,7 +25,8 @@ public class BasicOptions {
     private static Font buttonFont = new Font(null, Font.BOLD, 12);
     private static Color buttonColor = new Color(0, 71, 179);
 
-    public BasicOptions() {
+    public BasicOptions(GamePanel panel) {
+
         startButton = new JButton("Start");
         startButton.addActionListener(e -> startGame());
 
@@ -41,7 +42,7 @@ public class BasicOptions {
             // code executes when user makes one step back
             previousButton.setEnabled(false);
             Cell.takeAStepBack();
-            int generation = Main.oneGenerationBack();
+            int generation = GamePanel.oneGenerationBack();
             generationLabel.setText("Generation: " + generation);
         });
         previousButton.setEnabled(false);
@@ -63,13 +64,13 @@ public class BasicOptions {
 
             // check if optionsFrame fits to the right of the main frame
             // if not, set its location relative to the main frame
-            Point point = new Point(Main.getFrame().getX() + Main.getFrame().getWidth(), Main.getFrame().getY());
+            Point point = new Point(GamePanel.getFrame().getX() + GamePanel.getFrame().getWidth(), GamePanel.getFrame().getY());
             Point rightMostPoint = new Point((int) (point.getX() + optionsFrame.getWidth()), (int) point.getY());
 
             if (SwingUtil.isLocationInScreenBounds(rightMostPoint)) {
                 optionsFrame.setLocation(point);
             } else {
-                optionsFrame.setLocationRelativeTo(Main.getMain());
+                optionsFrame.setLocationRelativeTo(panel);
             }
             optionsFrame.setVisible(true);
         });
@@ -111,7 +112,7 @@ public class BasicOptions {
     }
 
     public static void reset() {
-        Main.setReset(true);
+        GamePanel.setReset(true);
 
         if (!paused) {
             togglePause();
