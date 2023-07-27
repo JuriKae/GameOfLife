@@ -23,9 +23,9 @@ public class Cell extends Rectangle {
         this.setBounds(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
     }
 
-    public static void initializeCells() {
-        xGrids = Main.getMain().getWidth() / cellWidth;
-        yGrids = Main.getMain().getHeight() / cellHeight;
+    public static void initializeCells(int mainWidth, int mainHeight) {
+        xGrids = mainWidth / cellWidth;
+        yGrids = mainHeight / cellHeight;
 
         cells = new Cell[xGrids][yGrids];
         
@@ -36,7 +36,6 @@ public class Cell extends Rectangle {
         }
 
         initAliveCells();
-        Main.setInitialized(true);
     }
 
     public static void initAliveCells() {
@@ -45,20 +44,22 @@ public class Cell extends Rectangle {
             case Empty:
                 break;
             case Line:
+                int lineDistance = AdvancedOptions.getLineDistance();
                 for (int i = 1; i < xGrids - 1; i++) {
                     for (int j = 1; j < yGrids - 1; j++) {
                         // sets cell alive in lines; line distance can be changed in the options
-                        if (j % AdvancedOptions.getLineDistance() == 0 || i % AdvancedOptions.getLineDistance() == 0) {
+                        if (j % lineDistance == 0 || i % lineDistance == 0) {
                             cells[i][j].alive = true;
                         }
                     }
                 }
                 break;
             case Random:
+                float percOfAliveCells = AdvancedOptions.getPercOfAliveCells();
                 for (int i = 0; i < xGrids; i++) {
                     for (int j = 0; j < yGrids; j++) {
                         // sets cell alive randomly; % of alive cells can be changed in options
-                        cells[i][j].alive = (Math.random() < AdvancedOptions.getPercOfAliveCells() / 100);
+                        cells[i][j].alive = (Math.random() < percOfAliveCells / 100);
                     }
                 }
                 break;
@@ -83,13 +84,20 @@ public class Cell extends Rectangle {
 
                 // sets next gen cell alive or dead according to number of neighbours
                 if (!cells[i][j].alive) {
-                    cells[i][j].nextGenAlive = neighbours == 3 ? true : false;
+                    cells[i][j].nextGenAlive = neighbours == 3;
                 } else {
-                    cells[i][j].nextGenAlive = neighbours <= 1 || neighbours >= 4 ? false : true;
+                    cells[i][j].nextGenAlive = neighbours == 2 || neighbours == 3;
                 }
             }
         }
-        CellColor.callChangeColorFunction();
+    }
+
+    public static void takeAStepBack() {
+        for (int i = 0; i < xGrids - 1; i++) {
+            for (int j = 0; j < yGrids - 1; j++) {
+                cells[i][j].alive = cells[i][j].lastGenAlive;
+            }
+        }
     }
 
     public boolean isAlive() {
@@ -142,10 +150,6 @@ public class Cell extends Rectangle {
 
     public static int getyGrids() {
         return yGrids;
-    }
-
-    public boolean isLastGenAlive() {
-        return lastGenAlive;
     }
 
     public void setLastGenAlive(boolean lastGenAlive) {

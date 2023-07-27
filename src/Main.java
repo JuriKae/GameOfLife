@@ -95,71 +95,77 @@ public class Main extends JPanel {
 
             @Override
             public void run() {
-                while (!reset) {
-
-                    try {
-                        // do not sleep if user makes steps
-                        if (!BasicOptions.isStep()) {
-                            Thread.sleep(BasicOptions.getDelay());
-                        } else {
-                            BasicOptions.setStep(false);
-                        }
-
-                        // wait until all the cells have been repainted
-                        while (!repainted) {
-                            Thread.sleep(0);
-                        }
-                        repainted = false;
-
-                        // wait if the game has been paused
-                        while (BasicOptions.isPaused() && !reset) {
-                            Thread.sleep(0);
-                            // if user pressed step, break out of the while loop for one iteration
-                            if (BasicOptions.isStep()) {
-                                break;
-                            }
-                        }
-
-                        // generate colors for one-generation color mode
-                        CellColor.generateColors(System.nanoTime());
-
-                        while (inPaint) {
-                            Thread.sleep(0);
-                        }
-
-                        Cell.countNeighbours();
-
-                        Cell cell = null;
-                        Cell[][] cells = Cell.getCells();
-                        int xGrids = cells.length;
-                        int yGrids = cells[0].length;
-
-                        for (int i = 0; i < xGrids; i++) {
-                            for (int j = 0; j < yGrids; j++) {
-
-                                cell = cells[i][j];
-
-                                // save if last generation was alive or dead
-                                cell.setLastGenAlive(cell.isAlive());
-
-                                // set cell alive if it is alive in the next generation
-                                cell.setAlive(cell.isNextGenAlive());
-                            }
-                        }
-                        main.repaint();
-                        generation++;
-                        BasicOptions.getGenerationLabel().setText("Generation: " + generation);
-
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-                // here when user resets
-                resetSuff();
+                runThread();
             }
         });
         // thread always starts immediately, but paused is enabled
         thread.start();
+    }
+
+    public static void runThread() {
+        while (!reset) {
+
+            try {
+                // do not sleep if user makes steps
+                if (!BasicOptions.isStep()) {
+                    Thread.sleep(BasicOptions.getDelay());
+                } else {
+                    BasicOptions.setStep(false);
+                }
+
+                // wait until all the cells have been repainted
+                while (!repainted) {
+                    Thread.sleep(1);
+                }
+                repainted = false;
+
+                // wait if the game has been paused
+                while (BasicOptions.isPaused() && !reset) {
+                    Thread.sleep(1);
+                    // if user pressed step, break out of the while loop for one iteration
+                    if (BasicOptions.isStep()) {
+                        break;
+                    }
+                }
+
+                // generate colors for one-generation color mode
+                CellColor.generateColors(System.nanoTime());
+
+                while (inPaint) {
+                    Thread.sleep(0);
+                }
+
+                Cell.countNeighbours();
+                CellColor.callChangeColorFunction();
+
+
+                Cell cell = null;
+                Cell[][] cells = Cell.getCells();
+                int xGrids = cells.length;
+                int yGrids = cells[0].length;
+
+                for (int i = 0; i < xGrids; i++) {
+                    for (int j = 0; j < yGrids; j++) {
+
+                        cell = cells[i][j];
+
+                        // save if last generation was alive or dead
+                        cell.setLastGenAlive(cell.isAlive());
+
+                        // set cell alive if it is alive in the next generation
+                        cell.setAlive(cell.isNextGenAlive());
+                    }
+                }
+                main.repaint();
+                generation++;
+                BasicOptions.getGenerationLabel().setText("Generation: " + generation);
+
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+        // here when user resets
+        resetSuff();
     }
 
     public static void resetSuff() {
@@ -170,7 +176,8 @@ public class Main extends JPanel {
         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
         CellColor.generateColors(System.nanoTime());
-        Cell.initializeCells();
+        Cell.initializeCells(main.getWidth(), main.getHeight());
+        initialized = true;
 
         currentCellWidth = Cell.getCellWidth();
         currentCellHeight = Cell.getCellHeight();
@@ -184,6 +191,12 @@ public class Main extends JPanel {
         prevZoomFactor = 1;
         xOffset = 0;
         yOffset = 0;
+    }
+
+    public static int oneGenerationBack() {
+        generation--;
+        main.repaint();
+        return generation;
     }
 
     // is called when user is dragging the mouse so that more pixel will be drawn
@@ -320,24 +333,12 @@ public class Main extends JPanel {
         return topPanel;
     }
 
-    public static Thread getThread() {
-        return thread;
-    }
-
     public static Main getMain() {
         return main;
     }
 
     public static void setReset(boolean reset) {
         Main.reset = reset;
-    }
-
-    public static void setGeneration(int generation) {
-        Main.generation = generation;
-    }
-
-    public static int getGeneration() {
-        return generation;
     }
 
     public static void setHasZoomed(boolean hasZoomed) {
@@ -364,19 +365,7 @@ public class Main extends JPanel {
         return frame;
     }
 
-    public static void setInitialized(boolean initialized) {
-        Main.initialized = initialized;
-    }
-
     public static void setLastCell(Cell lastCell) {
         Main.lastCell = lastCell;
-    }
-
-    public static boolean isRepainted() {
-        return repainted;
-    }
-
-    public static boolean isInPaint() {
-        return inPaint;
     }
 }

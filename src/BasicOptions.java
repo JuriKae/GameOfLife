@@ -7,6 +7,7 @@ import java.awt.Point;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JSlider;
 
@@ -36,26 +37,41 @@ public class BasicOptions {
         pauseButton.setEnabled(false);
 
         previousButton = new JButton("Back");
-        previousButton.addActionListener(e -> makeAStepBack());
+        previousButton.addActionListener(e -> {
+            // code executes when user makes one step back
+            previousButton.setEnabled(false);
+            Cell.takeAStepBack();
+            int generation = Main.oneGenerationBack();
+            generationLabel.setText("Generation: " + generation);
+        });
         previousButton.setEnabled(false);
-
+        
         stepButton = new JButton("Step");
-        stepButton.addActionListener(e -> makeAStep());
+        stepButton.addActionListener(e -> {
+            // code executes when user makes one step
+            previousButton.setEnabled(true);
+            pauseButton.setEnabled(true);
+            pauseButton.setText("Resume");
+            startButton.setEnabled(false);
+            step = true;
+        });
 
         optionsButton = new JButton("Options");
         optionsButton.addActionListener(e -> {
 
+            JFrame optionsFrame = AdvancedOptions.getOptionsFrame();
+
             // check if optionsFrame fits to the right of the main frame
             // if not, set its location relative to the main frame
             Point point = new Point(Main.getFrame().getX() + Main.getFrame().getWidth(), Main.getFrame().getY());
-            Point rightMostPoint = new Point((int) (point.getX() + AdvancedOptions.getOptionsFrame().getWidth()), (int) point.getY());
+            Point rightMostPoint = new Point((int) (point.getX() + optionsFrame.getWidth()), (int) point.getY());
 
             if (SwingUtil.isLocationInScreenBounds(rightMostPoint)) {
-                AdvancedOptions.getOptionsFrame().setLocation(point);
+                optionsFrame.setLocation(point);
             } else {
-                AdvancedOptions.getOptionsFrame().setLocationRelativeTo(Main.getMain());
+                optionsFrame.setLocationRelativeTo(Main.getMain());
             }
-            AdvancedOptions.getOptionsFrame().setVisible(true);
+            optionsFrame.setVisible(true);
         });
 
         generationLabel = new JLabel("Generation: 1");
@@ -84,7 +100,7 @@ public class BasicOptions {
 
         });
 
-        new LayoutMaker();
+        new LayoutMaker(buttonArray, delaySlider);
     }
 
     public static void startGame() {
@@ -123,35 +139,6 @@ public class BasicOptions {
         }
     }
 
-    public static void makeAStep() {
-        if (!Main.getThread().isAlive()) {
-            startGame();
-            togglePause();
-        }
-        previousButton.setEnabled(true);
-        pauseButton.setEnabled(true);
-        pauseButton.setText("Resume");
-        startButton.setEnabled(false);
-        step = true;
-    }
-
-    public static void makeAStepBack() {
-        previousButton.setEnabled(false);
-
-        int xGrid = Cell.getxGrids();
-        int yGrid = Cell.getyGrids();
-        Cell[][] cells = Cell.getCells();
-
-        for (int i = 0; i < xGrid - 1; i++) {
-            for (int j = 0; j < yGrid - 1; j++) {
-                cells[i][j].setAlive(cells[i][j].isLastGenAlive());
-            }
-        }
-        Main.setGeneration(Main.getGeneration() - 1);
-        generationLabel.setText("Generation: " + Main.getGeneration());
-        Main.getMain().repaint();
-    }
-
     public static boolean isPaused() {
         return paused;
     }
@@ -168,36 +155,8 @@ public class BasicOptions {
         return generationLabel;
     }
 
-    public static JButton getStartButton() {
-        return startButton;
-    }
-
-    public static JButton getResetButton() {
-        return resetButton;
-    }
-
-    public static JButton getPauseButton() {
-        return pauseButton;
-    }
-
-    public static JButton getStepButton() {
-        return stepButton;
-    }
-
-    public static JButton getOptionsButton() {
-        return optionsButton;
-    }
-
     public static int getDelay() {
         return delay;
-    }
-
-    public static JButton getPreviousButton() {
-        return previousButton;
-    }
-
-    public static JSlider getDelaySlider() {
-        return delaySlider;
     }
 
     public static Color getButtonColor() {

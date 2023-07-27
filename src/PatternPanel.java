@@ -200,10 +200,6 @@ public class PatternPanel {
         return isPattern;
     }
 
-    public static void setPattern(boolean isPattern) {
-        PatternPanel.isPattern = isPattern;
-    }
-
     public static Pattern getChosenPattern() {
         return chosenPattern;
     }
