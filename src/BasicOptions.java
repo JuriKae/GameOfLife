@@ -46,7 +46,7 @@ public class BasicOptions {
             generationLabel.setText("Generation: " + generation);
         });
         previousButton.setEnabled(false);
-        
+
         stepButton = new JButton("Step");
         stepButton.addActionListener(e -> {
             // code executes when user makes one step
@@ -90,15 +90,15 @@ public class BasicOptions {
             button.setBorder(BorderFactory.createLineBorder(Color.WHITE, 2));
         }
 
-        delaySlider = new JSlider(JSlider.VERTICAL, 1, 100, 40);
+        int[] delayValues = { 1000, 750, 500, 400, 300, 250, 200, 150, 100, 75, 50, 25, 10, 5, 1, 0 };
+
+        delaySlider = new JSlider(JSlider.VERTICAL, 0, delayValues.length - 1, 10);
         delaySlider.setPreferredSize(new Dimension(20, 70));
         delaySlider.setBackground(Color.BLACK);
-        delaySlider.setToolTipText("Delay between generations");
+        delaySlider.setToolTipText("Simulation Speed");
+
         delaySlider.addChangeListener(e -> {
-
-            // function to calculate logarithmic values for better slider experience
-            delay = (int) Math.exp((Math.log(1000) - Math.log(1)) / (100 - 1) * (delaySlider.getValue() - 1));
-
+            delay = delayValues[delaySlider.getValue()];
         });
 
         new LayoutMaker(buttonArray, delaySlider, panel);

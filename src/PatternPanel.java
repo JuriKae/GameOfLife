@@ -177,7 +177,7 @@ public class PatternPanel {
         }
 
         // creates a scroll pane and puts the patternPanel inside
-        // only show the vertical scollbar and increase the scrolling speed
+        // only show the vertical scrollbar and increase the scrolling speed
         JScrollPane scrollPane = new JScrollPane(patternPanel);
         scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
@@ -192,7 +192,7 @@ public class PatternPanel {
         }
     }
 
-    public static int getPatternpanelwidth() {
+    public static int getPatternpanelWidth() {
         return patternPanelWidth;
     }
 

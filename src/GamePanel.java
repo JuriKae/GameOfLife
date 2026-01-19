@@ -7,7 +7,6 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.MouseInfo;
-import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 import java.awt.image.BufferedImage;
@@ -27,7 +26,7 @@ public class GamePanel extends JPanel {
 
     private static final int topPanelHeight = 75;
 
-    private static int frameWidth = panelWidth + 16 + PatternPanel.getPatternpanelwidth();
+    private static int frameWidth = panelWidth + 16 + PatternPanel.getPatternpanelWidth();
     private static int frameHeight = panelHeight + 39 + topPanelHeight;
 
     private static int currentCellWidth;
@@ -55,6 +54,8 @@ public class GamePanel extends JPanel {
 
     private BufferedImage gridImage;
     private int[] pixelData;
+
+    private final AffineTransform affineTransform = new AffineTransform();
 
     public GamePanel() {
         frame = new JFrame();
@@ -112,9 +113,21 @@ public class GamePanel extends JPanel {
                     BasicOptions.setStep(false);
                 }
 
+                if (!BasicOptions.isStep()) {
+                    int currentDelay = BasicOptions.getDelay();
+                    if (currentDelay > 0) {
+                        Thread.sleep(currentDelay);
+                    } else {
+                        // Letting other threads breathe when running with 0 delay
+                        Thread.yield();
+                    }
+                } else {
+                    BasicOptions.setStep(false);
+                }
+
                 // wait until all the cells have been repainted
                 while (!repainted) {
-                    Thread.sleep(0);
+                    Thread.onSpinWait();
                 }
                 repainted = false;
 
@@ -131,7 +144,7 @@ public class GamePanel extends JPanel {
                 CellColor.generateColors(System.nanoTime());
 
                 while (inPaint) {
-                    Thread.sleep(0);
+                    Thread.onSpinWait();
                 }
 
                 Cell.countNeighbors();
@@ -174,9 +187,9 @@ public class GamePanel extends JPanel {
 
         CellColor.generateColors(System.nanoTime());
         Cell.initializeCells(this.getWidth(), this.getHeight());
-        
+
         initializeBuffer(Cell.getxGrids(), Cell.getyGrids());
-        
+
         initialized = true;
 
         currentCellWidth = Cell.getCellWidth();
@@ -214,10 +227,10 @@ public class GamePanel extends JPanel {
 
         g2 = (Graphics2D) g;
 
-        AffineTransform at = new AffineTransform();
-        at.translate(xOffset, yOffset);
-        at.scale(zoomFactor, zoomFactor);
-        g2.transform(at);
+        affineTransform.setToIdentity();
+        affineTransform.translate(xOffset, yOffset);
+        affineTransform.scale(zoomFactor, zoomFactor);
+        g2.transform(affineTransform);
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
         g2.setColor(cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
@@ -226,8 +239,11 @@ public class GamePanel extends JPanel {
         if (lastCell != null && wasDragged) {
             // if the drawn cell is not next to the cell drawn before
             // calculating the line between these cell with the Bresenham algorithm
-            if (new Point((int) lastCell.getCenterX(), (int) lastCell.getCenterY()).distance(cell.getCenterX(),
-                    cell.getCenterY()) > currentCellWidth) {
+            double dx = cell.getCenterX() - lastCell.getCenterX();
+            double dy = cell.getCenterY() - lastCell.getCenterY();
+            double distSq = dx * dx + dy * dy;
+
+            if (distSq > (double) currentCellWidth * currentCellWidth) {
 
                 int lastCellX = (int) lastCell.getX() / currentCellWidth;
                 int lastCellY = (int) lastCell.getY() / currentCellHeight;
@@ -272,7 +288,7 @@ public class GamePanel extends JPanel {
 
         g2 = (Graphics2D) g;
 
-        AffineTransform at = new AffineTransform();
+        affineTransform.setToIdentity();
         if (hasZoomed) {
 
             double xRel = MouseInfo.getPointerInfo().getLocation().getX() - getLocationOnScreen().getX();
@@ -286,9 +302,9 @@ public class GamePanel extends JPanel {
             prevZoomFactor = zoomFactor;
         }
 
-        at.translate(xOffset, yOffset);
-        at.scale(zoomFactor, zoomFactor);
-        g2.transform(at);
+        affineTransform.translate(xOffset, yOffset);
+        affineTransform.scale(zoomFactor, zoomFactor);
+        g2.transform(affineTransform);
 
         // initialized is set true by the Cell.java class when the 2D cell array has
         // been initialized with the correct values
@@ -311,7 +327,7 @@ public class GamePanel extends JPanel {
 
                 // Get color depending on status of cell and check if colors are inverted
                 Color c = cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor();
-                
+
                 // Map the 2D grid state to the 1D image pixel array
                 pixelData[j * xGrids + i] = c.getRGB();
             }

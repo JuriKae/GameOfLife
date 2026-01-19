@@ -289,7 +289,7 @@ public class AdvancedOptions {
         setCellSizeLabel.setForeground(Color.WHITE);
         setCellSizeLabel.setFont(normalFont);
 
-        SpinnerNumberModel cellSizeSpinnerModel = new SpinnerNumberModel(6, 2, 50, 1);
+        SpinnerNumberModel cellSizeSpinnerModel = new SpinnerNumberModel(6, 1, 50, 1);
         JSpinner cellSizeSpinner = new JSpinner(cellSizeSpinnerModel);
         cellSizeSpinner.setBounds(225, 50, 100, 30);
         cellSizeSpinner.getEditor().getComponent(0).setBackground(buttonColor);
