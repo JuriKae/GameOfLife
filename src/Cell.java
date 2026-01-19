@@ -1,9 +1,8 @@
 package src;
 
 import java.awt.Color;
-import java.awt.Rectangle;
 
-public class Cell extends Rectangle {
+public class Cell {
     private boolean alive = false;
     private boolean nextGenAlive = false;
     private boolean lastGenAlive = false;
@@ -19,27 +18,52 @@ public class Cell extends Rectangle {
 
     private static Cell[][] cells;
 
+    private int x, y;
+
     public Cell(int i, int j) {
-        this.setBounds(cellWidth * i, cellHeight * j, cellWidth, cellHeight);
+        this.x = i * cellWidth;
+        this.y = j * cellHeight;
+    }
+
+    // Standard getters to maintain compatibility with MouseCellListener
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
+    public int getWidth() {
+        return cellWidth;
+    }
+
+    public int getHeight() {
+        return cellHeight;
+    }
+
+    public double getCenterX() {
+        return x + cellWidth / 2.0;
+    }
+
+    public double getCenterY() {
+        return y + cellHeight / 2.0;
     }
 
     public static void initializeCells(int mainWidth, int mainHeight) {
         xGrids = mainWidth / cellWidth;
         yGrids = mainHeight / cellHeight;
-
         cells = new Cell[xGrids][yGrids];
-        
+
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
                 cells[i][j] = new Cell(i, j);
             }
         }
-
         initAliveCells();
     }
 
     public static void initAliveCells() {
-
         switch (AdvancedOptions.getAliveCellMode()) {
             case Empty:
                 break;
@@ -67,34 +91,51 @@ public class Cell extends Rectangle {
         CellColor.callChangeColorFunction();
     }
 
-    public static void countNeighbours() {
-        
+    public static void countNeighbors() {
         for (int i = 0; i < xGrids; i++) {
+            // Pre-calculate neighbor X indices once per column
+            int left = (i == 0) ? xGrids - 1 : i - 1;
+            int right = (i == xGrids - 1) ? 0 : i + 1;
+
             for (int j = 0; j < yGrids; j++) {
-                int neighbours = 0;
+                // Pre-calculate neighbor Y indices once per cell
+                int top = (j == 0) ? yGrids - 1 : j - 1;
+                int bottom = (j == yGrids - 1) ? 0 : j + 1;
 
-                neighbours += cells[(i + xGrids - 1) % xGrids][(j + yGrids - 1) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids + 0) % xGrids][(j + yGrids - 1) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids + 1) % xGrids][(j + yGrids - 1) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids - 1) % xGrids][(j + yGrids + 0) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids + 1) % xGrids][(j + yGrids + 0) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids - 1) % xGrids][(j + yGrids + 1) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids + 0) % xGrids][(j + yGrids + 1) % yGrids].alive ? 1 : 0;
-                neighbours += cells[(i + xGrids + 1) % xGrids][(j + yGrids + 1) % yGrids].alive ? 1 : 0;
+                int neighbors = 0;
 
-                // sets next gen cell alive or dead according to number of neighbours
-                if (!cells[i][j].alive) {
-                    cells[i][j].nextGenAlive = neighbours == 3;
+                // Count number of alive neighbors
+                if (cells[left][top].alive)
+                    neighbors++;
+                if (cells[i][top].alive)
+                    neighbors++;
+                if (cells[right][top].alive)
+                    neighbors++;
+                if (cells[left][j].alive)
+                    neighbors++;
+                if (cells[right][j].alive)
+                    neighbors++;
+                if (cells[left][bottom].alive)
+                    neighbors++;
+                if (cells[i][bottom].alive)
+                    neighbors++;
+                if (cells[right][bottom].alive)
+                    neighbors++;
+
+                // sets next gen cell alive or dead according to number of neighbors
+                Cell current = cells[i][j];
+                if (!current.alive) {
+                    current.nextGenAlive = (neighbors == 3);
                 } else {
-                    cells[i][j].nextGenAlive = neighbours == 2 || neighbours == 3;
+                    current.nextGenAlive = (neighbors == 2 || neighbors == 3);
                 }
             }
         }
     }
 
     public static void takeAStepBack() {
-        for (int i = 0; i < xGrids - 1; i++) {
-            for (int j = 0; j < yGrids - 1; j++) {
+        for (int i = 0; i < xGrids; i++) {
+            for (int j = 0; j < yGrids; j++) {
                 cells[i][j].alive = cells[i][j].lastGenAlive;
             }
         }

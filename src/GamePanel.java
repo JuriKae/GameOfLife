@@ -134,7 +134,7 @@ public class GamePanel extends JPanel {
                     Thread.sleep(0);
                 }
 
-                Cell.countNeighbours();
+                Cell.countNeighbors();
                 CellColor.callChangeColorFunction();
 
                 Cell cell = null;
@@ -221,7 +221,7 @@ public class GamePanel extends JPanel {
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
         g2.setColor(cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
-        g2.fill(cell);
+        g2.fillRect(cell.getX(), cell.getY(), cell.getWidth(), cell.getHeight());
 
         if (lastCell != null && wasDragged) {
             // if the drawn cell is not next to the cell drawn before
@@ -238,8 +238,9 @@ public class GamePanel extends JPanel {
                 ArrayList<Cell> list = Bresenham.findLine(Cell.getCells(), lastCellX, lastCellY, cellxGrid, cellyGrid);
 
                 for (int i = 0; i < list.size(); i++) {
-                    g2.fill(list.get(i));
-                    list.get(i).setAlive(isLeftClick);
+                    Cell lineCell = list.get(i);
+                    g2.fillRect(lineCell.getX(), lineCell.getY(), lineCell.getWidth(), lineCell.getHeight());
+                    lineCell.setAlive(isLeftClick);
                 }
             }
         }
