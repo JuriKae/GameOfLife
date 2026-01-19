@@ -10,6 +10,8 @@ import java.awt.MouseInfo;
 import java.awt.Point;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferInt;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFrame;
@@ -33,25 +35,26 @@ public class GamePanel extends JPanel {
 
     private static int generation = 1;
 
-    private static Cell lastCell;
+    private Cell lastCell;
 
-    private static GamePanel panel;
-
-    private static Thread thread;
+    private Thread thread;
 
     private static boolean reset;
-    private static boolean inPaint;
-    private static boolean repainted;
-    private static boolean initialized;
+    private boolean inPaint;
+    private boolean repainted;
+    private boolean initialized;
 
-    private static double zoomFactor = 1;
-    private static double prevZoomFactor = 1;
-    private static boolean hasZoomed;
+    private double zoomFactor = 1;
+    private double prevZoomFactor = 1;
+    private boolean hasZoomed;
 
-    private static double xOffset = 0;
-    private static double yOffset = 0;
+    private double xOffset = 0;
+    private double yOffset = 0;
 
     private static Graphics2D g2 = null;
+
+    private BufferedImage gridImage;
+    private int[] pixelData;
 
     public GamePanel() {
         frame = new JFrame();
@@ -72,7 +75,7 @@ public class GamePanel extends JPanel {
         frame.add(this, BorderLayout.CENTER);
         frame.add(topPanel, BorderLayout.NORTH);
 
-        new PatternPanel();
+        new PatternPanel(this);
         new BasicOptions(this);
         new AdvancedOptions(this);
         MouseCellListener mouseListener = new MouseCellListener(this);
@@ -82,14 +85,11 @@ public class GamePanel extends JPanel {
 
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
-    }
 
-    public static void start(GamePanel panel) {
-        GamePanel.panel = panel;
         resetSuff();
     }
 
-    public static void createThread() {
+    public void createThread() {
         thread = new Thread(new Runnable() {
 
             @Override
@@ -97,11 +97,11 @@ public class GamePanel extends JPanel {
                 runThread();
             }
         });
-        // thread always starts immediately, but paused is enabled
+        // thread always starts immediately, but "paused" is enabled
         thread.start();
     }
 
-    public static void runThread() {
+    public void runThread() {
         while (!reset) {
 
             try {
@@ -114,7 +114,7 @@ public class GamePanel extends JPanel {
 
                 // wait until all the cells have been repainted
                 while (!repainted) {
-                    Thread.sleep(1);
+                    Thread.sleep(0);
                 }
                 repainted = false;
 
@@ -137,7 +137,6 @@ public class GamePanel extends JPanel {
                 Cell.countNeighbours();
                 CellColor.callChangeColorFunction();
 
-
                 Cell cell = null;
                 Cell[][] cells = Cell.getCells();
                 int xGrids = cells.length;
@@ -145,7 +144,6 @@ public class GamePanel extends JPanel {
 
                 for (int i = 0; i < xGrids; i++) {
                     for (int j = 0; j < yGrids; j++) {
-
                         cell = cells[i][j];
 
                         // save if last generation was alive or dead
@@ -155,7 +153,7 @@ public class GamePanel extends JPanel {
                         cell.setAlive(cell.isNextGenAlive());
                     }
                 }
-                panel.repaint();
+                this.repaint();
                 generation++;
                 BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
@@ -167,7 +165,7 @@ public class GamePanel extends JPanel {
         resetSuff();
     }
 
-    public static void resetSuff() {
+    public void resetSuff() {
         reset = false;
         initialized = false;
         repainted = false;
@@ -175,7 +173,10 @@ public class GamePanel extends JPanel {
         BasicOptions.getGenerationLabel().setText("Generation: " + generation);
 
         CellColor.generateColors(System.nanoTime());
-        Cell.initializeCells(panel.getWidth(), panel.getHeight());
+        Cell.initializeCells(this.getWidth(), this.getHeight());
+        
+        initializeBuffer(Cell.getxGrids(), Cell.getyGrids());
+        
         initialized = true;
 
         currentCellWidth = Cell.getCellWidth();
@@ -184,7 +185,7 @@ public class GamePanel extends JPanel {
         createThread();
     }
 
-    public static void resetZoom() {
+    public void resetZoom() {
         hasZoomed = true;
         zoomFactor = 1;
         prevZoomFactor = 1;
@@ -192,10 +193,18 @@ public class GamePanel extends JPanel {
         yOffset = 0;
     }
 
-    public static int oneGenerationBack() {
+    public int oneGenerationBack() {
         generation--;
-        panel.repaint();
+        this.repaint();
         return generation;
+    }
+
+    public void initializeBuffer(int width, int height) {
+        // Create an image compatible with the screen
+        gridImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+
+        // Get the underlying array. Writing to this array updates the image instantly.
+        pixelData = ((DataBufferInt) gridImage.getRaster().getDataBuffer()).getData();
     }
 
     // is called when user is dragging the mouse so that more pixel will be drawn
@@ -241,7 +250,7 @@ public class GamePanel extends JPanel {
 
         // show the grid if user enabled it
         if (AdvancedOptions.isShowGrid()) {
-            g2.setColor(new Color(14,14,14));
+            g2.setColor(new Color(14, 14, 14));
             g2.setStroke(new BasicStroke(0));
             for (int i = 0; i < yGrids; i++) {
                 g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
@@ -281,7 +290,7 @@ public class GamePanel extends JPanel {
         g2.transform(at);
 
         // initialized is set true by the Cell.java class when the 2D cell array has
-        // been initalized with the correct values
+        // been initialized with the correct values
         while (!initialized) {
             try {
                 Thread.sleep(0);
@@ -291,27 +300,29 @@ public class GamePanel extends JPanel {
         }
 
         boolean isColorsInverted = AdvancedOptions.isColorsInverted();
-
         Cell[][] cells = Cell.getCells();
         int xGrids = cells.length;
         int yGrids = cells[0].length;
-        Cell cell = null;
 
         for (int i = 0; i < xGrids; i++) {
             for (int j = 0; j < yGrids; j++) {
-                cell = cells[i][j];
+                Cell cell = cells[i][j];
 
-                // set color depending on status of cell and check if colors are inverted
-                g2.setColor(cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor());
-                g2.fill(cell);
+                // Get color depending on status of cell and check if colors are inverted
+                Color c = cell.isAlive() == isColorsInverted ? cell.getDeadColor() : cell.getAliveColor();
+                
+                // Map the 2D grid state to the 1D image pixel array
+                pixelData[j * xGrids + i] = c.getRGB();
             }
         }
 
-        // show the grid if user enabled it
+        // Render the entire grid as a single image scaled to the cell dimensions
+        g2.drawImage(gridImage, 0, 0, xGrids * currentCellWidth, yGrids * currentCellHeight, null);
+
         if (AdvancedOptions.isShowGrid()) {
             // make grid as small as possible
             g2.setStroke(new BasicStroke(0));
-            g2.setColor(new Color(14,14,14));
+            g2.setColor(new Color(14, 14, 14));
 
             for (int i = 0; i < yGrids; i++) {
                 g2.drawLine(0, i * currentCellHeight, xGrids * currentCellWidth, i * currentCellHeight);
@@ -328,7 +339,7 @@ public class GamePanel extends JPanel {
         inPaint = false;
     }
 
-    public static JPanel getTopPanel() {
+    public JPanel getTopPanel() {
         return topPanel;
     }
 
@@ -336,31 +347,31 @@ public class GamePanel extends JPanel {
         GamePanel.reset = reset;
     }
 
-    public static void setHasZoomed(boolean hasZoomed) {
-        GamePanel.hasZoomed = hasZoomed;
+    public void setHasZoomed(boolean hasZoomed) {
+        this.hasZoomed = hasZoomed;
     }
 
-    public static double getZoomFactor() {
+    public double getZoomFactor() {
         return zoomFactor;
     }
 
-    public static void setZoomFactor(double zoomFactor) {
-        GamePanel.zoomFactor = zoomFactor;
+    public void setZoomFactor(double zoomFactor) {
+        this.zoomFactor = zoomFactor;
     }
 
-    public static double getxOffset() {
+    public double getxOffset() {
         return xOffset;
     }
 
-    public static double getyOffset() {
+    public double getyOffset() {
         return yOffset;
     }
 
-    public static JFrame getFrame() {
+    public JFrame getFrame() {
         return frame;
     }
 
-    public static void setLastCell(Cell lastCell) {
-        GamePanel.lastCell = lastCell;
+    public void setLastCell(Cell lastCell) {
+        this.lastCell = lastCell;
     }
 }

@@ -10,9 +10,9 @@ import javax.swing.JSlider;
 
 public class LayoutMaker {
 
-    public LayoutMaker(JButton[] buttons, JSlider delaySlider) {
+    public LayoutMaker(JButton[] buttons, JSlider delaySlider, GamePanel panel) {
 
-        JPanel topPanel = GamePanel.getTopPanel();
+        JPanel topPanel = panel.getTopPanel();
         GridBagConstraints gbc = new GridBagConstraints();
         topPanel.setLayout(new GridBagLayout());
 

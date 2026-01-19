@@ -28,12 +28,12 @@ public class MouseCellListener extends MouseAdapter {
             return;
         }
 
-        double xDifference = (Cell.getCellWidth() * GamePanel.getZoomFactor());
-        double yDifference = (Cell.getCellHeight() * GamePanel.getZoomFactor());
+        double xDifference = (Cell.getCellWidth() * panel.getZoomFactor());
+        double yDifference = (Cell.getCellHeight() * panel.getZoomFactor());
 
         // converts x and y to correct value, even when zoomed in
-        int x = (int) (e.getX() / xDifference - (GamePanel.getxOffset() / xDifference));
-        int y = (int) (e.getY() / yDifference - (GamePanel.getyOffset() / yDifference));
+        int x = (int) (e.getX() / xDifference - (panel.getxOffset() / xDifference));
+        int y = (int) (e.getY() / yDifference - (panel.getyOffset() / yDifference));
 
         if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
             return;
@@ -50,7 +50,7 @@ public class MouseCellListener extends MouseAdapter {
 
         cell.setAlive(isLeftClick);
 
-        GamePanel.setLastCell(cell);
+        panel.setLastCell(cell);
         paintedWithMouse = true;
     }
 
@@ -65,15 +65,15 @@ public class MouseCellListener extends MouseAdapter {
             return;
         }
 
-        double xDifference = (Cell.getCellWidth() * GamePanel.getZoomFactor());
-        double yDifference = (Cell.getCellHeight() * GamePanel.getZoomFactor());
+        double xDifference = (Cell.getCellWidth() * panel.getZoomFactor());
+        double yDifference = (Cell.getCellHeight() * panel.getZoomFactor());
 
         // converts x and y to correct value, even when zoomed in
-        int x = (int) (e.getX() / xDifference - (GamePanel.getxOffset() / xDifference));
-        int y = (int) (e.getY() / yDifference - (GamePanel.getyOffset() / yDifference));
+        int x = (int) (e.getX() / xDifference - (panel.getxOffset() / xDifference));
+        int y = (int) (e.getY() / yDifference - (panel.getyOffset() / yDifference));
 
         if (x < 0 || x >= Cell.getxGrids() || y < 0 || y >= Cell.getyGrids()) {
-            GamePanel.setLastCell(null);
+            panel.setLastCell(null);
             return;
         }
 
@@ -89,7 +89,7 @@ public class MouseCellListener extends MouseAdapter {
         if (paintedWithMouse && !PatternPanel.isPattern()) {
             panel.repaint();
             paintedWithMouse = false;
-            GamePanel.setLastCell(null);
+            panel.setLastCell(null);
         }
     }
 
@@ -101,7 +101,7 @@ public class MouseCellListener extends MouseAdapter {
 
         if (SwingUtilities.isMiddleMouseButton(e)) {
             hasZoomed = true;
-            GamePanel.resetZoom();
+            panel.resetZoom();
             panel.repaint();
         }
     }
@@ -114,12 +114,12 @@ public class MouseCellListener extends MouseAdapter {
 
         // zoom in
         if (e.getWheelRotation() < 0) {
-            GamePanel.setZoomFactor(GamePanel.getZoomFactor() * 1.1);
+            panel.setZoomFactor(panel.getZoomFactor() * 1.1);
             panel.repaint();
         }
         // zoom out
         if (e.getWheelRotation() > 0) {
-            GamePanel.setZoomFactor(GamePanel.getZoomFactor() / 1.1);
+            panel.setZoomFactor(panel.getZoomFactor() / 1.1);
             panel.repaint();
         }
     }

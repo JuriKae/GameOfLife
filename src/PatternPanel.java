@@ -29,7 +29,7 @@ public class PatternPanel {
 
     private static JButton[] buttonArray = new JButton[numberOfPatterns];
 
-    public PatternPanel() {
+    public PatternPanel(GamePanel panel) {
 
         JPanel patternPanel = new JPanel();
         patternPanel.setBackground(Color.DARK_GRAY);
@@ -183,7 +183,7 @@ public class PatternPanel {
         scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
         scrollPane.getVerticalScrollBar().setUnitIncrement(16);
 
-        GamePanel.getFrame().add(scrollPane, BorderLayout.EAST);
+        panel.getFrame().add(scrollPane, BorderLayout.EAST);
     }
 
     public static void deselectButtons() {

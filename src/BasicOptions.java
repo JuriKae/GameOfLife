@@ -42,7 +42,7 @@ public class BasicOptions {
             // code executes when user makes one step back
             previousButton.setEnabled(false);
             Cell.takeAStepBack();
-            int generation = GamePanel.oneGenerationBack();
+            int generation = panel.oneGenerationBack();
             generationLabel.setText("Generation: " + generation);
         });
         previousButton.setEnabled(false);
@@ -64,7 +64,7 @@ public class BasicOptions {
 
             // check if optionsFrame fits to the right of the main frame
             // if not, set its location relative to the main frame
-            Point point = new Point(GamePanel.getFrame().getX() + GamePanel.getFrame().getWidth(), GamePanel.getFrame().getY());
+            Point point = new Point(panel.getFrame().getX() + panel.getFrame().getWidth(), panel.getFrame().getY());
             Point rightMostPoint = new Point((int) (point.getX() + optionsFrame.getWidth()), (int) point.getY());
 
             if (SwingUtil.isLocationInScreenBounds(rightMostPoint)) {
@@ -101,7 +101,7 @@ public class BasicOptions {
 
         });
 
-        new LayoutMaker(buttonArray, delaySlider);
+        new LayoutMaker(buttonArray, delaySlider, panel);
     }
 
     public static void startGame() {
